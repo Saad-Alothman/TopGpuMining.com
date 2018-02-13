@@ -158,7 +158,7 @@ namespace GpuMiningInsights.Console
                 priceSource.Price = double.Parse(PriceText);
             }
         }
-         //aaaa
+         //aaaa ssss
 
         private static void LoadData()
         {
