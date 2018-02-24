@@ -62,5 +62,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GpuMiningInsights.Core\GpuMiningInsights.Core.csproj">
+      <Project>{b3e007a3-b917-4683-8b96-83264420d22d}</Project>
+      <Name>GpuMiningInsights.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

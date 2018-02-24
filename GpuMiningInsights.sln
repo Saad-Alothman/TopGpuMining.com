@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Console", "GpuMiningInsights.Console\GpuMiningInsights.Console.csproj", "{738CE139-D38A-4E44-94C0-DE49D74420E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Web", "GpuMiningInsights.Web\GpuMiningInsights.Web.csproj", "{BCC84AA4-1D56-4243-8F6F-E56F8AF50895}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Core", "GpuMiningInsights.Core\GpuMiningInsights.Core.csproj", "{B3E007A3-B917-4683-8B96-83264420D22D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Presentation.Web", "GpuMiningInsights.Presentation.Web\GpuMiningInsights.Presentation.Web.csproj", "{7D8413E3-DF95-4515-B0C2-27E018255F5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{738CE139-D38A-4E44-94C0-DE49D74420E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{738CE139-D38A-4E44-94C0-DE49D74420E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{738CE139-D38A-4E44-94C0-DE49D74420E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC84AA4-1D56-4243-8F6F-E56F8AF50895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC84AA4-1D56-4243-8F6F-E56F8AF50895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC84AA4-1D56-4243-8F6F-E56F8AF50895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC84AA4-1D56-4243-8F6F-E56F8AF50895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E007A3-B917-4683-8B96-83264420D22D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E007A3-B917-4683-8B96-83264420D22D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E007A3-B917-4683-8B96-83264420D22D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E007A3-B917-4683-8B96-83264420D22D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D8413E3-DF95-4515-B0C2-27E018255F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D8413E3-DF95-4515-B0C2-27E018255F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D8413E3-DF95-4515-B0C2-27E018255F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D8413E3-DF95-4515-B0C2-27E018255F5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
