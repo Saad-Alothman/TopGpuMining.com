@@ -18,6 +18,9 @@ namespace GpuMiningInsights.Core
         public double Hashrate { get; set; }
         public string CoinToStudyName { get; set; }
         public MiningProfitability MiningProfitability { get; set; }
+        public double RevenuePerDayUsd { get; set; }
+        public double ProfitPerDayUsd { get; set; }
+        public double ProfitPerYearMinusCostUsd => (ProfitPerDayUsd * 365) - LowestPriceSource.Price;
 
         public GPU()
         {
@@ -46,5 +49,6 @@ namespace GpuMiningInsights.Core
         public string URL { get; set; }
         public string Selector { get; set; }
         public double Price { get; set; }
+        public bool RequiresJavascript { get; set; }
     }
 }
