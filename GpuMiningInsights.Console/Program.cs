@@ -1,4 +1,5 @@
 ﻿using CsQuery;
+using GpuMiningInsights.Application.Amazon;
 using GpuMiningInsights.Core;
 using OpenQA.Selenium.PhantomJS;
 using System;
@@ -25,6 +26,8 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
+            AmazonService.Search();
+            return;
             bool isTest = false;
             
             if (isTest)
