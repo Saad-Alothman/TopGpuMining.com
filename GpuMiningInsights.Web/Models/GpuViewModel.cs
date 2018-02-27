@@ -11,7 +11,7 @@ namespace GpuMiningInsights.Web.Models
         public string Name { get; set; }
         public string WhatToMineUrl { get; set; }
         public List<PriceSource> PriceSources { get; set; }
-        public PriceSource LowestPriceSource => PriceSources.OrderBy(p => p.Price).FirstOrDefault();
+        public PriceSource LowestPriceSource => PriceSources.OrderBy(p => p.PriceSourceItems.Min(a=>a.Price)).FirstOrDefault();
         public HashPricePerSource LowestHashPrice => HashPricePerSourceList.OrderBy(p => p.HashPrice).FirstOrDefault();
         public List<HashPricePerSource> HashPricePerSourceList { get; set; }
         //MHs/s

@@ -6,16 +6,18 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using CsQuery;
+using GpuMiningInsights.Application.Amazon;
 using GpuMiningInsights.Core;
 using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
 
 namespace GpuMiningInsights.Console
 {
-    public static class Insighter
+    public static class InsighterService
     {
+
         public static List<GPU> Gpus = new List<GPU>();
-        internal static List<GPU> GetInsights()
+        public static List<GPU> GetInsights()
         {
             InitDriver();
 
@@ -52,11 +54,13 @@ namespace GpuMiningInsights.Console
 
             foreach (var item in gpu.PriceSources)
             {
+                //TODO:now using the lowest price from the results, maybe use different hash price for each source
                 //price for the GPU / Hashrate
+                double price = item.PriceSourceItems.Min(p => p.Price);
                 HashPricePerSource hashPricePerSource = new HashPricePerSource()
                 {
                     Source = item.Name,
-                    HashPrice = item.Price / gpu.Hashrate
+                    HashPrice = price / gpu.Hashrate
                 };
                 gpu.HashPricePerSourceList.Add(hashPricePerSource);
             }
@@ -233,7 +237,7 @@ namespace GpuMiningInsights.Console
 
         public static void PushData()
         {
-            string url= "http://localhost/GpuMiningInsights.Web/Home/PushData";
+            string url = "http://localhost/GpuMiningInsights.Web/Home/PushData";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
@@ -275,14 +279,21 @@ namespace GpuMiningInsights.Console
             foreach (var priceSource in gpu.PriceSources)
             {
                 System.Console.WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
-
-                string response = GetHttpResponseTextWithJavascript(priceSource.URL);
-                string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);
-                if (PriceText.IndexOf("$") > -1)
+                //is it an api or something, else we are going to scrape the shit out of it...
+                if (priceSource.PriceSourceAction != null)
                 {
-                    PriceText = PriceText.Remove(PriceText.IndexOf("$"), 1);
+                    List<PriceSourceItem> result = priceSource.PriceSourceAction.Invoke();
+                    priceSource.PriceSourceItems.AddRange(result);
+
                 }
-                priceSource.Price = double.Parse(PriceText);
+                else
+                {
+                    string response = GetHttpResponseTextWithJavascript(priceSource.URL);
+                    string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);
+                    if (PriceText.IndexOf("$") > -1) PriceText = PriceText.Remove(PriceText.IndexOf("$"), 1);
+                    priceSource.AddPriceSourceItem(PriceText);
+                }
+
             }
         }
         //aaaa ssss

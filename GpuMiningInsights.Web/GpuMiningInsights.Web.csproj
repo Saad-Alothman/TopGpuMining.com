@@ -175,6 +175,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -218,6 +219,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GpuMiningInsights.Application\GpuMiningInsights.Application.csproj">
+      <Project>{290d7c67-53b8-4d76-9497-59aa8a7abcbe}</Project>
+      <Name>GpuMiningInsights.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GpuMiningInsights.Core\GpuMiningInsights.Core.csproj">
       <Project>{b3e007a3-b917-4683-8b96-83264420d22d}</Project>
       <Name>GpuMiningInsights.Core</Name>

@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{738CE139-D38A-4E44-94C0-DE49D74420E6}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>GpuMiningInsights.Console</RootNamespace>
-    <AssemblyName>GpuMiningInsights.Console</AssemblyName>
+    <ProjectGuid>{290D7C67-53B8-4D76-9497-59AA8A7ABCBE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GpuMiningInsights.Application</RootNamespace>
+    <AssemblyName>GpuMiningInsights.Application</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -53,32 +51,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Insighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Info.txt" />
-    <Content Include="phantomjs.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GpuMiningInsights.Application.Amazon\GpuMiningInsights.Application.Amazon.csproj">
       <Project>{e944f711-d0c7-4f03-ae39-95483bb9c59e}</Project>
       <Name>GpuMiningInsights.Application.Amazon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GpuMiningInsights.Application\GpuMiningInsights.Application.csproj">
-      <Project>{290d7c67-53b8-4d76-9497-59aa8a7abcbe}</Project>
-      <Name>GpuMiningInsights.Application</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GpuMiningInsights.Core\GpuMiningInsights.Core.csproj">
-      <Project>{b3e007a3-b917-4683-8b96-83264420d22d}</Project>
+      <Project>{B3E007A3-B917-4683-8B96-83264420D22D}</Project>
       <Name>GpuMiningInsights.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

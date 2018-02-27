@@ -5,23 +5,114 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GpuMiningInsights.Core;
 
 namespace GpuMiningInsights.Application.Amazon
 {
+
     //https://github.com/tinohager/Nager.AmazonProductAdvertising
     public static class AmazonService
     {
-
-        public  static void Search()
+        private static string accessKey = "AKIAI6YFV4IQDUUAN6MQ";
+        private static string secreteKey = "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";
+        private static string merchantId = "saadtech-21";
+        public static List<PriceSourceItem> Search()
         {
-            
+            List<PriceSourceItem> results = new List<PriceSourceItem>();
             var authentication = new AmazonAuthentication();
-            authentication.AccessKey = "AKIAI6YFV4IQDUUAN6MQ";
-            authentication.SecretKey = "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";
+            authentication.AccessKey = accessKey;
+            authentication.SecretKey = secreteKey;
 
-            var wrapper = new AmazonWrapper(authentication, AmazonEndpoint.UK, "saadtech-21");
-            var result = wrapper.Search("MSI RX 580", AmazonSearchIndex.Electronics);
+            var wrapper = new AmazonWrapper(authentication, AmazonEndpoint.UK,merchantId );
+            //string searchTerm = "ASUS DUAL-RX580-O8G Radeon RX 580 8 GB GDDR5";
+            string searchTerm = "Aberg Best 21 Mega Pixels";
+            AmazonItemResponse result = wrapper.Search(searchTerm, AmazonSearchIndex.All);
+            results = result.ToPriceSourceItems();
+            return results;
+        }
+        public static List<PriceSourceItem> SearchLookup()
+        {
+            List<PriceSourceItem> results = new List<PriceSourceItem>();
+            var authentication = new AmazonAuthentication();
+            authentication.AccessKey = accessKey;
+            authentication.SecretKey = secreteKey;
 
+            var wrapper = new AmazonWrapper(authentication, AmazonEndpoint.UK, merchantId);
+            //string searchTerm = "ASUS DUAL-RX580-O8G Radeon RX 580 8 GB GDDR5";
+            string searchTerm = "Aberg Best 21 Mega Pixels";
+            AmazonItemResponse result = wrapper.Lookup(searchTerm);
+            results = result.ToPriceSourceItems();
+            return results;
+        }
+        public static List<PriceSourceItem> SearchItemLookupOperation()
+        {
+            List<PriceSourceItem> results = new List<PriceSourceItem>();
+            var authentication = new AmazonAuthentication();
+            authentication.AccessKey = accessKey;
+            authentication.SecretKey = secreteKey;
+
+            var wrapper = new AmazonWrapper(authentication, AmazonEndpoint.UK, merchantId);
+            string searchTerm = "Aberg Best 21 Mega Pixels";
+
+
+            var searchOperation = wrapper.ItemLookupOperation(new List<string>() { "B076GZ3JFC" });
+            ExtendedWebResponse xmlResponse = wrapper.Request(searchOperation);
+
+            var rrrrrr = XmlHelper.ParseXml<ItemLookupResponse>(xmlResponse.Content);
+            return results;
         }
     }
+
+
+    public static class AmazonItemResponseExtension
+    {
+        public static List<PriceSourceItem> ToPriceSourceItems(this AmazonItemResponse amazonItemResponse)
+        {
+            List<PriceSourceItem> result = new List<PriceSourceItem>();
+            if (amazonItemResponse == null) return result;
+            foreach (var item in amazonItemResponse.Items.Item)
+            {
+                string asin = item.ASIN;
+                string url = item.DetailPageURL;
+                if (item.Offers.TotalOffers != "0")
+                {
+                    foreach (var offer in item.Offers.Offer)
+                    {
+                        string merchant = offer.Merchant?.Name;
+                        foreach (var offerListing in offer.OfferListing)
+                        {
+                            PriceSourceItem priceSourceItem = new PriceSourceItem();
+                            priceSourceItem.Merchant = merchant;
+                            priceSourceItem.ASIN = asin;
+                            priceSourceItem.URL = url;
+
+                            string priceStr = offerListing.Price.Amount;
+                            priceSourceItem.PriceCurrency = offerListing.Price.CurrencyCode;
+                            if (!string.IsNullOrWhiteSpace(offerListing.SalePrice?.Amount))
+                            {
+                                priceStr = offerListing.SalePrice.Amount;
+                                priceSourceItem.PriceCurrency = offerListing.SalePrice.CurrencyCode;
+                            }
+                            if (priceStr.Length >= 2)
+                            {
+                                priceStr = priceStr.Insert(priceStr.Length - 2, ".");
+                            }
+                            priceSourceItem.Price = double.Parse(priceStr);
+                        }
+                    }
+                }
+                else if (item.ItemLinks.FirstOrDefault(l => l.Description == "All Offers") != null)
+                {
+                    url = item.ItemLinks.FirstOrDefault(l => l.Description == "All Offers").URL;
+                }
+
+
+
+
+            }
+            return result;
+        }
+    }
+
+
 }

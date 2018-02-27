@@ -52,5 +52,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GpuMiningInsights.Core\GpuMiningInsights.Core.csproj">
+      <Project>{B3E007A3-B917-4683-8B96-83264420D22D}</Project>
+      <Name>GpuMiningInsights.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
