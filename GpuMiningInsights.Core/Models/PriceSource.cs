@@ -14,7 +14,8 @@ namespace GpuMiningInsights.Core
         public string Selector { get; set; }
         public List<PriceSourceItem> PriceSourceItems { get; set; }
         public bool RequiresJavascript { get; set; }
-        public Func<List<PriceSourceItem>> PriceSourceAction { get; set; }
+        public Func<string,List<PriceSourceItem>> PriceSourceAction { get; set; }
+        public string PriceSourceItemIdentifier { get; set; }
 
         public void AddPriceSourceItem(string price)
         {

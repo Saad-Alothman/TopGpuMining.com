@@ -26,8 +26,10 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
-            AmazonService.Search();
-            return;
+            var resultttt =AmazonService.Search("B076GZ3JFC");
+            var resultttt2 =AmazonService.SearchLookup("B076GZ3JFC");
+            var resultttt3 =AmazonService.SearchItemLookupOperation("B076GZ3JFC");
+            //return;
             bool isTest = false;
             
             if (isTest)
