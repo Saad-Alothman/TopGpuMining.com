@@ -13,6 +13,8 @@ namespace GpuMiningInsights.Core
         public string Name { get; set; }
         public string URL { get; set; }
         public string Selector { get; set; }
+        public string ImageUrl { get; set; }
+        public string ImageUrlSelector { get; set; }
         public List<PriceSourceItem> PriceSourceItems { get; set; }
         public bool RequiresJavascript { get; set; }
         [JsonIgnore]
@@ -30,6 +32,18 @@ namespace GpuMiningInsights.Core
             };
             this.PriceSourceItems.Add(priceSourceItem);
         }
+        public void AddPriceSourceItem(string price,string imageUrl)
+        {
+            PriceSourceItem priceSourceItem = new PriceSourceItem()
+            {
+                Name = Name,
+                Price = double.Parse(price),
+                Selector = Selector,
+                ImageUrl = imageUrl
+
+            };
+            this.PriceSourceItems.Add(priceSourceItem);
+        }
     }
 
     public class PriceSourceItem
@@ -41,5 +55,6 @@ namespace GpuMiningInsights.Core
         public string ASIN { get; set; }
         public string PriceCurrency { get; set; }
         public string Merchant { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

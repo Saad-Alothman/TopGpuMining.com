@@ -27,9 +27,10 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
-            //var resultttt =AmazonService.Search("B076GZ3JFC");
-            //var resultttt2 =AmazonService.SearchLookup("B076GZ3JFC");
-            //var resultttt3 =AmazonService.SearchItemLookupOperation("B076GZ3JFC");
+            string searchTerm = "B071Y7CKM2";
+            var resultttt =AmazonService.Search(searchTerm);
+            var resultttt2 =AmazonService.SearchLookup(searchTerm );
+            var resultttt3 =AmazonService.SearchItemLookupOperation(searchTerm);
             //return;
             bool isTest = false;
             
@@ -51,7 +52,8 @@ namespace GpuMiningInsights.Console
                     System.Console.WriteLine($"GPU {gpuName} ,ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd}, Revenue ($/Day) = {item.RevenuePerDayUsd}, Profit ($/Day) = {item.ProfitPerDayUsd}  ,HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
 
                 }
-                System.Console.WriteLine(JsonConvert.SerializeObject(gpus));
+                string ser = JsonConvert.SerializeObject(gpus);
+                List<GPU> gpustest = JsonConvert.DeserializeObject<List<GPU>>(ser);
                 InsighterService.PushData();
             }
 

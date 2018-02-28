@@ -10,7 +10,21 @@ namespace GpuMiningInsights.Core
         public string Name { get; set; }
         public string WhatToMineUrl { get; set; }
         public List<PriceSource> PriceSources { get; set; }
-        public PriceSource LowestPriceSource => PriceSources.OrderBy(p => p.PriceSourceItems.Min(m=>m.Price)).FirstOrDefault();
+
+        public PriceSource LowestPriceSource
+        {
+            get
+            {
+                PriceSource lowestPriceSource = null;
+                var priceSourcesWithPriceSourceItems = PriceSources.Where(s => s.PriceSourceItems.Any()).ToList();
+                if (priceSourcesWithPriceSourceItems.Any())
+                   lowestPriceSource= priceSourcesWithPriceSourceItems.OrderBy(p => p.PriceSourceItems.Min(m => m.Price) ).FirstOrDefault();
+
+                return lowestPriceSource;
+            }
+        }
+
+        
         public HashPricePerSource LowestHashPrice => HashPricePerSourceList.OrderBy(p => p.HashPrice).FirstOrDefault();
         public List<HashPricePerSource> HashPricePerSourceList { get; set; }
         //MHs/s
@@ -19,7 +33,17 @@ namespace GpuMiningInsights.Core
         public MiningProfitability MiningProfitability { get; set; }
         public double RevenuePerDayUsd { get; set; }
         public double ProfitPerDayUsd { get; set; }
-        public double ProfitPerYearMinusCostUsd => (ProfitPerDayUsd * 365) - LowestPriceSource.PriceSourceItems.Min(p=>p.Price);
+        public double? ProfitPerYearMinusCostUsd {
+            get
+            {
+                double? profitPerYearMinusCostUsd = null;
+                if (LowestPriceSource.PriceSourceItems.Any())
+                    profitPerYearMinusCostUsd = (ProfitPerDayUsd * 365) - (LowestPriceSource.PriceSourceItems.Min(p => p.Price));
+
+
+                return profitPerYearMinusCostUsd;
+            }
+        }
 
         public GPU()
         {

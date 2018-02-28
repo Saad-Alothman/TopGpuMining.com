@@ -50,13 +50,17 @@ namespace GpuMiningInsights.Console
             {
                 //TODO:now using the lowest price from the results, maybe use different hash price for each source
                 //price for the GPU / Hashrate
-                double price = item.PriceSourceItems.Min(p => p.Price);
-                HashPricePerSource hashPricePerSource = new HashPricePerSource()
+                if (item.PriceSourceItems.Any())
                 {
-                    Source = item.Name,
-                    HashPrice = price / gpu.Hashrate
-                };
-                gpu.HashPricePerSourceList.Add(hashPricePerSource);
+                    double price = item.PriceSourceItems.Min(p => p.Price);
+                    HashPricePerSource hashPricePerSource = new HashPricePerSource()
+                    {
+                        Source = item.Name,
+                        HashPrice = price / gpu.Hashrate
+                    };
+                    gpu.HashPricePerSourceList.Add(hashPricePerSource);
+                }
+                
             }
         }
 
@@ -284,8 +288,15 @@ namespace GpuMiningInsights.Console
                 {
                     string response = GetHttpResponseTextWithJavascript(priceSource.URL);
                     string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);
+                    string imageUrl=null;
+                    if (!string.IsNullOrWhiteSpace(priceSource.ImageUrlSelector))
+                        imageUrl = GetTextFromHtmlStringByCssSelector(response, priceSource.ImageUrlSelector);
+
                     if (PriceText.IndexOf("$") > -1) PriceText = PriceText.Remove(PriceText.IndexOf("$"), 1);
+                    if (string.IsNullOrWhiteSpace(imageUrl))
                     priceSource.AddPriceSourceItem(PriceText);
+                    else
+                    priceSource.AddPriceSourceItem(PriceText,imageUrl);
                 }
 
             }
@@ -311,7 +322,7 @@ namespace GpuMiningInsights.Console
                         }
                         ,new PriceSource()
                         {
-                            PriceSourceItemIdentifier= "B076GZ3JFC",
+                            PriceSourceItemIdentifier= "B06ZYC3SW1",
                             PriceSourceAction =AmazonService.SearchItemLookupOperation,
                             Name="Amazon",
                             URL="https://www.newegg.com/Product/Product.aspx?Item=9SIA6V661W8467&cm_re=rx_570-_-9SIA6V661W8467-_-Product",
