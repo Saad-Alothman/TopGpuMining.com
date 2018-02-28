@@ -25,9 +25,9 @@ namespace GpuMiningInsights.Application.Amazon
             authentication.SecretKey = secreteKey;
 
             var wrapper = new AmazonWrapper(authentication, AmazonEndpoint.UK,merchantId );
-            //string searchTerm = "ASUS DUAL-RX580-O8G Radeon RX 580 8 GB GDDR5";
-            string searchTerm = "Aberg Best 21 Mega Pixels";
-            AmazonItemResponse result = wrapper.Search(term, amazonSearchIndex);
+            string searchTerm = "ASUS DUAL-RX580-O8G Radeon RX 580 8 GB GDDR5";
+            //string searchTerm = //"B076GZ3JFC";
+            AmazonItemResponse result = wrapper.Search(term, AmazonSearchIndex.All);
             results = result.ToPriceSourceItems();
             return results;
         }
@@ -99,6 +99,7 @@ namespace GpuMiningInsights.Application.Amazon
                                 priceStr = priceStr.Insert(priceStr.Length - 2, ".");
                             }
                             priceSourceItem.Price = double.Parse(priceStr);
+                            result.Add(priceSourceItem);
                         }
                     }
                 }
