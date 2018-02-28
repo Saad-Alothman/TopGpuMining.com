@@ -16,7 +16,7 @@ namespace GpuMiningInsights.Application.Amazon
         private static string accessKey = "AKIAI6YFV4IQDUUAN6MQ";
         private static string secreteKey = "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";
         private static string merchantId = "saadtech-21";
-        public static List<PriceSourceItem> Search()
+        private static List<PriceSourceItem> SearchByTerm(string term)
         {
             List<PriceSourceItem> results = new List<PriceSourceItem>();
             var authentication = new AmazonAuthentication();
@@ -24,13 +24,13 @@ namespace GpuMiningInsights.Application.Amazon
             authentication.SecretKey = secreteKey;
 
             var wrapper = new AmazonWrapper(authentication, AmazonEndpoint.UK,merchantId );
-            //string searchTerm = "ASUS DUAL-RX580-O8G Radeon RX 580 8 GB GDDR5";
-            string searchTerm = "Aberg Best 21 Mega Pixels";
-            AmazonItemResponse result = wrapper.Search(searchTerm, AmazonSearchIndex.All);
+            string searchTerm = "ASUS DUAL-RX580-O8G Radeon RX 580 8 GB GDDR5";
+            //string searchTerm = //"B076GZ3JFC";
+            AmazonItemResponse result = wrapper.Search(term, AmazonSearchIndex.All);
             results = result.ToPriceSourceItems();
             return results;
         }
-        public static List<PriceSourceItem> SearchLookup()
+        public static List<PriceSourceItem> SearchLookup(string term)
         {
             List<PriceSourceItem> results = new List<PriceSourceItem>();
             var authentication = new AmazonAuthentication();
@@ -39,12 +39,12 @@ namespace GpuMiningInsights.Application.Amazon
 
             var wrapper = new AmazonWrapper(authentication, AmazonEndpoint.UK, merchantId);
             //string searchTerm = "ASUS DUAL-RX580-O8G Radeon RX 580 8 GB GDDR5";
-            string searchTerm = "Aberg Best 21 Mega Pixels";
-            AmazonItemResponse result = wrapper.Lookup(searchTerm);
+            string searchTerm = "Aberg Best 21 Mega Pixels"; //"B076GZ3JFC"
+            AmazonItemResponse result = wrapper.Lookup(term);
             results = result.ToPriceSourceItems();
             return results;
         }
-        public static List<PriceSourceItem> SearchItemLookupOperation()
+        public static List<PriceSourceItem> SearchItemLookupOperation(string term)
         {
             List<PriceSourceItem> results = new List<PriceSourceItem>();
             var authentication = new AmazonAuthentication();
@@ -55,7 +55,7 @@ namespace GpuMiningInsights.Application.Amazon
             string searchTerm = "Aberg Best 21 Mega Pixels";
 
 
-            var searchOperation = wrapper.ItemLookupOperation(new List<string>() { "B076GZ3JFC" });
+            var searchOperation = wrapper.ItemLookupOperation(new List<string>() { term });
             ExtendedWebResponse xmlResponse = wrapper.Request(searchOperation);
 
             var rrrrrr = XmlHelper.ParseXml<ItemLookupResponse>(xmlResponse.Content);
@@ -98,6 +98,7 @@ namespace GpuMiningInsights.Application.Amazon
                                 priceStr = priceStr.Insert(priceStr.Length - 2, ".");
                             }
                             priceSourceItem.Price = double.Parse(priceStr);
+                            result.Add(priceSourceItem);
                         }
                     }
                 }

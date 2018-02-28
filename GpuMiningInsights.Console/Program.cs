@@ -26,7 +26,7 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
-            AmazonService.Search();
+            List<PriceSourceItem> results = AmazonService.SearchLookup("B076GZ3JFC");
             return;
             bool isTest = false;
             

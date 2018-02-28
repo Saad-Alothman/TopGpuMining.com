@@ -307,7 +307,13 @@ namespace GpuMiningInsights.Console
                     Name = "RX 570",
                     CoinToStudyName="Ethereum(ETH)",
                     WhatToMineUrl = "https://whattomine.com/coins?utf8=%E2%9C%93&adapt_q_280x=0&adapt_q_380=0&adapt_q_fury=0&adapt_q_470=0&adapt_q_480=3&adapt_q_570=1&adapt_570=true&adapt_q_580=0&adapt_q_vega56=0&adapt_q_vega64=0&adapt_q_750Ti=0&adapt_q_1050Ti=0&adapt_q_10606=0&adapt_q_1070=0&adapt_q_1070Ti=0&adapt_q_1080=0&adapt_q_1080Ti=0&eth=true&factor%5Beth_hr%5D=27.9&factor%5Beth_p%5D=120.0&factor%5Bgro_hr%5D=15.5&factor%5Bgro_p%5D=110.0&factor%5Bx11g_hr%5D=5.6&factor%5Bx11g_p%5D=110.0&factor%5Bcn_hr%5D=700.0&factor%5Bcn_p%5D=110.0&factor%5Beq_hr%5D=260.0&factor%5Beq_p%5D=110.0&factor%5Blrev2_hr%5D=5500.0&factor%5Blrev2_p%5D=110.0&factor%5Bns_hr%5D=630.0&factor%5Bns_p%5D=140.0&factor%5Blbry_hr%5D=115.0&factor%5Blbry_p%5D=115.0&factor%5Bbk2b_hr%5D=840.0&factor%5Bbk2b_p%5D=115.0&factor%5Bbk14_hr%5D=1140.0&factor%5Bbk14_p%5D=115.0&factor%5Bpas_hr%5D=580.0&factor%5Bpas_p%5D=135.0&factor%5Bskh_hr%5D=16.3&factor%5Bskh_p%5D=110.0&factor%5Bn5_hr%5D=18.0&factor%5Bn5_p%5D=110.0&factor%5Bl2z_hr%5D=420.0&factor%5Bl2z_p%5D=300.0&factor%5Bcost%5D=0.1&sort=Profitability24&volume=0&revenue=24h&factor%5Bexchanges%5D%5B%5D=&factor%5Bexchanges%5D%5B%5D=abucoins&factor%5Bexchanges%5D%5B%5D=bitfinex&factor%5Bexchanges%5D%5B%5D=bittrex&factor%5Bexchanges%5D%5B%5D=binance&factor%5Bexchanges%5D%5B%5D=cryptopia&factor%5Bexchanges%5D%5B%5D=hitbtc&factor%5Bexchanges%5D%5B%5D=poloniex&factor%5Bexchanges%5D%5B%5D=yobit&dataset=&commit=Calculate",
-                    PriceSources = new List<PriceSource>(){new PriceSource(){Name="New Egg",URL="https://www.newegg.com/Product/Product.aspx?Item=9SIA6V661W8467&cm_re=rx_570-_-9SIA6V661W8467-_-Product",RequiresJavascript=true,Selector="#landingpage-price .price-current"}
+                    PriceSources = new List<PriceSource>(){
+                        new PriceSource(){
+                            Name ="New Egg",
+                            URL ="https://www.newegg.com/Product/Product.aspx?Item=9SIA6V661W8467&cm_re=rx_570-_-9SIA6V661W8467-_-Product",
+                            RequiresJavascript =true,
+                            Selector ="#landingpage-price .price-current"
+                        }
                     }
                 },
                 new GPU()
