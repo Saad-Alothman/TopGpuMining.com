@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GpuMiningInsights.Core
 {
+    [Serializable]
     public class GPU
     {
         public string Name { get; set; }

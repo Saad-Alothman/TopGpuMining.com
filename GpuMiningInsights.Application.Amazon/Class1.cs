@@ -60,12 +60,14 @@ namespace GpuMiningInsights.Application.Amazon
             ExtendedWebResponse xmlResponse = wrapper.Request(searchOperation);
 
             var rrrrrr = XmlHelper.ParseXml<ItemLookupResponse>(xmlResponse.Content);
+
+            results =rrrrrr.ToPriceSourceItems();
             return results;
         }
     }
 
 
-    public static class AmazonItemResponseExtension
+    public static class AmazonExtension
     {
         public static List<PriceSourceItem> ToPriceSourceItems(this AmazonItemResponse amazonItemResponse)
         {
@@ -114,7 +116,57 @@ namespace GpuMiningInsights.Application.Amazon
             }
             return result;
         }
+
+        public static List<PriceSourceItem> ToPriceSourceItems(this ItemLookupResponse amazonItemResponse)
+        {
+            List<PriceSourceItem> result = new List<PriceSourceItem>();
+            if (amazonItemResponse == null) return result;
+            foreach (var item in amazonItemResponse.Items.Item)
+            {
+                string asin = item.ASIN;
+                string url = item.DetailPageURL;
+                if (item.Offers.TotalOffers != "0")
+                {
+                    foreach (var offer in item.Offers.Offer)
+                    {
+                        string merchant = offer.Merchant?.Name;
+                        foreach (var offerListing in offer.OfferListing)
+                        {
+                            PriceSourceItem priceSourceItem = new PriceSourceItem();
+                            priceSourceItem.Merchant = merchant;
+                            priceSourceItem.ASIN = asin;
+                            priceSourceItem.URL = url;
+
+                            string priceStr = offerListing.Price.Amount;
+                            priceSourceItem.PriceCurrency = offerListing.Price.CurrencyCode;
+                            if (!string.IsNullOrWhiteSpace(offerListing.SalePrice?.Amount))
+                            {
+                                priceStr = offerListing.SalePrice.Amount;
+                                priceSourceItem.PriceCurrency = offerListing.SalePrice.CurrencyCode;
+                            }
+                            if (priceStr.Length >= 2)
+                            {
+                                priceStr = priceStr.Insert(priceStr.Length - 2, ".");
+                            }
+                            priceSourceItem.Price = double.Parse(priceStr);
+                            result.Add(priceSourceItem);
+                        }
+                    }
+                }
+                else if (item.ItemLinks.FirstOrDefault(l => l.Description == "All Offers") != null)
+                {
+                    url = item.ItemLinks.FirstOrDefault(l => l.Description == "All Offers").URL;
+                }
+
+
+
+
+            }
+            return result;
+        }
+
     }
+
 
 
 }

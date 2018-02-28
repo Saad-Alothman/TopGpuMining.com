@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace GpuMiningInsights.Console
 {
@@ -26,9 +27,9 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
-            var resultttt =AmazonService.Search("B076GZ3JFC");
-            var resultttt2 =AmazonService.SearchLookup("B076GZ3JFC");
-            var resultttt3 =AmazonService.SearchItemLookupOperation("B076GZ3JFC");
+            //var resultttt =AmazonService.Search("B076GZ3JFC");
+            //var resultttt2 =AmazonService.SearchLookup("B076GZ3JFC");
+            //var resultttt3 =AmazonService.SearchItemLookupOperation("B076GZ3JFC");
             //return;
             bool isTest = false;
             
@@ -43,13 +44,15 @@ namespace GpuMiningInsights.Console
                 {
 
                     string gpuName = item.Name;
-                    string hashPrice = item.LowestHashPrice.HashPrice.ToString();
-                    string hashPriceSource = item.LowestHashPrice.Source;
-                    string gpuPriceFromSource = item.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource).PriceSourceItems.Min(a=>a.Price).ToString();
+                    string hashPrice = item.LowestHashPrice?.HashPrice.ToString();
+                    string hashPriceSource = item.LowestHashPrice?.Source;
+                    string gpuPriceFromSource = item.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource)?.PriceSourceItems.Min(a=>a.Price).ToString();
 
                     System.Console.WriteLine($"GPU {gpuName} ,ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd}, Revenue ($/Day) = {item.RevenuePerDayUsd}, Profit ($/Day) = {item.ProfitPerDayUsd}  ,HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
-                }
 
+                }
+                System.Console.WriteLine(JsonConvert.SerializeObject(gpus));
+                InsighterService.PushData();
             }
 
             //}
@@ -60,7 +63,7 @@ namespace GpuMiningInsights.Console
             //}
             System.Console.WriteLine("PAKTC");
             System.Console.ReadLine();
-
+            
         }
 
         private static void Test()

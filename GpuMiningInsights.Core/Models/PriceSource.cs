@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace GpuMiningInsights.Core
 {
@@ -14,18 +15,20 @@ namespace GpuMiningInsights.Core
         public string Selector { get; set; }
         public List<PriceSourceItem> PriceSourceItems { get; set; }
         public bool RequiresJavascript { get; set; }
+        [JsonIgnore]
         public Func<string,List<PriceSourceItem>> PriceSourceAction { get; set; }
         public string PriceSourceItemIdentifier { get; set; }
 
         public void AddPriceSourceItem(string price)
         {
-            PriceSourceItem priceSourceItems = new PriceSourceItem()
+            PriceSourceItem priceSourceItem = new PriceSourceItem()
             {
                 Name = Name,
                 Price = double.Parse(price),
                 Selector = Selector,
                 
             };
+            this.PriceSourceItems.Add(priceSourceItem);
         }
     }
 

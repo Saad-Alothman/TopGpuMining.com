@@ -23,8 +23,7 @@ namespace GpuMiningInsights.Console
             InitDriver();
 
 
-            try
-            {
+            
                 //seed initial data, ideally this will be read from DB
                 LoadData();
                 //Gather information
@@ -34,11 +33,6 @@ namespace GpuMiningInsights.Console
                 // sort by that value
                 Gpus = Gpus.OrderByDescending(g => g.ProfitPerYearMinusCostUsd).ToList();
 
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine(ex);
-            }
 
             service.Dispose();
             return Gpus;
@@ -321,7 +315,7 @@ namespace GpuMiningInsights.Console
                             PriceSourceAction =AmazonService.SearchItemLookupOperation,
                             Name="Amazon",
                             URL="https://www.newegg.com/Product/Product.aspx?Item=9SIA6V661W8467&cm_re=rx_570-_-9SIA6V661W8467-_-Product",
-                            RequiresJavascript=true,
+                            RequiresJavascript=false,
                             Selector="#landingpage-price .price-current"
                         }
                     }
