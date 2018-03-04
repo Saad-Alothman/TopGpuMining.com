@@ -9,7 +9,7 @@ using GpuMiningInsights.Core;
 
 namespace GpuMiningInsights.Application.Amazon
 {
-
+    
     //https://github.com/tinohager/Nager.AmazonProductAdvertising
     public static class AmazonService
     {

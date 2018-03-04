@@ -1,0 +1,33 @@
+﻿NOTE:
+When i registered for Canada after UK, i noticed the same key already there, So we will give it a go
+
+
+
+=======================================================================
+US
+        private static string accessKey = "AKIAI6YFV4IQDUUAN6MQ";
+        private static string secreteKey = "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";
+        private static string merchantId = "saadtech0d-20"
+=======================================================================
+
+
+=======================================================================
+UK
+        private static string accessKey = "AKIAI6YFV4IQDUUAN6MQ";
+        private static string secreteKey = "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";
+        private static string merchantId = "saadtech-21"
+=======================================================================
+
+=======================================================================
+Canada
+        private static string accessKey = "AKIAI6YFV4IQDUUAN6MQ";
+        private static string secreteKey = "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";
+        private static string merchantId = "saadtech-20"
+=======================================================================
+
+=======================================================================
+India
+        private static string accessKey = "AKIAI6YFV4IQDUUAN6MQ";
+        private static string secreteKey = "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";
+        private static string merchantId = "saadtech05-21"
+================
