@@ -11,7 +11,7 @@
         "ImageUrlSelector": null,
         "PriceSourceItems": [],
         "RequiresJavascript": true,
-        "PriceSourceItemIdentifier": null
+        "PriceSourceItemIdentifier": null,
       },
       {
         "Name": "Amazon",
@@ -21,7 +21,7 @@
         "ImageUrlSelector": null,
         "PriceSourceItems": [],
         "RequiresJavascript": false,
-        "PriceSourceItemIdentifier": "B06ZYC3SW1"
+        "PriceSourceItemIdentifier": "B06Y15M48C,B06Y144RLK,B06ZYC3SW1"
       }
     ],
     "LowestPriceSource": null,
@@ -39,18 +39,28 @@
     "ProfitPerYearMinusCostUsd": null
   },
   {
-    "Name": "RX 480",
-    "WhatToMineUrl": "https://whattomine.com/coins?utf8=%E2%9C%93&adapt_q_280x=0&adapt_q_380=0&adapt_q_fury=0&adapt_q_470=0&adapt_q_480=1&adapt_480=true&adapt_q_570=0&adapt_q_580=0&adapt_q_vega56=0&adapt_q_vega64=0&adapt_q_750Ti=0&adapt_q_1050Ti=0&adapt_q_10606=0&adapt_q_1070=0&adapt_q_1070Ti=0&adapt_q_1080=0&adapt_q_1080Ti=0&eth=true&factor%5Beth_hr%5D=29.5&factor%5Beth_p%5D=135.0&factor%5Bgro_hr%5D=18.0&factor%5Bgro_p%5D=130.0&factor%5Bx11g_hr%5D=6.7&factor%5Bx11g_p%5D=140.0&factor%5Bcn_hr%5D=730.0&factor%5Bcn_p%5D=110.0&factor%5Beq_hr%5D=290.0&factor%5Beq_p%5D=120.0&factor%5Blrev2_hr%5D=4900.0&factor%5Blrev2_p%5D=130.0&factor%5Bns_hr%5D=650.0&factor%5Bns_p%5D=150.0&factor%5Blbry_hr%5D=95.0&factor%5Blbry_p%5D=140.0&factor%5Bbk2b_hr%5D=990.0&factor%5Bbk2b_p%5D=150.0&factor%5Bbk14_hr%5D=1400.0&factor%5Bbk14_p%5D=150.0&factor%5Bpas_hr%5D=690.0&factor%5Bpas_p%5D=135.0&factor%5Bskh_hr%5D=18.0&factor%5Bskh_p%5D=115.0&factor%5Bn5_hr%5D=19.0&factor%5Bn5_p%5D=115.0&factor%5Bl2z_hr%5D=420.0&factor%5Bl2z_p%5D=300.0&factor%5Bcost%5D=0.1&sort=Profitability24&volume=0&revenue=24h&factor%5Bexchanges%5D%5B%5D=&factor%5Bexchanges%5D%5B%5D=abucoins&factor%5Bexchanges%5D%5B%5D=bitfinex&factor%5Bexchanges%5D%5B%5D=bittrex&factor%5Bexchanges%5D%5B%5D=binance&factor%5Bexchanges%5D%5B%5D=cryptopia&factor%5Bexchanges%5D%5B%5D=hitbtc&factor%5Bexchanges%5D%5B%5D=poloniex&factor%5Bexchanges%5D%5B%5D=yobit&dataset=Main&commit=Calculate",
+    "Name": "RX 580",
+    "WhatToMineUrl": "https://whattomine.com/coins?utf8=%E2%9C%93&adapt_q_280x=0&adapt_q_380=0&adapt_q_fury=0&adapt_q_470=0&adapt_q_480=0&adapt_q_570=0&adapt_q_580=1&adapt_580=true&adapt_q_vega56=0&adapt_q_vega64=0&adapt_q_750Ti=0&adapt_q_1050Ti=0&adapt_q_10606=0&adapt_q_1070=0&adapt_q_1070Ti=0&adapt_q_1080=0&adapt_q_1080Ti=0&eth=true&factor%5Beth_hr%5D=30.2&factor%5Beth_p%5D=135.0&factor%5Bgro_hr%5D=18.5&factor%5Bgro_p%5D=115.0&factor%5Bx11g_hr%5D=6.9&factor%5Bx11g_p%5D=110.0&factor%5Bcn_hr%5D=690.0&factor%5Bcn_p%5D=115.0&factor%5Beq_hr%5D=290.0&factor%5Beq_p%5D=120.0&factor%5Blrev2_hr%5D=5700.0&factor%5Blrev2_p%5D=120.0&factor%5Bns_hr%5D=820.0&factor%5Bns_p%5D=150.0&factor%5Blbry_hr%5D=135.0&factor%5Blbry_p%5D=145.0&factor%5Bbk14_hr%5D=1350.0&factor%5Bbk14_p%5D=130.0&factor%5Bpas_hr%5D=690.0&factor%5Bpas_p%5D=145.0&factor%5Bskh_hr%5D=18.5&factor%5Bskh_p%5D=115.0&factor%5Bn5_hr%5D=20.0&factor%5Bn5_p%5D=115.0&factor%5Bl2z_hr%5D=420.0&factor%5Bl2z_p%5D=300.0&factor%5Bcost%5D=0.1&sort=Profitability24&volume=0&revenue=24h&factor%5Bexchanges%5D%5B%5D=&factor%5Bexchanges%5D%5B%5D=abucoins&factor%5Bexchanges%5D%5B%5D=bitfinex&factor%5Bexchanges%5D%5B%5D=bittrex&factor%5Bexchanges%5D%5B%5D=binance&factor%5Bexchanges%5D%5B%5D=cryptopia&factor%5Bexchanges%5D%5B%5D=hitbtc&factor%5Bexchanges%5D%5B%5D=poloniex&factor%5Bexchanges%5D%5B%5D=yobit&dataset=Main&commit=Calculate",
     "PriceSources": [
       {
         "Name": "New Egg",
-        "URL": "https://www.newegg.com/Product/Product.aspx?Item=9SIA6V66TC9897&cm_re=rx_480-_-9SIA6V66TC9897-_-Product",
+        "URL": "https://www.newegg.com/global/sa/Product/Product.aspx?Item=9SIA6V66483925&cm_re=msi_rx_580-_-9SIA6V66483925-_-Product",
         "Selector": "#landingpage-price .price-current",
         "ImageUrl": null,
         "ImageUrlSelector": null,
         "PriceSourceItems": [],
         "RequiresJavascript": true,
         "PriceSourceItemIdentifier": null
+      },
+      {
+        "Name": "Amazon",
+        "URL": "https://www.newegg.com/Product/Product.aspx?Item=9SIA6V661W8467&cm_re=rx_570-_-9SIA6V661W8467-_-Product",
+        "Selector": "#landingpage-price .price-current",
+        "ImageUrl": null,
+        "ImageUrlSelector": null,
+        "PriceSourceItems": [],
+        "RequiresJavascript": false,
+        "PriceSourceItemIdentifier": "B06Y19NMP3,B06ZYC3SW1,B06XZZ93FQ"
       }
     ],
     "LowestPriceSource": null,
@@ -80,6 +90,16 @@
         "PriceSourceItems": [],
         "RequiresJavascript": true,
         "PriceSourceItemIdentifier": null
+      },
+      {
+        "Name": "Amazon",
+        "URL": "https://www.newegg.com/Product/Product.aspx?Item=9SIA6V661W8467&cm_re=rx_570-_-9SIA6V661W8467-_-Product",
+        "Selector": "#landingpage-price .price-current",
+        "ImageUrl": null,
+        "ImageUrlSelector": null,
+        "PriceSourceItems": [],
+        "RequiresJavascript": false,
+        "PriceSourceItemIdentifier": "B00ZPOBI0M,B0135Y935K,B00YXSLI92,B00ZPOBI0M"
       }
     ],
     "LowestPriceSource": null,

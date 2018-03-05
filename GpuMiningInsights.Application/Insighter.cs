@@ -23,15 +23,15 @@ namespace GpuMiningInsights.Console
             InitDriver();
 
 
-            
-                //seed initial data, ideally this will be read from DB
-                LoadData();
-                //Gather information
-                GatherInfo(Gpus);
-                // For each GPU ,calculate Cost / 1 MHs/s  For Each Source
-                FindHashCost(Gpus);
-                // sort by that value
-                Gpus = Gpus.OrderByDescending(g => g.ProfitPerYearMinusCostUsd).ToList();
+
+            //seed initial data, ideally this will be read from DB
+            LoadData();
+            //Gather information
+            GatherInfo(Gpus);
+            // For each GPU ,calculate Cost / 1 MHs/s  For Each Source
+            FindHashCost(Gpus);
+            // sort by that value
+            Gpus = Gpus.OrderByDescending(g => g.ProfitPerYearMinusCostUsd).ToList();
 
 
             service.Dispose();
@@ -60,7 +60,7 @@ namespace GpuMiningInsights.Console
                     };
                     gpu.HashPricePerSourceList.Add(hashPricePerSource);
                 }
-                
+
             }
         }
 
@@ -288,21 +288,31 @@ namespace GpuMiningInsights.Console
                 {
                     string response = GetHttpResponseTextWithJavascript(priceSource.URL);
                     string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);
-                    string imageUrl=null;
+                    string currency = "USD";
+                    string imageUrl = null;
                     if (!string.IsNullOrWhiteSpace(priceSource.ImageUrlSelector))
                         imageUrl = GetTextFromHtmlStringByCssSelector(response, priceSource.ImageUrlSelector);
 
-                    if (PriceText.IndexOf("$") > -1) PriceText = PriceText.Remove(PriceText.IndexOf("$"), 1);
+                    if (PriceText.IndexOf("$") > -1)
+                    {
+
+                        PriceText = PriceText.Remove(PriceText.IndexOf("$"), 1);
+                        currency = "USD";
+                    }
+                    if (PriceText.IndexOf("SR") > -1)
+                    {
+                        PriceText = PriceText.Remove(PriceText.IndexOf("SR"), 2);
+                        currency = "SAR";
+                    }
                     if (string.IsNullOrWhiteSpace(imageUrl))
-                    priceSource.AddPriceSourceItem(PriceText);
+                        priceSource.AddPriceSourceItem(PriceText);
                     else
-                    priceSource.AddPriceSourceItem(PriceText,imageUrl);
+                        priceSource.AddPriceSourceItem(PriceText, imageUrl);
                 }
 
             }
         }
         //aaaa ssss
-
         private static void LoadData()
         {
             Gpus.Clear();
@@ -355,7 +365,7 @@ namespace GpuMiningInsights.Console
             //        }
             //    }
             //};
-            
+
             gpus = JsonConvert.DeserializeObject<List<GPU>>(File.ReadAllText("gpus.json"));
             Gpus = gpus;
         }
