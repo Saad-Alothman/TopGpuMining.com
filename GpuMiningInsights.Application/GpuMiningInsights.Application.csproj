@@ -65,6 +65,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gpus.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

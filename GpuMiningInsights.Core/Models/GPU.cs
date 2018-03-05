@@ -37,7 +37,7 @@ namespace GpuMiningInsights.Core
             get
             {
                 double? profitPerYearMinusCostUsd = null;
-                if (LowestPriceSource.PriceSourceItems.Any())
+                if (LowestPriceSource!= null && LowestPriceSource.PriceSourceItems != null && LowestPriceSource.PriceSourceItems.Any())
                     profitPerYearMinusCostUsd = (ProfitPerDayUsd * 365) - (LowestPriceSource.PriceSourceItems.Min(p => p.Price));
 
 
@@ -54,4 +54,8 @@ namespace GpuMiningInsights.Core
         }
 
     }
+
+
+    
+ 
 }

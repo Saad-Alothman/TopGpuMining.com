@@ -1,0 +1,32 @@
+﻿[
+  {
+    "accessKey": "AKIAI6YFV4IQDUUAN6MQ",
+    "secreteKey": "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",
+    "endpointCountryName": "US",
+    "endpointCode": "US",
+    "merchantId": "saadtech0d-20"
+
+  },
+  {
+    "accessKey": "AKIAI6YFV4IQDUUAN6MQ",
+    "secreteKey": "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",
+    "endpointCountryName": "UK",
+    "endpointCode": "UK",
+    "merchantId": "saadtech-21"
+  },
+  {
+    "accessKey": "AKIAI6YFV4IQDUUAN6MQ",
+    "secreteKey": "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",
+    "endpointCountryName": "India",
+    "endpointCode": "IN",
+    "merchantId": "saadtech05-21"
+
+  },
+  {
+    "accessKey": "AKIAI6YFV4IQDUUAN6MQ",
+    "secreteKey": "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",
+    "endpointCountryName": "CA",
+    "endpointCode": "CA",
+    "merchantId": "saadtech-20"
+  }
+]
