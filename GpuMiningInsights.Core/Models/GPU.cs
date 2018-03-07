@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,13 +19,13 @@ namespace GpuMiningInsights.Core
                 PriceSource lowestPriceSource = null;
                 var priceSourcesWithPriceSourceItems = PriceSources.Where(s => s.PriceSourceItems.Any()).ToList();
                 if (priceSourcesWithPriceSourceItems.Any())
-                   lowestPriceSource= priceSourcesWithPriceSourceItems.OrderBy(p => p.PriceSourceItems.Min(m => m.Price) ).FirstOrDefault();
+                    lowestPriceSource = priceSourcesWithPriceSourceItems.OrderBy(p => p.PriceSourceItems.Min(m => m.Price)).FirstOrDefault();
 
                 return lowestPriceSource;
             }
         }
 
-        
+
         public HashPricePerSource LowestHashPrice => HashPricePerSourceList.OrderBy(p => p.HashPrice).FirstOrDefault();
         public List<HashPricePerSource> HashPricePerSourceList { get; set; }
         //MHs/s
@@ -33,14 +34,13 @@ namespace GpuMiningInsights.Core
         public MiningProfitability MiningProfitability { get; set; }
         public double RevenuePerDayUsd { get; set; }
         public double ProfitPerDayUsd { get; set; }
+        [JsonIgnore]
         public double? ProfitPerYearMinusCostUsd {
             get
             {
                 double? profitPerYearMinusCostUsd = null;
                 if (LowestPriceSource!= null && LowestPriceSource.PriceSourceItems != null && LowestPriceSource.PriceSourceItems.Any())
-                    profitPerYearMinusCostUsd = (ProfitPerDayUsd * 365) - (LowestPriceSource.PriceSourceItems.Min(p => p.Price));
-
-
+                    profitPerYearMinusCostUsd = (ProfitPerDayUsd * 365) - (LowestPriceSource.PriceSourceItems.Min(p => p.PriceUSD));
                 return profitPerYearMinusCostUsd;
             }
         }

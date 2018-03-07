@@ -29,12 +29,13 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
+            // TestCurrencyApi();
             string searchTerm = "B06Y15M48C,B06Y144RLK,B06ZYC3SW1";// "B071Y7CKM2";
-            var resultttt2US = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.US);
-           var resultttt2CA = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.CA);
-            var resultttt2IN = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.IN);
-            var resultttt2UK = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.UK);
-            //return;
+                                                                   // var resultttt2US = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.US);
+                                                                   //var resultttt2CA = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.CA);
+                                                                   // var resultttt2IN = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.IN);
+                                                                   // var resultttt2UK = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.UK);
+                                                                   //return;
             bool isTest = false;
 
             if (isTest)
@@ -43,16 +44,39 @@ namespace GpuMiningInsights.Console
             {
                 var gpus = InsighterService.GetInsights();
                 System.Console.Clear();
+                InsighterService.PushData();
+                System.Console.WriteLine("");
+                ClientGpuListData clientGpuListData = new ClientGpuListData()
+                {
+                    Date = DateTime.Now.ToString(Settings.DateFormat),
+                    Gpus = gpus
+                };
+                string json = JsonConvert.SerializeObject(clientGpuListData);
+                System.Console.WriteLine("");
 
                 foreach (var item in gpus)
                 {
-
                     string gpuName = item.Name;
                     string hashPrice = item.LowestHashPrice?.HashPrice.ToString();
                     string hashPriceSource = item.LowestHashPrice?.Source;
-                    string gpuPriceFromSource = item.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource)?.PriceSourceItems.Min(a => a.Price).ToString();
+                    //string gpuPriceFromSource = item.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource)?.PriceSourceItems.Min(a => a.Price).ToString();
 
-                    System.Console.WriteLine($"GPU {gpuName} ,ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd}, Revenue ($/Day) = {item.RevenuePerDayUsd}, Profit ($/Day) = {item.ProfitPerDayUsd}  ,HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
+                    System.Console.WriteLine("************************************************************************");
+                    System.Console.WriteLine($"GPU {gpuName} ,ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd}, Revenue ($/Day) = {item.RevenuePerDayUsd}, Profit ($/Day) = {item.ProfitPerDayUsd}  ,HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price ");
+                    System.Console.WriteLine("");
+                    foreach (var priceSource in item.PriceSources)
+                    {
+
+                        System.Console.WriteLine($" priceSource :Name :{priceSource.Name}");
+                        System.Console.WriteLine($" priceSource Items:");
+                        foreach (var priceSourceItem in priceSource.PriceSourceItems)
+                        {
+                            System.Console.WriteLine($"item Name :{priceSourceItem.Name},Price :{priceSourceItem.Price},PriceCurrency: {priceSourceItem.PriceCurrency}, mercharnt: {priceSourceItem.Merchant}");
+
+                        }
+
+                    }
+                    System.Console.WriteLine("************************************************************************");
 
                 }
                 string ser = JsonConvert.SerializeObject(gpus);
@@ -69,6 +93,16 @@ namespace GpuMiningInsights.Console
             System.Console.WriteLine("PAKTC");
             System.Console.ReadLine();
 
+        }
+
+        private static void TestCurrencyApi()
+        {
+            string baseCurrency = "USD";
+            string currencyApiUrl = "http://www.apilayer.net/api/live?access_key=ff139c408a9439cd66d94f7ee26a598b&format=1&source=USD";
+
+            string respomseText = InsighterService.GetHttpResponseText(currencyApiUrl);
+            var pricesDictResponse = JsonConvert.DeserializeObject<CurrencyPricesResponse>(respomseText);
+            var pricesDict = pricesDictResponse.quotes;
         }
 
         private static void Test()

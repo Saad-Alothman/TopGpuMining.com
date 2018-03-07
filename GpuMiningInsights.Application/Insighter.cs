@@ -17,6 +17,9 @@ namespace GpuMiningInsights.Console
     {
 
         public static List<GPU> Gpus = new List<GPU>();
+        public static Dictionary<string, double> pricesDict;
+        private static string baseCurrency = "USD";
+
         public static List<GPU> GetInsights()
         {
             //PhantomJs & Selenium
@@ -26,6 +29,7 @@ namespace GpuMiningInsights.Console
 
             //seed initial data, ideally this will be read from DB
             LoadData();
+            LoadCurrencies();
             //Gather information
             GatherInfo(Gpus);
             // For each GPU ,calculate Cost / 1 MHs/s  For Each Source
@@ -74,6 +78,59 @@ namespace GpuMiningInsights.Console
                 GetHashrate(gpu);
                 GeRevenueAndProfit(gpu, "table tbody tr");
                 GetMiningProfitability(gpu);
+            }
+            CalculatePricesBasedOnUSD(gpus);
+        }
+
+        private static void CalculatePricesBasedOnUSD(List<GPU> gpus)
+        {
+            string baseCurrency = "USD";
+            string currencyApiUrl = "http://www.apilayer.net/api/live?access_key=ff139c408a9439cd66d94f7ee26a598b&format=1&source=USD";
+
+            string respomseText = GetHttpResponseText(currencyApiUrl);
+            var pricesDictResponse = JsonConvert.DeserializeObject<CurrencyPricesResponse>(respomseText);
+            var pricesDict = pricesDictResponse.quotes;
+            foreach (var priceSourceItem in gpus.SelectMany(s => s.PriceSources).SelectMany(a => a.PriceSourceItems))
+            {
+                string curr = priceSourceItem.PriceCurrency.ToUpper();
+                string targetCurrKey = baseCurrency + curr;
+                if (pricesDict.ContainsKey(targetCurrKey))
+                {
+                    //this is what 1 USD equals
+                    double rate = pricesDict[targetCurrKey];
+                    //1 USD = rate in target currency
+                    //? USD = price target currency
+                    //so divide the price by the rate
+                    double priceUsd = priceSourceItem.Price / rate;
+                    priceSourceItem.PriceUSD = Math.Round(priceUsd, 2);
+                }
+            }
+        }
+        public static void LoadCurrencies()
+        {
+            string currencyApiUrl = "http://www.apilayer.net/api/live?access_key=ff139c408a9439cd66d94f7ee26a598b&format=1&source=USD";
+
+            string respomseText = GetHttpResponseText(currencyApiUrl);
+            var pricesDictResponse = JsonConvert.DeserializeObject<CurrencyPricesResponse>(respomseText);
+            pricesDict = pricesDictResponse.quotes;
+        }
+        private static void FillUSDPrice(PriceSourceItem priceSourceItem)
+        {
+
+            if (priceSourceItem == null || priceSourceItem.Price <= 0 || string.IsNullOrWhiteSpace(priceSourceItem.PriceCurrency))
+                return;
+
+            string curr = priceSourceItem.PriceCurrency.ToUpper();
+            string targetCurrKey = baseCurrency + curr;
+            if (pricesDict.ContainsKey(targetCurrKey))
+            {
+                //this is what 1 USD equals
+                double rate = pricesDict[targetCurrKey];
+                //1 USD = rate in target currency
+                //? USD = price target currency
+                //so divide the price by the rate
+                double priceUsd = priceSourceItem.Price / rate;
+                priceSourceItem.PriceUSD = Math.Round(priceUsd, 2);
             }
         }
 
@@ -166,8 +223,8 @@ namespace GpuMiningInsights.Console
         {
             CQ dom = response;
             CQ textElement = dom[CssSelector];
-            string nodeName = textElement.FirstElement().NodeName.ToLower();
-            string result = textElement.Text(); ;
+            string nodeName = textElement.FirstElement()?.NodeName?.ToLower();
+            string result = textElement.Text();
 
             if (nodeName == "input")
                 result = textElement.Val();
@@ -217,7 +274,7 @@ namespace GpuMiningInsights.Console
             }
             return source;
         }
-        private static string GetHttpResponseText(string url)
+        public static string GetHttpResponseText(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2";
@@ -288,6 +345,10 @@ namespace GpuMiningInsights.Console
                 {
                     string response = GetHttpResponseTextWithJavascript(priceSource.URL);
                     string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);
+                    if (string.IsNullOrEmpty(PriceText))
+                    {
+                        continue;
+                    }
                     string currency = "USD";
                     string imageUrl = null;
                     if (!string.IsNullOrWhiteSpace(priceSource.ImageUrlSelector))
@@ -304,12 +365,18 @@ namespace GpuMiningInsights.Console
                         PriceText = PriceText.Remove(PriceText.IndexOf("SR"), 2);
                         currency = "SAR";
                     }
+
                     if (string.IsNullOrWhiteSpace(imageUrl))
-                        priceSource.AddPriceSourceItem(PriceText);
+                        priceSource.AddPriceSourceItem(PriceText, currency);
                     else
-                        priceSource.AddPriceSourceItem(PriceText, imageUrl);
+                        priceSource.AddPriceSourceItem(PriceText, currency, imageUrl);
                 }
 
+            }
+            //Calculate USD Price
+            foreach (var priceSourceItem in gpu.PriceSources.SelectMany(s=>s.PriceSourceItems))
+            {
+                FillUSDPrice(priceSourceItem);
             }
         }
         //aaaa ssss
@@ -367,7 +434,15 @@ namespace GpuMiningInsights.Console
             //};
 
             gpus = JsonConvert.DeserializeObject<List<GPU>>(File.ReadAllText("gpus.json"));
+            foreach (var item in gpus)
+            {
+                foreach (var psources in item.PriceSources.Where(s => s.Name.ToLower().Contains("amazon")))
+                {
+                    psources.PriceSourceAction = AmazonService.SearchItemLookupOperation;
+                }
+            }
             Gpus = gpus;
         }
     }
+
 }

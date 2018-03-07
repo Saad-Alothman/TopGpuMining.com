@@ -123,6 +123,7 @@ namespace GpuMiningInsights.Application.Amazon
                         foreach (var offerListing in offer.OfferListing)
                         {
                             PriceSourceItem priceSourceItem = new PriceSourceItem();
+                            
                             priceSourceItem.Merchant = merchant;
                             priceSourceItem.ASIN = asin;
                             priceSourceItem.URL = url;
@@ -178,6 +179,7 @@ namespace GpuMiningInsights.Application.Amazon
                 string asin = item.ASIN;
                 string url = item.DetailPageURL;
                 string imageUrl = item.LargeImage.URL;
+                string itemName = item.ToString(); 
                 if (item.Offers.TotalOffers != "0")
                 {
                     foreach (var offer in item.Offers.Offer)
@@ -190,7 +192,7 @@ namespace GpuMiningInsights.Application.Amazon
                             priceSourceItem.ASIN = asin;
                             priceSourceItem.URL = url;
                             priceSourceItem.ImageUrl = imageUrl;
-
+                            priceSourceItem.Name = itemName;
                             string priceStr = offerListing.Price.Amount;
                             priceSourceItem.PriceCurrency = offerListing.Price.CurrencyCode;
                             if (!string.IsNullOrWhiteSpace(offerListing.SalePrice?.Amount))

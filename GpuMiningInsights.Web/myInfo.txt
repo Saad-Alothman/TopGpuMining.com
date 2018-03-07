@@ -1,0 +1,4 @@
+﻿publish user :saad77
+pass : 4d
+
+https://saad77@saad77.scm.azurewebsites.net:443/saad77.git

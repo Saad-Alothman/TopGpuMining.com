@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace GpuMiningInsights.Core
 {
+    public class ClientGpuListData
+    {
+        public List<GPU> Gpus { get; set; }
+        public string Date { get; set; }
+    }
     public class PriceSource
     {
         public PriceSource()
@@ -15,31 +21,59 @@ namespace GpuMiningInsights.Core
         public string Selector { get; set; }
         public string ImageUrl { get; set; }
         public string ImageUrlSelector { get; set; }
+        public PriceSourceItem LowestPriceSourceItem
+        {
+            get
+            {
+                PriceSourceItem priceSourceItem = null;
+                if (PriceSourceItems == null || !PriceSourceItems.Any())
+                {
+                    return priceSourceItem;
+                }
+
+
+                var nonEmptyUsdItems = PriceSourceItems.Where(s => s.PriceUSD > 0);
+                if (nonEmptyUsdItems != null && nonEmptyUsdItems.Any())
+                {
+                    priceSourceItem = nonEmptyUsdItems.FirstOrDefault();
+                    foreach (var item in nonEmptyUsdItems)
+                    {
+                        if (item.PriceUSD < priceSourceItem.PriceUSD)
+                        {
+                            priceSourceItem = item;
+                        }
+                    }
+                }
+                return priceSourceItem;
+            }
+        }
         public List<PriceSourceItem> PriceSourceItems { get; set; }
         public bool RequiresJavascript { get; set; }
         [JsonIgnore]
-        public Func<string,List<PriceSourceItem>> PriceSourceAction { get; set; }
+        public Func<string, List<PriceSourceItem>> PriceSourceAction { get; set; }
         public string PriceSourceItemIdentifier { get; set; }
 
-        public void AddPriceSourceItem(string price)
+        public void AddPriceSourceItem(string price, string currency)
         {
             PriceSourceItem priceSourceItem = new PriceSourceItem()
             {
                 Name = Name,
                 Price = double.Parse(price),
                 Selector = Selector,
-                
+                PriceCurrency = currency
+
             };
             this.PriceSourceItems.Add(priceSourceItem);
         }
-        public void AddPriceSourceItem(string price,string imageUrl)
+        public void AddPriceSourceItem(string price, string currency, string imageUrl)
         {
             PriceSourceItem priceSourceItem = new PriceSourceItem()
             {
                 Name = Name,
                 Price = double.Parse(price),
                 Selector = Selector,
-                ImageUrl = imageUrl
+                ImageUrl = imageUrl,
+                PriceCurrency = currency
 
             };
             this.PriceSourceItems.Add(priceSourceItem);
@@ -56,5 +90,6 @@ namespace GpuMiningInsights.Core
         public string PriceCurrency { get; set; }
         public string Merchant { get; set; }
         public string ImageUrl { get; set; }
+        public double PriceUSD { get; set; }
     }
 }
