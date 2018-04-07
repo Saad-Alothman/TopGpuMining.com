@@ -1,6 +1,7 @@
 ﻿@using GpuMiningInsights.Web.Models
 @using GpuMiningInsights.Core;
 @using Newtonsoft.Json
+@using System.Configuration
 @model ClientGpuListData
 @{
     ViewBag.Title = "Best GPUs for mining";
@@ -65,11 +66,10 @@
                         double? gpuPriceFromSource = gpu.LowestPriceSource?.LowestPriceSourceItem?.Price;
                         string currency = gpu.LowestPriceSource.LowestPriceSourceItem.PriceCurrency;
                         double lowestGpuPriceUsd = gpu.LowestPriceSource.LowestPriceSourceItem.PriceUSD;
-                        double annualRevenue = gpu.ProfitPerDayUsd * 365;
-                        double roi = ((annualRevenue - gpu.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource).PriceSourceItems.Min(a => a.Price)) / gpu.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource).PriceSourceItems.Min(a => a.Price));
-                        roi = Math.Round(roi * 100, 2);
-                        string roistyle = roi >= 0 ? "" : "style=\"color:#de6c6c\"";
-                        if (roi > 30)
+                        double annualRevenue = gpu.AnnualRevenue;
+                        
+                        string roistyle = gpu.ROI >= 0 ? "" : "style=\"color:#de6c6c\"";
+                        if (gpu.ROI > 30)
                         {
                             roistyle = "style=\"color:#0fc304\"";
                         }
@@ -83,9 +83,9 @@
                             <td>@gpuPriceFromSource @currency </td>
                             <td>@lowestGpuPriceUsd $</td>
                             <td>@annualRevenue </td>
-                            <td @Html.Raw(roistyle)>@(roi) %</td>
+                            <td @Html.Raw(roistyle)>@(gpu.ROI) %</td>
                             <td>
-                                <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">Buy Now!</button>
+                                <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options!</button>
                             </td>
                         </tr>
                     }
@@ -126,7 +126,7 @@
                             foreach (var priceSourceItem in priceSource.PriceSourceItems)
                             {
                                 string name = priceSourceItem.Name;
-                                //name = string.IsNullOrWhiteSpace(name) ? : name;
+                                name = string.IsNullOrWhiteSpace(name) ?gpu.Name : name;
                                 <tr>
                                     <td>
                                         <a href="@priceSourceItem.URL">
@@ -141,7 +141,7 @@
                                     <td>@priceSourceItem.PriceUSD $ </td>
                                     <td>@priceSource.Name </td>
                                     <td>
-                                        <a href="@priceSourceItem.URL" class="btn btn-primary">Buy From @priceSource.Name!</a>
+                                        <a href="@priceSourceItem.URL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSource.Name!</a>
                                     </td>
                                 </tr>
                             }
@@ -163,6 +163,8 @@
     <br/>
 
     Hash rates info from : http://www.whattomine.com
+
+    Version Number: @ConfigurationManager.AppSettings["VersionNumber"]
 </p>
 
 @section scripts

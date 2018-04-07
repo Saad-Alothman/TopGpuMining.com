@@ -24,8 +24,16 @@ namespace GpuMiningInsights.Core
                 return lowestPriceSource;
             }
         }
-
-
+        public double AnnualRevenue { get
+            {
+                return ProfitPerDayUsd * 365;
+            }
+        }
+        public double ROI { get {
+                double roi = ((AnnualRevenue - PriceSources.FirstOrDefault(s => s.Name == LowestHashPrice.Source).PriceSourceItems.Min(a => a.Price)) / PriceSources.FirstOrDefault(s => s.Name == LowestHashPrice.Source).PriceSourceItems.Min(a => a.Price));
+                roi = Math.Round(roi * 100, 2);
+                return roi;
+            } }
         public HashPricePerSource LowestHashPrice => HashPricePerSourceList.OrderBy(p => p.HashPrice).FirstOrDefault();
         public List<HashPricePerSource> HashPricePerSourceList { get; set; }
         //MHs/s

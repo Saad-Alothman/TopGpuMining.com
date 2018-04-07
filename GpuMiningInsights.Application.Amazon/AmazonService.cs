@@ -83,7 +83,7 @@ namespace GpuMiningInsights.Application.Amazon
                 authentication.SecretKey = endpointItem.secreteKey;
 
                 endpoint = (AmazonEndpoint)Enum.Parse(typeof(AmazonEndpoint), endpointItem.endpointCode);
-            var wrapper = new AmazonWrapper(authentication, endpoint.Value, endpointItem.merchantId);
+                var wrapper = new AmazonWrapper(authentication, endpoint.Value, endpointItem.merchantId);
                 var searchOperation = wrapper.ItemLookupOperation(new List<string>() { term });
                 ExtendedWebResponse xmlResponse = wrapper.Request(searchOperation);
                 var itemLookupResponse = XmlHelper.ParseXml<ItemLookupResponse>(xmlResponse.Content);
@@ -96,7 +96,7 @@ namespace GpuMiningInsights.Application.Amazon
 
 
 
-            
+
             return results;
         }
     }
@@ -123,9 +123,11 @@ namespace GpuMiningInsights.Application.Amazon
                         foreach (var offerListing in offer.OfferListing)
                         {
                             PriceSourceItem priceSourceItem = new PriceSourceItem();
-                            
+
                             priceSourceItem.Merchant = merchant;
                             priceSourceItem.ASIN = asin;
+                            string itemName = item.ToString();
+                            priceSourceItem.Name = itemName;
                             priceSourceItem.URL = url;
                             priceSourceItem.ImageUrl = imageUrl;
                             string priceStr = offerListing.Price.Amount;
@@ -148,6 +150,8 @@ namespace GpuMiningInsights.Application.Amazon
                 {
                     url = item.ItemLinks.FirstOrDefault(l => l.Description == "All Offers").URL;
                     PriceSourceItem priceSourceItem = new PriceSourceItem();
+                    string itemName = item.ToString();
+                    priceSourceItem.Name = itemName;
                     priceSourceItem.ASIN = asin;
                     priceSourceItem.URL = url;
                     priceSourceItem.ImageUrl = imageUrl;
@@ -179,7 +183,10 @@ namespace GpuMiningInsights.Application.Amazon
                 string asin = item.ASIN;
                 string url = item.DetailPageURL;
                 string imageUrl = item.LargeImage.URL;
-                string itemName = item.ToString(); 
+                string itemName = item.ItemAttributes.Model;
+                if (string.IsNullOrWhiteSpace(itemName))
+                    itemName = item.ToString();
+
                 if (item.Offers.TotalOffers != "0")
                 {
                     foreach (var offer in item.Offers.Offer)
@@ -194,6 +201,7 @@ namespace GpuMiningInsights.Application.Amazon
                             priceSourceItem.ImageUrl = imageUrl;
                             priceSourceItem.Name = itemName;
                             string priceStr = offerListing.Price.Amount;
+                            priceSourceItem.Name = itemName;
                             priceSourceItem.PriceCurrency = offerListing.Price.CurrencyCode;
                             if (!string.IsNullOrWhiteSpace(offerListing.SalePrice?.Amount))
                             {
@@ -217,8 +225,10 @@ namespace GpuMiningInsights.Application.Amazon
                         url = item.ItemLinks.FirstOrDefault(l => l.Description == "All Offers").URL;
                         PriceSourceItem priceSourceItem = new PriceSourceItem();
                         priceSourceItem.ASIN = asin;
+                        priceSourceItem.Name = itemName;
                         priceSourceItem.URL = url;
                         priceSourceItem.ImageUrl = imageUrl;
+                        priceSourceItem.Name = itemName;
                         string priceStr = item.OfferSummary.LowestNewPrice.Amount;
                         priceSourceItem.PriceCurrency = item.OfferSummary.LowestNewPrice.CurrencyCode;
                         if (priceStr.Length >= 2)

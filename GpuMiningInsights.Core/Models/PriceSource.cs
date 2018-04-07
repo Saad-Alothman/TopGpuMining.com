@@ -7,6 +7,16 @@ namespace GpuMiningInsights.Core
 {
     public class ClientGpuListData
     {
+        public ClientGpuListData()
+        {
+
+        }
+        public ClientGpuListData(List<GPU> results, DateTime now)
+        {
+            this.Gpus= results;
+            this.Date= now.ToString(Settings.DateFormat);
+        }
+
         public List<GPU> Gpus { get; set; }
         public string Date { get; set; }
     }
@@ -52,28 +62,31 @@ namespace GpuMiningInsights.Core
         [JsonIgnore]
         public Func<string, List<PriceSourceItem>> PriceSourceAction { get; set; }
         public string PriceSourceItemIdentifier { get; set; }
+        public string ItemNameSelector { get; set; }
 
-        public void AddPriceSourceItem(string price, string currency)
+        public void AddPriceSourceItem(string price, string nameText, string currency)
         {
             PriceSourceItem priceSourceItem = new PriceSourceItem()
             {
-                Name = Name,
+                Name = nameText,
                 Price = double.Parse(price),
                 Selector = Selector,
                 PriceCurrency = currency
-
             };
             this.PriceSourceItems.Add(priceSourceItem);
         }
-        public void AddPriceSourceItem(string price, string currency, string imageUrl)
+        public void AddPriceSourceItem(string price,string nameText, string currency, string imageUrl)
         {
             PriceSourceItem priceSourceItem = new PriceSourceItem()
             {
-                Name = Name,
+                Name = nameText,
                 Price = double.Parse(price),
                 Selector = Selector,
                 ImageUrl = imageUrl,
-                PriceCurrency = currency
+                PriceCurrency = currency,
+                
+                
+                
 
             };
             this.PriceSourceItems.Add(priceSourceItem);
