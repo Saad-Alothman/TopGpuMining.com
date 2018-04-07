@@ -10,6 +10,9 @@ using GpuMiningInsights.Application.Amazon;
 using GpuMiningInsights.Core;
 using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Configuration;
 
 namespace GpuMiningInsights.Console
 {
@@ -35,13 +38,10 @@ namespace GpuMiningInsights.Console
             // For each GPU ,calculate Cost / 1 MHs/s  For Each Source
             FindHashCost(Gpus);
             // sort by that value
-            Gpus = Gpus.OrderByDescending(g => g.ProfitPerYearMinusCostUsd).ToList();
+            Gpus = Gpus.OrderByDescending(g => g.ROI).ToList();
 
 
-            driver.Close();
-            driver.Quit();
             service.Dispose();
-            driver.Dispose();
             return Gpus;
         }
 
@@ -293,26 +293,28 @@ namespace GpuMiningInsights.Console
             }
         }
 
-        public static void PushData()
+        public static void PushData(ClientGpuListData clientGpuListData = null)
         {
-            string url = "http://topgpumining.com/Home/PushData";
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
+            string baseUrl = ConfigurationManager.AppSettings["WebAppBaseURL"];
+            string url = $"{baseUrl}/Home/PushData";
+            HttpClient client = new HttpClient();
+            if (clientGpuListData == null)
+                clientGpuListData = new ClientGpuListData()
+                {
+                    Date = DateTime.Now.ToString(Settings.DateFormat),
+                    Gpus = Gpus
+                };
+            string json= JsonConvert.SerializeObject(clientGpuListData);
+            var values = new Dictionary<string, string>
+{
+   { "clientGpuListDataJson", json  },
+};
 
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                string json = JsonConvert.SerializeObject(Gpus);
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
+            var content = new FormUrlEncodedContent(values);
+            var response = Task.Run(()=> client.PostAsync(url, content)).Result;
+            var responseString = Task.Run(()=> response.Content.ReadAsStringAsync()).Result;
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-            }
+            
         }
         //private static string GetHttpResponseText(string url)
         //{
@@ -348,6 +350,8 @@ namespace GpuMiningInsights.Console
                 {
                     string response = GetHttpResponseTextWithJavascript(priceSource.URL);
                     string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);
+
+                    string nameText = GetTextFromHtmlStringByCssSelector(response, priceSource.ItemNameSelector);
                     if (string.IsNullOrEmpty(PriceText))
                     {
                         continue;
@@ -370,14 +374,14 @@ namespace GpuMiningInsights.Console
                     }
 
                     if (string.IsNullOrWhiteSpace(imageUrl))
-                        priceSource.AddPriceSourceItem(PriceText, currency);
+                        priceSource.AddPriceSourceItem(PriceText, nameText, currency);
                     else
-                        priceSource.AddPriceSourceItem(PriceText, currency, imageUrl);
+                        priceSource.AddPriceSourceItem(PriceText, nameText, currency, imageUrl);
                 }
 
             }
             //Calculate USD Price
-            foreach (var priceSourceItem in gpu.PriceSources.SelectMany(s=>s.PriceSourceItems))
+            foreach (var priceSourceItem in gpu.PriceSources.SelectMany(s => s.PriceSourceItems))
             {
                 FillUSDPrice(priceSourceItem);
             }
@@ -435,7 +439,6 @@ namespace GpuMiningInsights.Console
             //        }
             //    }
             //};
-
             gpus = JsonConvert.DeserializeObject<List<GPU>>(File.ReadAllText("gpus.json"));
             foreach (var item in gpus)
             {

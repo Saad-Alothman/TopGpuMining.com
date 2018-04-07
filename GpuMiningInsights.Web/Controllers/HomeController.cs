@@ -16,7 +16,8 @@ namespace GpuMiningInsights.Web.Controllers
         public ActionResult Index(bool isLoad = true)
         {
             var results = InsighterService.GetInsights();
-           var clientGpuListData= SaveData(results);
+            ClientGpuListData clientGpuListData = new ClientGpuListData(results, DateTime.Now);
+            SaveData(clientGpuListData);
             return View(clientGpuListData);
         }
         public ActionResult Index()
@@ -25,41 +26,52 @@ namespace GpuMiningInsights.Web.Controllers
             return View(clientGpuListData);
         }
 
-        private ClientGpuListData LoadClientGpuListData(bool loadDummyOnNoData =true)
+        private ClientGpuListData LoadClientGpuListData(bool loadDummyOnNoData = true)
         {
             ClientGpuListData clientGpuListData = null;
             string fullPath = Server.MapPath(Settings.DataPath);
             List<string> allFiles = System.IO.Directory.GetFiles(fullPath).ToList();
             DateTime dt = DateTime.Now;
-            string lastFileName = allFiles.Where(r=> DateTime.TryParseExact(r.Replace(fullPath,"").Replace("\\",""), Settings.DateFormat, null,System.Globalization.DateTimeStyles.None, out dt)).OrderByDescending(s => DateTime.ParseExact(s, Settings.DateFormat, null)).FirstOrDefault();
+            string lastFileName = allFiles.Where(r => DateTime.TryParseExact(r.Replace(fullPath, "").Replace("\\", ""), Settings.DateFormat, null, System.Globalization.DateTimeStyles.None, out dt)).OrderByDescending(s => DateTime.ParseExact(s.Replace(fullPath, "").Replace("\\", ""), Settings.DateFormat, null)).FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(lastFileName))
                 clientGpuListData = JsonConvert.DeserializeObject<ClientGpuListData>(System.IO.File.ReadAllText(lastFileName));
-            else if(allFiles.Select(s=>s.Replace(fullPath, "").Replace("\\", "")).Contains("dummy.json")){
+            else if (allFiles.Select(s => s.Replace(fullPath, "").Replace("\\", "")).Contains(Settings.DummyFileName))
+            {
                 clientGpuListData = JsonConvert.DeserializeObject<ClientGpuListData>(System.IO.File.ReadAllText(fullPath + "\\" + "dummy.json"));
 
-                
+
             }
 
-            
+
             return clientGpuListData;
         }
 
-        public ActionResult PushData(List<GPU> gpus)
+        public ActionResult PushData(string clientGpuListDataJson)
         {
-            SaveData(gpus);
-            return Json(true);
+            string result = true.ToString();
+            try
+            {
+                ClientGpuListData clientGpuListData = JsonConvert.DeserializeObject<ClientGpuListData>(clientGpuListDataJson);
+                SaveData(clientGpuListData);
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+            }
+            
+            return Json(new { message = result});
         }
 
-        private ClientGpuListData SaveData(List<GPU> gpus)
+        private ClientGpuListData SaveData(ClientGpuListData ClientGpuListData)
         {
             DateTime dateTime = DateTime.Now;
-            ClientGpuListData ClientGpuListData = new ClientGpuListData()
-            {
-                Gpus = gpus,
-                Date = dateTime.ToString(Settings.DateFormat)
-            };
-            string json = JsonConvert.SerializeObject(gpus);
-            System.IO.File.WriteAllText(Server.MapPath(Settings.DataPath), json);
+            string json = JsonConvert.SerializeObject(ClientGpuListData);
+            DateTime date = DateTime.Now;
+            if (!DateTime.TryParseExact(ClientGpuListData.Date, Settings.DateFormat, null, System.Globalization.DateTimeStyles.None, out date))
+                date = DateTime.Now;
+
+            string FullfileName = Server.MapPath(Settings.DataPath) + "/" + date.ToString(Settings.DateFormat);
+            System.IO.File.WriteAllText(FullfileName, json);
             return ClientGpuListData;
         }
 
