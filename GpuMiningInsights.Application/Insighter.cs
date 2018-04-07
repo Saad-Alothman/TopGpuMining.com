@@ -38,7 +38,10 @@ namespace GpuMiningInsights.Console
             Gpus = Gpus.OrderByDescending(g => g.ProfitPerYearMinusCostUsd).ToList();
 
 
+            driver.Close();
+            driver.Quit();
             service.Dispose();
+            driver.Dispose();
             return Gpus;
         }
 
@@ -292,7 +295,7 @@ namespace GpuMiningInsights.Console
 
         public static void PushData()
         {
-            string url = "http://localhost/GpuMiningInsights.Web/Home/PushData";
+            string url = "http://topgpumining.com/Home/PushData";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";

@@ -42,46 +42,54 @@ namespace GpuMiningInsights.Console
                 Test();
             else
             {
-                var gpus = InsighterService.GetInsights();
-                System.Console.Clear();
-                InsighterService.PushData();
-                System.Console.WriteLine("");
-                ClientGpuListData clientGpuListData = new ClientGpuListData()
+                try
                 {
-                    Date = DateTime.Now.ToString(Settings.DateFormat),
-                    Gpus = gpus
-                };
-                string json = JsonConvert.SerializeObject(clientGpuListData);
-                System.Console.WriteLine("");
-
-                foreach (var item in gpus)
-                {
-                    string gpuName = item.Name;
-                    string hashPrice = item.LowestHashPrice?.HashPrice.ToString();
-                    string hashPriceSource = item.LowestHashPrice?.Source;
-                    //string gpuPriceFromSource = item.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource)?.PriceSourceItems.Min(a => a.Price).ToString();
-
-                    System.Console.WriteLine("************************************************************************");
-                    System.Console.WriteLine($"GPU {gpuName} ,ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd}, Revenue ($/Day) = {item.RevenuePerDayUsd}, Profit ($/Day) = {item.ProfitPerDayUsd}  ,HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price ");
+                    var gpus = InsighterService.GetInsights();
+                    System.Console.Clear();
+                    InsighterService.PushData();
                     System.Console.WriteLine("");
-                    foreach (var priceSource in item.PriceSources)
+                    ClientGpuListData clientGpuListData = new ClientGpuListData()
                     {
+                        Date = DateTime.Now.ToString(Settings.DateFormat),
+                        Gpus = gpus
+                    };
+                    string json = JsonConvert.SerializeObject(clientGpuListData);
+                    System.Console.WriteLine("");
 
-                        System.Console.WriteLine($" priceSource :Name :{priceSource.Name}");
-                        System.Console.WriteLine($" priceSource Items:");
-                        foreach (var priceSourceItem in priceSource.PriceSourceItems)
+                    foreach (var item in gpus)
+                    {
+                        string gpuName = item.Name;
+                        string hashPrice = item.LowestHashPrice?.HashPrice.ToString();
+                        string hashPriceSource = item.LowestHashPrice?.Source;
+                        //string gpuPriceFromSource = item.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource)?.PriceSourceItems.Min(a => a.Price).ToString();
+
+                        System.Console.WriteLine("************************************************************************");
+                        System.Console.WriteLine($"GPU {gpuName} ,ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd}, Revenue ($/Day) = {item.RevenuePerDayUsd}, Profit ($/Day) = {item.ProfitPerDayUsd}  ,HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price ");
+                        System.Console.WriteLine("");
+                        foreach (var priceSource in item.PriceSources)
                         {
-                            System.Console.WriteLine($"item Name :{priceSourceItem.Name},Price :{priceSourceItem.Price},PriceCurrency: {priceSourceItem.PriceCurrency}, mercharnt: {priceSourceItem.Merchant}");
+
+                            System.Console.WriteLine($" priceSource :Name :{priceSource.Name}");
+                            System.Console.WriteLine($" priceSource Items:");
+                            foreach (var priceSourceItem in priceSource.PriceSourceItems)
+                            {
+                                System.Console.WriteLine($"item Name :{priceSourceItem.Name},Price :{priceSourceItem.Price},PriceCurrency: {priceSourceItem.PriceCurrency}, mercharnt: {priceSourceItem.Merchant}");
+
+                            }
 
                         }
+                        System.Console.WriteLine("************************************************************************");
 
                     }
-                    System.Console.WriteLine("************************************************************************");
-
+                    string ser = JsonConvert.SerializeObject(gpus);
+                    List<GPU> gpustest = JsonConvert.DeserializeObject<List<GPU>>(ser);
+                    InsighterService.PushData();
                 }
-                string ser = JsonConvert.SerializeObject(gpus);
-                List<GPU> gpustest = JsonConvert.DeserializeObject<List<GPU>>(ser);
-                InsighterService.PushData();
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e);
+                }
+                
             }
 
             //}
