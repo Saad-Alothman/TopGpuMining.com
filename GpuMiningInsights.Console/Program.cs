@@ -5,6 +5,7 @@ using OpenQA.Selenium.PhantomJS;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using GpuMiningInsights.Core.Utils;
 using Newtonsoft.Json;
 
 namespace GpuMiningInsights.Console
@@ -29,8 +31,7 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
-            TestPush();
-            return;
+              
             // TestCurrencyApi();
             string searchTerm = "B06Y15M48C,B06Y144RLK,B06ZYC3SW1";// "B071Y7CKM2";
                                                                    // var resultttt2US = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.US);
@@ -39,7 +40,16 @@ namespace GpuMiningInsights.Console
                                                                    // var resultttt2UK = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.UK);
                                                                    //return;
             bool isTest = false;
+            
+            //int hashRatePowerMega = 88;
+            //double blockReward = 2.91;
+            //double DifficultyMega = 3287008653;//3,287,008,653;
 
+            //double perDay = CryptoUtils.CalculateCoinRevenuePerDay(hashRatePowerMega, DifficultyMega, blockReward);
+            //int currentUsdExchangeRate = 600;
+            //double perDayUsd = perDay *currentUsdExchangeRate ;
+            
+            //return;
             if (isTest)
                 Test();
             else
@@ -47,16 +57,11 @@ namespace GpuMiningInsights.Console
                 try
                 {
                     var gpus = InsighterService.GetInsights();
-                    System.Console.Clear();
+                    //System.Console.Clear();
                     InsighterService.PushData();
-                    System.Console.WriteLine("");
-                    ClientGpuListData clientGpuListData = new ClientGpuListData()
-                    {
-                        Date = DateTime.Now.ToString(Settings.DateFormat),
-                        Gpus = gpus
-                    };
-                    string json = JsonConvert.SerializeObject(clientGpuListData);
-                    System.Console.WriteLine("");
+                    WriteLine("");
+                    
+                    WriteLine("");
 
                     foreach (var item in gpus)
                     {
@@ -65,31 +70,31 @@ namespace GpuMiningInsights.Console
                         string hashPriceSource = item.LowestHashPrice?.Source;
                         //string gpuPriceFromSource = item.PriceSources.FirstOrDefault(s => s.Name == hashPriceSource)?.PriceSourceItems.Min(a => a.Price).ToString();
 
-                        System.Console.WriteLine("************************************************************************");
-                        System.Console.WriteLine($"GPU {gpuName} ,ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd}, Revenue ($/Day) = {item.RevenuePerDayUsd}, Profit ($/Day) = {item.ProfitPerDayUsd}  ,HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price ");
-                        System.Console.WriteLine("");
+                        WriteLine("************************************************************************");
+                        WriteLine($"GPU {gpuName} ,ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd}, Revenue ($/Day) = {item.RevenuePerDayUsd}, Profit ($/Day) = {item.ProfitPerDayUsd}  ,HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price ");
+                        WriteLine("");
                         foreach (var priceSource in item.PriceSources)
                         {
 
-                            System.Console.WriteLine($" priceSource :Name :{priceSource.Name}");
-                            System.Console.WriteLine($" priceSource Items:");
+                            WriteLine($" priceSource :Name :{priceSource.Name}");
+                            WriteLine($" priceSource Items:");
                             foreach (var priceSourceItem in priceSource.PriceSourceItems)
                             {
-                                System.Console.WriteLine($"item Name :{priceSourceItem.Name},Price :{priceSourceItem.Price},PriceCurrency: {priceSourceItem.PriceCurrency}, mercharnt: {priceSourceItem.Merchant}");
+                                WriteLine($"item Name :{priceSourceItem.Name},Price :{priceSourceItem.Price},PriceCurrency: {priceSourceItem.PriceCurrency}, mercharnt: {priceSourceItem.Merchant}");
 
                             }
 
                         }
-                        System.Console.WriteLine("************************************************************************");
+                        WriteLine("************************************************************************");
 
                     }
-                    string ser = JsonConvert.SerializeObject(gpus);
-                    List<GPU> gpustest = JsonConvert.DeserializeObject<List<GPU>>(ser);
-                    InsighterService.PushData();
+                    //string ser = JsonConvert.SerializeObject(gpus);
+                    //List<GPU> gpustest = JsonConvert.DeserializeObject<List<GPU>>(ser);
+                    //InsighterService.PushData();
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e);
+                    WriteLine(e.Message);
                 }
                 
             }
@@ -97,12 +102,17 @@ namespace GpuMiningInsights.Console
             //}
             //catch (Exception ex)
             //{
-            //    System.Console.WriteLine(ex);
+            //    WriteLine(ex);
 
             //}
-            System.Console.WriteLine("PAKTC");
-            System.Console.ReadLine();
+            WriteLine("PAKTC");
+            bool isDebug;
+            if (bool.TryParse(ConfigurationManager.AppSettings["IsDebug"], out isDebug) && isDebug)
+            {
+                System.Console.ReadLine();
 
+            }
+            GC.Collect();
         }
 
         private static void TestPush()
@@ -110,6 +120,14 @@ namespace GpuMiningInsights.Console
 
             InsighterService.PushData(GetTestPushData());
 
+        }
+        public static void WriteLine(string message)
+        {
+            bool isDebug;
+            if (bool.TryParse(ConfigurationManager.AppSettings["IsDebug"], out isDebug) && isDebug)
+            {
+                System.Console.WriteLine(message);
+            }
         }
         public static ClientGpuListData GetTestPushData()
         {
@@ -206,7 +224,7 @@ namespace GpuMiningInsights.Console
     //    {
     //        foreach (var gpu in gpus)
     //        {
-    //            System.Console.WriteLine($"Getting data for GPU {gpu.Name}");
+    //            WriteLine($"Getting data for GPU {gpu.Name}");
 
     //            GetPrices(gpu);
     //            GetHashrate(gpu);
@@ -217,7 +235,7 @@ namespace GpuMiningInsights.Console
 
     //    private static void GetHashrate(GPU gpu)
     //    {
-    //        System.Console.WriteLine($"Getting Hashrate From WhatToMine For GPU {gpu.Name}");
+    //        WriteLine($"Getting Hashrate From WhatToMine For GPU {gpu.Name}");
 
     //        string response = GetHttpResponseText(gpu.WhatToMineUrl);
     //        string hashRateText = GetTextFromHtmlStringByCssSelector(response, "#factor_eth_hr");
@@ -248,7 +266,7 @@ namespace GpuMiningInsights.Console
     //    //}
     //    private static string GeRevenueAndProfit(GPU gpu,string CssSelector)
     //    {
-    //            System.Console.WriteLine($"Getting Revenu and profit From What to mine For GPU {gpu.Name}");
+    //            WriteLine($"Getting Revenu and profit From What to mine For GPU {gpu.Name}");
     //        string response = GetHttpResponseText(gpu.WhatToMineUrl);
     //        CQ dom = response;
     //        CQ rows = dom[CssSelector];
@@ -274,7 +292,7 @@ namespace GpuMiningInsights.Console
     //    }
     //    private static void GetMiningProfitability(GPU gpu)
     //    {
-    //        System.Console.WriteLine($"Getting Mining Profitability From What to mine based on {gpu.CoinToStudyName} For GPU {gpu.Name}");
+    //        WriteLine($"Getting Mining Profitability From What to mine based on {gpu.CoinToStudyName} For GPU {gpu.Name}");
 
     //        //https://whattomine.com/coins?utf8=%E2%9C%93&adapt_q_280x=0&adapt_q_380=0&adapt_q_fury=0&adapt_q_470=0&adapt_q_480=3&adapt_q_570=1&adapt_570=true&adapt_q_580=0&adapt_q_vega56=0&adapt_q_vega64=0&adapt_q_750Ti=0&adapt_q_1050Ti=0&adapt_q_10606=0&adapt_q_1070=0&adapt_q_1070Ti=0&adapt_q_1080=0&adapt_q_1080Ti=0&eth=true&factor%5Beth_hr%5D=27.9&factor%5Beth_p%5D=120.0&factor%5Bgro_hr%5D=15.5&factor%5Bgro_p%5D=110.0&factor%5Bx11g_hr%5D=5.6&factor%5Bx11g_p%5D=110.0&factor%5Bcn_hr%5D=700.0&factor%5Bcn_p%5D=110.0&factor%5Beq_hr%5D=260.0&factor%5Beq_p%5D=110.0&factor%5Blrev2_hr%5D=5500.0&factor%5Blrev2_p%5D=110.0&factor%5Bns_hr%5D=630.0&factor%5Bns_p%5D=140.0&factor%5Blbry_hr%5D=115.0&factor%5Blbry_p%5D=115.0&factor%5Bbk2b_hr%5D=840.0&factor%5Bbk2b_p%5D=115.0&factor%5Bbk14_hr%5D=1140.0&factor%5Bbk14_p%5D=115.0&factor%5Bpas_hr%5D=580.0&factor%5Bpas_p%5D=135.0&factor%5Bskh_hr%5D=16.3&factor%5Bskh_p%5D=110.0&factor%5Bn5_hr%5D=18.0&factor%5Bn5_p%5D=110.0&factor%5Bl2z_hr%5D=420.0&factor%5Bl2z_p%5D=300.0&factor%5Bcost%5D=0.1&sort=Profitability24&volume=0&revenue=24h&factor%5Bexchanges%5D%5B%5D=&factor%5Bexchanges%5D%5B%5D=abucoins&factor%5Bexchanges%5D%5B%5D=bitfinex&factor%5Bexchanges%5D%5B%5D=bittrex&factor%5Bexchanges%5D%5B%5D=binance&factor%5Bexchanges%5D%5B%5D=cryptopia&factor%5Bexchanges%5D%5B%5D=hitbtc&factor%5Bexchanges%5D%5B%5D=poloniex&factor%5Bexchanges%5D%5B%5D=yobit&dataset=&commit=Calculate
     //        string response = GetHttpResponseText(gpu.WhatToMineUrl);
@@ -364,7 +382,7 @@ namespace GpuMiningInsights.Console
     //    {
     //        foreach (var priceSource in gpu.PriceSources)
     //        {
-    //            System.Console.WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
+    //            WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
 
     //            string response = GetHttpResponseTextWithJavascript(priceSource.URL);
     //            string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);

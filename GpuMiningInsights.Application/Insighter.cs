@@ -23,12 +23,21 @@ namespace GpuMiningInsights.Console
         public static Dictionary<string, double> pricesDict;
         private static string baseCurrency = "USD";
 
+        public static void TestDriver()
+        {
+            InitDriver();
+            driver.Close();
+            driver.Quit();
+            driver.Dispose();
+            service.Dispose();
+            driver.Dispose();
+
+        }
         public static List<GPU> GetInsights()
         {
             //PhantomJs & Selenium
+
             InitDriver();
-
-
 
             //seed initial data, ideally this will be read from DB
             LoadData();
@@ -41,7 +50,11 @@ namespace GpuMiningInsights.Console
             Gpus = Gpus.OrderByDescending(g => g.ROI).ToList();
 
 
+            driver.Close();
+            driver.Quit();
+            driver.Dispose();
             service.Dispose();
+            driver.Dispose();
             return Gpus;
         }
 
@@ -75,7 +88,7 @@ namespace GpuMiningInsights.Console
         {
             foreach (var gpu in gpus)
             {
-                System.Console.WriteLine($"Getting data for GPU {gpu.Name}");
+                WriteLine($"Getting data for GPU {gpu.Name}");
 
                 GetPrices(gpu);
                 GetHashrate(gpu);
@@ -139,7 +152,7 @@ namespace GpuMiningInsights.Console
 
         private static void GetHashrate(GPU gpu)
         {
-            System.Console.WriteLine($"Getting Hashrate From WhatToMine For GPU {gpu.Name}");
+            WriteLine($"Getting Hashrate From WhatToMine For GPU {gpu.Name}");
 
             string response = GetHttpResponseText(gpu.WhatToMineUrl);
             string hashRateText = GetTextFromHtmlStringByCssSelector(response, "#factor_eth_hr");
@@ -170,7 +183,7 @@ namespace GpuMiningInsights.Console
         //}
         private static string GeRevenueAndProfit(GPU gpu, string CssSelector)
         {
-            System.Console.WriteLine($"Getting Revenu and profit From What to mine For GPU {gpu.Name}");
+            WriteLine($"Getting Revenu and profit From What to mine For GPU {gpu.Name}");
             string response = GetHttpResponseText(gpu.WhatToMineUrl);
             CQ dom = response;
             CQ rows = dom[CssSelector];
@@ -196,7 +209,7 @@ namespace GpuMiningInsights.Console
         }
         private static void GetMiningProfitability(GPU gpu)
         {
-            System.Console.WriteLine($"Getting Mining Profitability From What to mine based on {gpu.CoinToStudyName} For GPU {gpu.Name}");
+            WriteLine($"Getting Mining Profitability From What to mine based on {gpu.CoinToStudyName} For GPU {gpu.Name}");
 
             //https://whattomine.com/coins?utf8=%E2%9C%93&adapt_q_280x=0&adapt_q_380=0&adapt_q_fury=0&adapt_q_470=0&adapt_q_480=3&adapt_q_570=1&adapt_570=true&adapt_q_580=0&adapt_q_vega56=0&adapt_q_vega64=0&adapt_q_750Ti=0&adapt_q_1050Ti=0&adapt_q_10606=0&adapt_q_1070=0&adapt_q_1070Ti=0&adapt_q_1080=0&adapt_q_1080Ti=0&eth=true&factor%5Beth_hr%5D=27.9&factor%5Beth_p%5D=120.0&factor%5Bgro_hr%5D=15.5&factor%5Bgro_p%5D=110.0&factor%5Bx11g_hr%5D=5.6&factor%5Bx11g_p%5D=110.0&factor%5Bcn_hr%5D=700.0&factor%5Bcn_p%5D=110.0&factor%5Beq_hr%5D=260.0&factor%5Beq_p%5D=110.0&factor%5Blrev2_hr%5D=5500.0&factor%5Blrev2_p%5D=110.0&factor%5Bns_hr%5D=630.0&factor%5Bns_p%5D=140.0&factor%5Blbry_hr%5D=115.0&factor%5Blbry_p%5D=115.0&factor%5Bbk2b_hr%5D=840.0&factor%5Bbk2b_p%5D=115.0&factor%5Bbk14_hr%5D=1140.0&factor%5Bbk14_p%5D=115.0&factor%5Bpas_hr%5D=580.0&factor%5Bpas_p%5D=135.0&factor%5Bskh_hr%5D=16.3&factor%5Bskh_p%5D=110.0&factor%5Bn5_hr%5D=18.0&factor%5Bn5_p%5D=110.0&factor%5Bl2z_hr%5D=420.0&factor%5Bl2z_p%5D=300.0&factor%5Bcost%5D=0.1&sort=Profitability24&volume=0&revenue=24h&factor%5Bexchanges%5D%5B%5D=&factor%5Bexchanges%5D%5B%5D=abucoins&factor%5Bexchanges%5D%5B%5D=bitfinex&factor%5Bexchanges%5D%5B%5D=bittrex&factor%5Bexchanges%5D%5B%5D=binance&factor%5Bexchanges%5D%5B%5D=cryptopia&factor%5Bexchanges%5D%5B%5D=hitbtc&factor%5Bexchanges%5D%5B%5D=poloniex&factor%5Bexchanges%5D%5B%5D=yobit&dataset=&commit=Calculate
             string response = GetHttpResponseText(gpu.WhatToMineUrl);
@@ -338,7 +351,7 @@ namespace GpuMiningInsights.Console
         {
             foreach (var priceSource in gpu.PriceSources)
             {
-                System.Console.WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
+                WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
                 //is it an api or something, else we are going to scrape the shit out of it...
                 if (priceSource.PriceSourceAction != null)
                 {
@@ -448,6 +461,15 @@ namespace GpuMiningInsights.Console
                 }
             }
             Gpus = gpus;
+        }
+
+        public static void WriteLine(string message)
+        {
+            bool isDebug;
+            if (bool.TryParse(ConfigurationManager.AppSettings["IsDebug"],out isDebug) && isDebug)
+            {
+                System.Console.WriteLine(message);
+            }
         }
     }
 
