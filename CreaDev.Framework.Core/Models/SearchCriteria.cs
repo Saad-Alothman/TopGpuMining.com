@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using CreaDev.Framework.Core.Linq;
 
 namespace CreaDev.Framework.Core.Models
 {
@@ -45,6 +46,16 @@ namespace CreaDev.Framework.Core.Models
             this.FilterExpression = filterExpression;
             this.SortExpression = sortExpression;
         }
+
+        public void AndCondition(Expression<Func<T, bool>> expression)
+        {
+            FilterExpression = FilterExpression.And(expression);
+        }
+        public void OrCondition(Expression<Func<T, bool>> expression)
+        {
+            FilterExpression = FilterExpression.Or(expression);
+        }
+
 
     }
 

@@ -9,24 +9,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace CreaDev.Framework.Core.Models
 {
-    public class SingletonBase<TType> where TType : class,new()
-    {
-        protected static TType instance;
-
-        public static TType Instance
-        {
-            get { return (instance ?? (instance = new TType())); }
-        }
-
-        protected SingletonBase()
-        {
-          
-        }
-
-        static SingletonBase()
-        {
-        }
-    }
     public class ServiceBase<TModel,TService,TDbContext, TUser> : SingletonBase<TService>, IServiceBase<TModel> 
         where TDbContext:DbContext, new()
         where TModel: EntityBase

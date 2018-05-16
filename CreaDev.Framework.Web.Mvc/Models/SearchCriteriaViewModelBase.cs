@@ -47,7 +47,26 @@ namespace CreaDev.Framework.Web.Mvc.Models
 
             return routeValueDictionary;
         }
-        public abstract SearchCriteria<T> ToSearchCriteria();
-        public abstract RouteValueDictionary ToRouteValueDictionary(int page, string prefix = "");
+        public virtual SearchCriteria<T> ToSearchCriteria()
+        {
+
+
+            SearchCriteria<T> searchCriteria = new SearchCriteria<T>();
+            searchCriteria.FilterExpression = x => true;
+
+
+            searchCriteria.PageSize = this.PageSize;
+            searchCriteria.IsDescending = this.IsDescending;
+            searchCriteria.PageNumber = this.PageNumber;
+
+           
+            return searchCriteria;
+
+        }
+
+        public virtual RouteValueDictionary ToRouteValueDictionary(int page, string prefix = "")
+        {
+            return GetBaseValuesRouteValueDictionary(page, prefix);
+        }
     }
 }

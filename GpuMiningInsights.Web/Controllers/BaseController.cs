@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CreaDev.Framework.Core;
 using CreaDev.Framework.Core.Exceptions;
 using CreaDev.Framework.Core.Models;
 using CreaDev.Framework.Core.Resources;
@@ -115,8 +116,8 @@ namespace GpuMiningInsights.Web.Controllers
         {
             Alert alert;
 
-          
-                alert = new Alert(Messages.OperationFailed, Alert.Type.Error, isAutoHide);
+
+            alert = new Alert(Messages.OperationFailed, Alert.Type.Error, isAutoHide);
 
             return alert;
         }
@@ -231,7 +232,7 @@ namespace GpuMiningInsights.Web.Controllers
 
         }
 
-      
+
 
         public ActionResult SimpleAjaxAction(Action action, bool setSuccessMessage = true)
         {
@@ -372,8 +373,8 @@ namespace GpuMiningInsights.Web.Controllers
 
             return View(modelToView);
         }
+ 
 
-  
         internal void AddViewDataSearchModel<TSearchViewModel>(TSearchViewModel tSearchViewModel)
         {
             ViewData[Constants.SEARCH_MODEL] = tSearchViewModel;
@@ -481,5 +482,54 @@ namespace GpuMiningInsights.Web.Controllers
             return Json(result);
         }
 
+
+        #region NewMethods
+
+        protected ActionResult SimpleIndex<TModel>(Func<SearchCriteria<TModel>, SearchResult<TModel>> action)
+            where TModel : GmiEntityBase
+        {
+            SearchResult<TModel> viewModel = new SearchResult<TModel>();
+            try
+            {
+                SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
+                viewModel = action.Invoke(searchCriteria);
+            }
+            catch (Exception ex)
+            {
+                SetError(false, ex);
+            }
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult SimpleAjaxAdd<TModel>(TModel model, Action<TModel> addAction, Func<SearchCriteria<TModel>, SearchResult<TModel>> searchAction, string modelListPartial)
+        {
+            JsonResultObject result = new JsonResultObject();
+
+            try
+            {
+                if (!ModelState.IsValid)
+                    ThrowModelStateErrors();
+
+                addAction.Invoke(model);
+                SetSuccess(result);
+
+                SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
+                SearchResult<TModel> searchResult = searchAction.Invoke(searchCriteria);
+                result.PartialViewHtml = RenderPartialViewToString(modelListPartial, searchResult);
+            }
+            catch (BusinessException ex)
+            {
+                SetError(result, false, ex);
+            }
+
+            return Json(result);
+        }
+
+        #endregion
+
     }
+
+
+
 }

@@ -139,6 +139,7 @@
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\Search\ISearchable.cs" />
     <Compile Include="Models\ServiceBase.cs" />
+    <Compile Include="Models\SingletonBase.cs" />
     <Compile Include="Models\UnitOfWork.cs" />
     <Compile Include="Models\CreaDevUser.cs" />
     <Compile Include="PermissionSettingsLocator.cs" />

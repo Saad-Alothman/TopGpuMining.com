@@ -68,6 +68,7 @@
     <Compile Include="Services\Base\GenericService.cs" />
     <Compile Include="Services\Base\GmiServiceBase.cs" />
     <Compile Include="Services\BrandService.cs" />
+    <Compile Include="CHRSApp.cs" />
     <Compile Include="Services\Insighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
