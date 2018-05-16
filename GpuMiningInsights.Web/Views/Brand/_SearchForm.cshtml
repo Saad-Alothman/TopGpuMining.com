@@ -1,0 +1,16 @@
+﻿@model BrandSearchViewModel
+
+@{ 
+    var companies = CompanyService.Instance.Get();
+    
+
+}
+<div class="row">
+    <div class="col-md-4">
+        @Html.BootstrapTextBoxFor(a => a.Text)
+    </div>
+    <div class="col-md-4">
+        @Html.BootstrapDropDownListFor(m => m.CompanyId, companies.ToSelectListItems(addEmptyItem: true), new { @class = "form-control" })
+    </div>
+</div>
+

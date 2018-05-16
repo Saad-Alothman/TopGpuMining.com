@@ -1,0 +1,219 @@
+﻿
+@{
+    ViewBag.Name = "Index";
+}
+
+
+
+@using CreaDev.Framework.Core.Resources
+@using GpuMiningInsights.Domain.Models
+@model CreaDev.Framework.Core.Models.SearchResult<GpuMiningInsights.Domain.Models.Brand>
+
+
+<br />
+<button type="button" class="btn green" onclick="showAddBrand()">
+    @Common.AddBrand
+</button>
+
+<br />
+<br />
+<div class="portlet light" id="costcenter-list-portlet">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-list"></i>
+            <span class="caption-subject font-green bold uppercase">
+                @Common.Brands
+            </span>
+        </div>
+    </div>
+    <div class="portlet-body form" id="form-portlet">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-green-sharp">
+                    <i class="fa fa-search"></i>
+                    <span class="caption-subject bold uppercase">
+                        @Common.Search
+                    </span>
+                </div>
+
+            </div>
+            <div class="portlet-body form" >
+                <br/>
+
+                @using (Ajax.BeginForm("Search", new { }, new AjaxOptions()
+                {
+                    HttpMethod = "POST",
+                    OnBegin = "block('#costcenter-list-portlet')",
+                    OnComplete = "unblock('#costcenter-list-portlet')",
+                    UpdateTargetId = "costcenter-list"
+                }, new { id = "form-search",@class="auto-search" }))
+                {
+                    @Html.Partial("_SearchForm", new BrandSearchViewModel())
+                    <br />
+                    <button type="submit" class="btn green btn-block">
+                        @Common.Search
+                    </button>
+                }
+            </div>
+        </div>
+        <br/>
+
+        <div id="costcenter-list">
+            @Html.Partial("_BrandList")
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade"
+     id="add-costcenter-modal"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="add-costcenter-div">
+
+            @using (Ajax.BeginForm("Add", "Brand", new { }, new AjaxOptions()
+            {
+                OnBegin = "block('#add-costcenter-div')",
+                OnComplete = "onAjaxComplete(xhr, status, '#add-costcenter-div', '#add-costcenter-alert', '#costcenter-list')",
+                OnFailure = "onAjaxFailed(xhr, status, error, '#add-costcenter-alert')",
+                OnSuccess = "onAjaxSuccess(xhr, status, '#add-costcenter-modal')"
+            }, new { id = "add-costcenter-form", @role = "form" }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">@Common.AddBrand</h4>
+                </div>
+
+                        <div class="modal-body">
+                            <div id="add-costcenter-alert"></div>
+                            @Html.Partial("_BrandForm", new Brand())
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn green">
+                                @Common.Add
+                            </button>
+                            <button type="button" data-dismiss="modal" class="btn red">
+                                @Common.Cancel
+                            </button>
+                        </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade"
+     id="edit-costcenter-modal"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="edit-costcenter-div">
+
+            @using (Ajax.BeginForm("Update", "Brand", new { }, new AjaxOptions()
+            {
+                OnBegin = "block('#edit-costcenter-div')",
+                OnComplete = "onAjaxComplete(xhr, status, '#edit-costcenter-div', '#edit-costcenter-alert', '#costcenter-list')",
+                OnFailure = "onAjaxFailed(xhr, status, error, '#edit-costcenter-alert')",
+                OnSuccess = "onAjaxSuccess(xhr, status, '#edit-costcenter-modal')"
+            }, new { id = "edit-costcenter-form", @role = "form" }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">@Common.Edit</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div id="edit-costcenter-alert"></div>
+
+                    <div id="edit-costcenter-form-div">
+                        @Html.Partial("_BrandForm", new Brand())
+                    </div>
+                </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn green">
+                                @Common.Save
+                            </button>
+                            <button type="button" data-dismiss="modal" class="btn red">
+                                @Common.Cancel
+                            </button>
+                        </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade"
+     id="delete-costcenter-modal"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="delete-costcenter-div">
+
+            @using (Ajax.BeginForm("Delete", "Brand", new { }, new AjaxOptions()
+            {
+                OnBegin = "block('#delete-costcenter-div')",
+                OnComplete = "onAjaxComplete(xhr, status, '#delete-costcenter-div', '#delete-costcenter-alert', '#costcenter-list')",
+                OnFailure = "onAjaxFailed(xhr, status, error, '#delete-costcenter-alert')",
+                OnSuccess = "onAjaxSuccess(xhr, status, '#delete-costcenter-modal')"
+            }, new { id = "delete-costcenter-form", @role = "form" }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">@Common.AreYouSure</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div id="delete-costcenter-alert"></div>
+
+                    <div id="delete-costcenter-form-div">
+                        @Html.Partial("_DeleteForm", new Brand())
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @Common.Delete    
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @Common.Cancel
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+
+        function showAddBrand() {
+
+            $("#add-costcenter-modal").modal('show');
+        }
+
+        function showEditBrand() {
+
+            $("#edit-costcenter-modal").modal('show');
+        }
+
+        function showDeleteBrand() {
+            $("#delete-costcenter-alert").html('');
+            $("#delete-costcenter-modal").modal('show');
+        }
+    </script>
+}

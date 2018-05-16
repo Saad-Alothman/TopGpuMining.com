@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
-using GpuMiningInsights.Console;
 using GpuMiningInsights.Core;
 using OpenQA.Selenium;
 using Newtonsoft.Json;
 using System.Linq;
+using GpuMiningInsights.Application;
+using GpuMiningInsights.Application.Services;
+using GpuMiningInsights.Domain.Models;
 
 namespace GpuMiningInsights.Web.Controllers
 {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GpuMiningInsights.Core;
+using GpuMiningInsights.Domain.Models;
 
 namespace GpuMiningInsights.Application.Amazon
 {

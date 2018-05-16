@@ -1,0 +1,65 @@
+﻿@model Brand
+
+
+<input type="hidden" name="@Html.NameFor(a=> a.ID)" value="@Model.ID" />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                <strong>
+                    @Html.DisplayNameFor(a => a.Name) @Common.Arabic
+                </strong>
+            </label>
+            <br />
+            <p class="form-control-static">
+                @Model.Name.Arabic
+            </p>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                <strong>
+                    @Html.DisplayNameFor(a => a.Name) @Common.English
+                </strong>
+            </label>
+            <br />
+            <p class="form-control-static">
+                @Model.Name.English
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                <strong>
+                    @Common.AffectedEmployeeCount
+                </strong>
+            </label>
+            <br />
+            <p class="form-control-static">
+                @(Model.Employees != null ? Model.Employees.Count.ToString() : "0")
+            </p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                <strong>
+                    @Html.DisplayNameFor(a => a.CreatedDate)
+                </strong>
+            </label>
+            <br />
+            <p class="form-control-static">
+                @(Model.CreatedDate?.ToSystemDateTimeFormat())
+            </p>
+        </div>
+    </div>
+</div>
+

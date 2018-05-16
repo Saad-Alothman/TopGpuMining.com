@@ -17,7 +17,7 @@
     <AssemblyName>GpuMiningInsights.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -48,6 +48,10 @@
   <ItemGroup>
     <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CreaDev.Framework.Web.Mvc\bin\Debug\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -148,11 +152,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CostCenterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Insighter.cs" />
+    <Compile Include="Controllers\JsonDotNetResult.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Filters\ExceptionHandlerFilter.cs" />
     <Compile Include="Models\GpuViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -182,6 +190,11 @@
     <Content Include="Data\10-03-2018   204255" />
     <Content Include="Data\11-03-2018   012229" />
     <Content Include="Data\dummy.json" />
+    <Content Include="Views\Brand\Index.cshtml" />
+    <Content Include="Views\Brand\_Form.cshtml" />
+    <Content Include="Views\Brand\_List.cshtml" />
+    <Content Include="Views\Brand\_DeleteForm.cshtml" />
+    <Content Include="Views\Brand\_SearchForm.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\saad77 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -229,6 +242,14 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CreaDev.Framework.Core\CreaDev.Framework.Core.csproj">
+      <Project>{1F6E84C3-AFF2-48B2-86D7-08F2C75467B8}</Project>
+      <Name>CreaDev.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CreaDev.Framework.Web.Mvc\CreaDev.Framework.Web.Mvc.csproj">
+      <Project>{7A4768B0-B3A6-4AA4-853E-6FEFC2384D33}</Project>
+      <Name>CreaDev.Framework.Web.Mvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GpuMiningInsights.Application\GpuMiningInsights.Application.csproj">
       <Project>{290d7c67-53b8-4d76-9497-59aa8a7abcbe}</Project>
       <Name>GpuMiningInsights.Application</Name>
@@ -236,6 +257,14 @@
     <ProjectReference Include="..\GpuMiningInsights.Core\GpuMiningInsights.Core.csproj">
       <Project>{b3e007a3-b917-4683-8b96-83264420d22d}</Project>
       <Name>GpuMiningInsights.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GpuMiningInsights.Domain\GpuMiningInsights.Domain.csproj">
+      <Project>{64CC8B88-07B2-4DF3-99A3-DB8F380DAF37}</Project>
+      <Name>GpuMiningInsights.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GpuMiningInsights.Persistance\GpuMiningInsights.Persistance.csproj">
+      <Project>{D7FE8337-B483-4366-8259-09EEAB1B62BF}</Project>
+      <Name>GpuMiningInsights.Persistance</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

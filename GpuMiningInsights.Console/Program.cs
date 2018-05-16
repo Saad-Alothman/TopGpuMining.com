@@ -13,7 +13,10 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using GpuMiningInsights.Application;
+using GpuMiningInsights.Application.Services;
 using GpuMiningInsights.Core.Utils;
+using GpuMiningInsights.Domain.Models;
 using Newtonsoft.Json;
 
 namespace GpuMiningInsights.Console

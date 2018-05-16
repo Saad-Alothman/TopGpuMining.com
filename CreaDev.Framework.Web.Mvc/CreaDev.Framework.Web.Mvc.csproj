@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A4768B0-B3A6-4AA4-853E-6FEFC2384D33}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CreaDev.Framework.Web.Mvc</RootNamespace>
+    <AssemblyName>CreaDev.Framework.Web.Mvc</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Demo|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Demo\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActionResults\HttpInternalServerError.cs" />
+    <Compile Include="Attributes\Validation\ArabicInput.cs" />
+    <Compile Include="Attributes\Validation\ArabicInputWithoutNumber.cs" />
+    <Compile Include="Attributes\Validation\CreaDevRequiredAttribute.cs" />
+    <Compile Include="Attributes\Validation\EnglishInputAttribute.cs" />
+    <Compile Include="Attributes\Validation\GreaterThan.cs" />
+    <Compile Include="Attributes\Validation\LocalizableTextLength.cs" />
+    <Compile Include="Attributes\Validation\Realestate\RealEstateContinuiousNumberAttributeValues.cs" />
+    <Compile Include="Attributes\Validation\Realestate\RealEstateContinuousNumberAttribute.cs" />
+    <Compile Include="Attributes\Validation\Realestate\RealEstateDiscreteNumberAttribute.cs" />
+    <Compile Include="Attributes\Validation\Realestate\RealEstateRanges.cs" />
+    <Compile Include="Attributes\Validation\Realestate\RealEstateNumberAttributeValues.cs" />
+    <Compile Include="Attributes\Validation\Realestate\RealEstateNumberType.cs" />
+    <Compile Include="Binders\CreaDevDateTimeBinder.cs" />
+    <Compile Include="ControllerBase.cs" />
+    <Compile Include="Filters\AjaxOnlyAttribute.cs" />
+    <Compile Include="Filters\AutoErrorLoggerAttribute.cs" />
+    <Compile Include="Filters\GoogleAnalyticsAttribute.cs" />
+    <Compile Include="Filters\InternationalizationAttribute.cs" />
+    <Compile Include="Filters\RecaptchaAttribute.cs" />
+    <Compile Include="Helpers\ActionExtension.cs" />
+    <Compile Include="Helpers\AlertExtension.cs" />
+    <Compile Include="Helpers\CollectionVariableNames\Ui.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Helpers\HtmlRequestHelper.cs" />
+    <Compile Include="Helpers\HttpRequestExtensions.cs" />
+    <Compile Include="Helpers\PaginationExtension.cs" />
+    <Compile Include="Helpers\PartialViewHelper.cs" />
+    <Compile Include="Helpers\ResponseExtension.cs" />
+    <Compile Include="Helpers\SelectListItemHelper.cs" />
+    <Compile Include="Helpers\StringExtension.cs" />
+    <Compile Include="Html\Ajax\CreaDevAjaxOptions.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\BootstrapExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\ColumnExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\DropDownListExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\FormGroup.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\FormGroupExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\LabelExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\Metronic\ContainerColor.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\Metronic\Portlet\Portlet.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\Metronic\Portlet\PortletBodyExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\Metronic\Portlet\PortletExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\Metronic\Portlet\PortletHeaderActionsExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\Metronic\Portlet\PortletHeaderExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\Metronic\Portlet\PortletType.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\RowExtension.cs" />
+    <Compile Include="Html\Helpers\Bootstrap\TextBoxControlExtension.cs" />
+    <Compile Include="Html\Helpers\Html.cs" />
+    <Compile Include="Html\Helpers\HtmlSelectExtension.cs" />
+    <Compile Include="Html\Helpers\PartialExtension.cs" />
+    <Compile Include="Html\Helpers\ViewPathByConventionHelper.cs" />
+    <Compile Include="Models\Alert.cs" />
+    <Compile Include="Models\GenericViewModel.cs" />
+    <Compile Include="Models\ITabularDataViewModel.cs" />
+    <Compile Include="Models\JsonResultObject.cs" />
+    <Compile Include="Models\LocalizableText.cs" />
+    <Compile Include="Models\RelatedItemViewModel.cs" />
+    <Compile Include="Models\SearchCriteriaViewModelBase.cs" />
+    <Compile Include="Models\SearchResultViewModelBase.cs" />
+    <Compile Include="Models\SearchResultViewModelBasewithTabularDataViewModel.cs" />
+    <Compile Include="Models\ViewDisplayMode.cs" />
+    <Compile Include="PartialViewsDependancies.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Serialization\JsonDotNetResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Implementation\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CreaDev.Framework.Core\CreaDev.Framework.Core.csproj">
+      <Project>{1F6E84C3-AFF2-48B2-86D7-08F2C75467B8}</Project>
+      <Name>CreaDev.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CreaDev.Framework.Web\CreaDev.Framework.Web.csproj">
+      <Project>{1BEB1969-50F3-4AF1-B627-87943AE84298}</Project>
+      <Name>CreaDev.Framework.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

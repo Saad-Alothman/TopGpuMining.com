@@ -33,11 +33,24 @@
     <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -52,10 +65,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Insighter.cs" />
+    <Compile Include="Services\Base\GenericService.cs" />
+    <Compile Include="Services\Base\GmiServiceBase.cs" />
+    <Compile Include="Services\BrandService.cs" />
+    <Compile Include="Services\Insighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CreaDev.Framework.Core\CreaDev.Framework.Core.csproj">
+      <Project>{1F6E84C3-AFF2-48B2-86D7-08F2C75467B8}</Project>
+      <Name>CreaDev.Framework.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GpuMiningInsights.Application.Amazon\GpuMiningInsights.Application.Amazon.csproj">
       <Project>{e944f711-d0c7-4f03-ae39-95483bb9c59e}</Project>
       <Name>GpuMiningInsights.Application.Amazon</Name>
@@ -64,11 +84,20 @@
       <Project>{B3E007A3-B917-4683-8B96-83264420D22D}</Project>
       <Name>GpuMiningInsights.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GpuMiningInsights.Domain\GpuMiningInsights.Domain.csproj">
+      <Project>{64cc8b88-07b2-4df3-99a3-db8f380daf37}</Project>
+      <Name>GpuMiningInsights.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GpuMiningInsights.Persistance\GpuMiningInsights.Persistance.csproj">
+      <Project>{D7FE8337-B483-4366-8259-09EEAB1B62BF}</Project>
+      <Name>GpuMiningInsights.Persistance</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="gpus.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
