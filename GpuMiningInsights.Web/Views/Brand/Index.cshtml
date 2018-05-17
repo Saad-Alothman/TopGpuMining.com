@@ -7,17 +7,18 @@
 
 @using CreaDev.Framework.Core.Resources
 @using GpuMiningInsights.Domain.Models
+@using GpuMiningInsights.Web.Models.Search
 @model CreaDev.Framework.Core.Models.SearchResult<GpuMiningInsights.Domain.Models.Brand>
 
 
 <br />
 <button type="button" class="btn green" onclick="showAddBrand()">
-    @Common.AddBrand
+    @Common.Add
 </button>
 
 <br />
 <br />
-<div class="portlet light" id="costcenter-list-portlet">
+<div class="portlet light" id="brand-list-portlet">
     <div class="portlet-title">
         <div class="caption">
             <i class="icon-list"></i>
@@ -43,12 +44,12 @@
                 @using (Ajax.BeginForm("Search", new { }, new AjaxOptions()
                 {
                     HttpMethod = "POST",
-                    OnBegin = "block('#costcenter-list-portlet')",
-                    OnComplete = "unblock('#costcenter-list-portlet')",
-                    UpdateTargetId = "costcenter-list"
+                    OnBegin = "block('#brand-list-portlet')",
+                    OnComplete = "unblock('#brand-list-portlet')",
+                    UpdateTargetId = "brand-list"
                 }, new { id = "form-search",@class="auto-search" }))
                 {
-                    @Html.Partial("_SearchForm", new BrandSearchViewModel())
+                    @Html.Partial("_SearchForm", new BrandSearchCrietriaViewModel())
                     <br />
                     <button type="submit" class="btn green btn-block">
                         @Common.Search
@@ -58,7 +59,7 @@
         </div>
         <br/>
 
-        <div id="costcenter-list">
+        <div id="brand-list">
             @Html.Partial("_BrandList")
         </div>
     </div>
@@ -66,21 +67,21 @@
 
 
 <div class="modal fade"
-     id="add-costcenter-modal"
+     id="add-brand-modal"
      role="basic"
      tabindex="-1"
      aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="add-costcenter-div">
+        <div class="modal-content" id="add-brand-div">
 
             @using (Ajax.BeginForm("Add", "Brand", new { }, new AjaxOptions()
             {
-                OnBegin = "block('#add-costcenter-div')",
-                OnComplete = "onAjaxComplete(xhr, status, '#add-costcenter-div', '#add-costcenter-alert', '#costcenter-list')",
-                OnFailure = "onAjaxFailed(xhr, status, error, '#add-costcenter-alert')",
-                OnSuccess = "onAjaxSuccess(xhr, status, '#add-costcenter-modal')"
-            }, new { id = "add-costcenter-form", @role = "form" }))
+                OnBegin = "block('#add-brand-div')",
+                OnComplete = "onAjaxComplete(xhr, status, '#add-brand-div', '#add-brand-alert', '#brand-list')",
+                OnFailure = "onAjaxFailed(xhr, status, error, '#add-brand-alert')",
+                OnSuccess = "onAjaxSuccess(xhr, status, '#add-brand-modal')"
+            }, new { id = "add-brand-form", @role = "form" }))
             {
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -88,7 +89,7 @@
                 </div>
 
                         <div class="modal-body">
-                            <div id="add-costcenter-alert"></div>
+                            <div id="add-brand-alert"></div>
                             @Html.Partial("_BrandForm", new Brand())
                         </div>
 
@@ -108,21 +109,21 @@
 
 
 <div class="modal fade"
-     id="edit-costcenter-modal"
+     id="edit-brand-modal"
      role="basic"
      tabindex="-1"
      aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="edit-costcenter-div">
+        <div class="modal-content" id="edit-brand-div">
 
             @using (Ajax.BeginForm("Update", "Brand", new { }, new AjaxOptions()
             {
-                OnBegin = "block('#edit-costcenter-div')",
-                OnComplete = "onAjaxComplete(xhr, status, '#edit-costcenter-div', '#edit-costcenter-alert', '#costcenter-list')",
-                OnFailure = "onAjaxFailed(xhr, status, error, '#edit-costcenter-alert')",
-                OnSuccess = "onAjaxSuccess(xhr, status, '#edit-costcenter-modal')"
-            }, new { id = "edit-costcenter-form", @role = "form" }))
+                OnBegin = "block('#edit-brand-div')",
+                OnComplete = "onAjaxComplete(xhr, status, '#edit-brand-div', '#edit-brand-alert', '#brand-list')",
+                OnFailure = "onAjaxFailed(xhr, status, error, '#edit-brand-alert')",
+                OnSuccess = "onAjaxSuccess(xhr, status, '#edit-brand-modal')"
+            }, new { id = "edit-brand-form", @role = "form" }))
             {
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -130,9 +131,9 @@
                 </div>
 
                 <div class="modal-body">
-                    <div id="edit-costcenter-alert"></div>
+                    <div id="edit-brand-alert"></div>
 
-                    <div id="edit-costcenter-form-div">
+                    <div id="edit-brand-form-div">
                         @Html.Partial("_BrandForm", new Brand())
                     </div>
                 </div>
@@ -152,21 +153,21 @@
 
 
 <div class="modal fade"
-     id="delete-costcenter-modal"
+     id="delete-brand-modal"
      role="basic"
      tabindex="-1"
      aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="delete-costcenter-div">
+        <div class="modal-content" id="delete-brand-div">
 
             @using (Ajax.BeginForm("Delete", "Brand", new { }, new AjaxOptions()
             {
-                OnBegin = "block('#delete-costcenter-div')",
-                OnComplete = "onAjaxComplete(xhr, status, '#delete-costcenter-div', '#delete-costcenter-alert', '#costcenter-list')",
-                OnFailure = "onAjaxFailed(xhr, status, error, '#delete-costcenter-alert')",
-                OnSuccess = "onAjaxSuccess(xhr, status, '#delete-costcenter-modal')"
-            }, new { id = "delete-costcenter-form", @role = "form" }))
+                OnBegin = "block('#delete-brand-div')",
+                OnComplete = "onAjaxComplete(xhr, status, '#delete-brand-div', '#delete-brand-alert', '#brand-list')",
+                OnFailure = "onAjaxFailed(xhr, status, error, '#delete-brand-alert')",
+                OnSuccess = "onAjaxSuccess(xhr, status, '#delete-brand-modal')"
+            }, new { id = "delete-brand-form", @role = "form" }))
             {
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -174,9 +175,9 @@
                 </div>
 
                 <div class="modal-body">
-                    <div id="delete-costcenter-alert"></div>
+                    <div id="delete-brand-alert"></div>
 
-                    <div id="delete-costcenter-form-div">
+                    <div id="delete-brand-form-div">
                         @Html.Partial("_DeleteForm", new Brand())
                     </div>
                 </div>
@@ -203,17 +204,17 @@
 
         function showAddBrand() {
 
-            $("#add-costcenter-modal").modal('show');
+            $("#add-brand-modal").modal('show');
         }
 
         function showEditBrand() {
 
-            $("#edit-costcenter-modal").modal('show');
+            $("#edit-brand-modal").modal('show');
         }
 
         function showDeleteBrand() {
-            $("#delete-costcenter-alert").html('');
-            $("#delete-costcenter-modal").modal('show');
+            $("#delete-brand-alert").html('');
+            $("#delete-brand-modal").modal('show');
         }
     </script>
 }

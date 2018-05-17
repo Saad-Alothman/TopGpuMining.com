@@ -17,6 +17,7 @@ namespace GpuMiningInsights.Domain.Models
         //[Display(Name = nameof(Core.Resources.Domain.Description), ResourceType = typeof(Core.Resources.Domain))]
         public LocalizableText Description { get; set; }
 
+        //private List<GPU> Gpus { get; set; }
         public override void Update(object objectWithNewData)
         {
      

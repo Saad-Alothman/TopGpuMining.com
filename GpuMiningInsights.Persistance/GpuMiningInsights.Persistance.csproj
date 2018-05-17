@@ -53,6 +53,7 @@
     <Compile Include="AccountRepository.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="IRemeContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GmiContext.cs" />
     <Compile Include="RemeUnitOfWork.cs" />

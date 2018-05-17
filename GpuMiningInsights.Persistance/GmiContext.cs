@@ -11,11 +11,12 @@ namespace GpuMiningInsights.Persistance
 {
     public class GmiContext : IdentityDbContext<User, Role, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>
     {
-        //public virtual DbSet<ContactUsForm> ContactUsForms { get; set; }
+        public virtual DbSet<Brand> Brands { get; set; }
 
         public GmiContext() : base("DefaultConnection")
         {
             this.Configuration.ProxyCreationEnabled = false;
+            
 
         }
 

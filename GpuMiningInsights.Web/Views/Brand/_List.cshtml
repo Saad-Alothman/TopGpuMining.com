@@ -1,7 +1,15 @@
 ﻿@model SearchResult<Brand>
 
+@using CreaDev.Framework.Core.Resources
 @using X.PagedList.Mvc;
+@{
+    var brandSearchCrietriaViewModel = new BrandSearchCrietriaViewModel();
 
+    if (ViewData[Constants.SEARCH_MODEL] != null)
+    {
+        brandSearchCrietriaViewModel = ViewData[Constants.SEARCH_MODEL] as BrandSearchCrietriaViewModel;
+    }
+}
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
 
@@ -13,9 +21,7 @@
             <th>
                 @Html.DisplayNameFor(a => a.Result.First().Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(a => a.Result.First().Company)
-            </th>
+            
 
             <th>
                 @Common.Actions
@@ -32,19 +38,18 @@
                 <td>
                     @(item.Description?.ToString())
                 </td>
-                <td>
-                    @(item.Company?.Name?.ToString())
-                </td>
+            
                 <td width="180">
-                    <a href="@Url.Action("Edit","Brand",new { id = item.ID })"
-                       @CHRSAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CHRSAjaxOptions("#costcenter-list", "#edit-costcenter-form-div", completeMethods: "showEditBrand();"))
+
+                    @using CreaDev.Framework.Web.Mvc.Html.Ajax
+@using GpuMiningInsights.Web.Models.Search
+                    <a href="@Url.Action("Edit", "Brand", new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions("#brand-list", "#edit-brand-form-div", onCompleteMethod: "showEditBrand();"))
                        class="btn btn-sm green">
                         <i class="fa fa-edit"></i>
                         @Common.Edit
                     </a>
 
-                    <a href="@Url.Action("Delete", "Brand", new { id = item.ID })"
-                       @CHRSAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes( new CHRSAjaxOptions( "#costcenter-list", "#delete-costcenter-form-div", method: FormMethod.Get, completeMethods: "showDeleteBrand();"))
+                    <a href="@Url.Action("Delete", "Brand", new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions("#brand-list", "#delete-brand-form-div", httpMethod: FormMethod.Get, onCompleteMethod: "showDeleteBrand();"))
                        class="btn btn-sm red">
                         <i class="fa fa-remove"></i>
                         @Common.Delete
@@ -56,12 +61,14 @@
     </table>
 
 </div>
-
-@Html.PagedListPager(Model.ToPagedList(), page => Url.Action("Index", "Brand", new { page = page })
-                    , PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
-                    {
-                        HttpMethod = "GET",
-                        OnBegin = "block('#costcenter-list')",
-                        OnComplete = "unblock('#costcenter-list')",
-                        UpdateTargetId = "costcenter-list"
-                    }))
+@{
+    BrandSearchCrietriaViewModel searchCrietriaViewModel = new BrandSearchCrietriaViewModel();
+}
+@Html.PagedListPager(Model.ToPagedList(), page => Url.Action("Search", "Brand", brandSearchCrietriaViewModel.ToRouteValueDictionary(page))
+    , PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+    {
+        HttpMethod = "GET",
+        OnBegin = "block('#brand-list')",
+        OnComplete = "unblock('#brand-list')",
+        UpdateTargetId = "brand-list"
+    }))
