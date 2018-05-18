@@ -85,7 +85,7 @@ namespace GpuMiningInsights.Application.Services
             }
         }
 
-        private static void GatherInfo(List<GPU> gpus)
+        public static void GatherInfo(List<GPU> gpus)
         {
             foreach (var gpu in gpus)
             {
@@ -318,17 +318,17 @@ namespace GpuMiningInsights.Application.Services
                     Date = DateTime.Now.ToString(Settings.DateFormat),
                     Gpus = Gpus
                 };
-            string json= JsonConvert.SerializeObject(clientGpuListData);
+            string json = JsonConvert.SerializeObject(clientGpuListData);
             var values = new Dictionary<string, string>
 {
    { "clientGpuListDataJson", json  },
 };
 
             var content = new FormUrlEncodedContent(values);
-            var response = Task.Run(()=> client.PostAsync(url, content)).Result;
-            var responseString = Task.Run(()=> response.Content.ReadAsStringAsync()).Result;
+            var response = Task.Run(() => client.PostAsync(url, content)).Result;
+            var responseString = Task.Run(() => response.Content.ReadAsStringAsync()).Result;
 
-            
+
         }
         //private static string GetHttpResponseText(string url)
         //{
@@ -348,51 +348,12 @@ namespace GpuMiningInsights.Application.Services
         //    return responseText;
         //}
 
-        private static void GetPrices(GPU gpu)
+        public static void GetPrices(GPU gpu)
         {
             foreach (var priceSource in gpu.PriceSources)
             {
-                WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
-                //is it an api or something, else we are going to scrape the shit out of it...
-                if (priceSource.PriceSourceAction != null)
-                {
-                    List<PriceSourceItem> result = priceSource.PriceSourceAction.Invoke(priceSource.PriceSourceItemIdentifier);
-                    priceSource.PriceSourceItems.AddRange(result);
-
-                }
-                else
-                {
-                    string response = GetHttpResponseTextWithJavascript(priceSource.URL);
-                    string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);
-
-                    string nameText = GetTextFromHtmlStringByCssSelector(response, priceSource.ItemNameSelector);
-                    if (string.IsNullOrEmpty(PriceText))
-                    {
-                        continue;
-                    }
-                    string currency = "USD";
-                    string imageUrl = null;
-                    if (!string.IsNullOrWhiteSpace(priceSource.ImageUrlSelector))
-                        imageUrl = GetTextFromHtmlStringByCssSelector(response, priceSource.ImageUrlSelector);
-
-                    if (PriceText.IndexOf("$") > -1)
-                    {
-
-                        PriceText = PriceText.Remove(PriceText.IndexOf("$"), 1);
-                        currency = "USD";
-                    }
-                    if (PriceText.IndexOf("SR") > -1)
-                    {
-                        PriceText = PriceText.Remove(PriceText.IndexOf("SR"), 2);
-                        currency = "SAR";
-                    }
-
-                    if (string.IsNullOrWhiteSpace(imageUrl))
-                        priceSource.AddPriceSourceItem(PriceText, nameText, currency);
-                    else
-                        priceSource.AddPriceSourceItem(PriceText, nameText, currency, imageUrl);
-                }
-
+                var priceSourceItems =GetPrice(gpu, priceSource);
+                priceSource.PriceSourceItems.AddRange(priceSourceItems);
             }
             //Calculate USD Price
             foreach (var priceSourceItem in gpu.PriceSources.SelectMany(s => s.PriceSourceItems))
@@ -400,12 +361,64 @@ namespace GpuMiningInsights.Application.Services
                 FillUSDPrice(priceSourceItem);
             }
         }
+
+        public static List<PriceSourceItem> GetPrice(GPU gpu, PriceSource priceSource)
+        {
+            List<PriceSourceItem> priceSourceItems = new List<PriceSourceItem>();
+            WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
+            //is it an api or something, else we are going to scrape the shit out of it...
+            if (priceSource.PriceSourceAction != null)
+            {
+                List<PriceSourceItem> result = priceSource.PriceSourceAction.Invoke(priceSource.PriceSourceItemIdentifier);
+                priceSourceItems.AddRange(result);
+
+            }
+            else
+            {
+                string response = GetHttpResponseTextWithJavascript(priceSource.URL);
+                string PriceText = GetTextFromHtmlStringByCssSelector(response, priceSource.Selector);
+
+                string nameText = GetTextFromHtmlStringByCssSelector(response, priceSource.ItemNameSelector);
+                if (string.IsNullOrEmpty(PriceText)) return priceSourceItems;
+
+                string currency = "USD";
+                string imageUrl = null;
+                if (!string.IsNullOrWhiteSpace(priceSource.ImageUrlSelector))
+                    imageUrl = GetTextFromHtmlStringByCssSelector(response, priceSource.ImageUrlSelector);
+
+                if (PriceText.IndexOf("$") > -1)
+                {
+                    PriceText = PriceText.Remove(PriceText.IndexOf("$"), 1);
+                    currency = "USD";
+                }
+                if (PriceText.IndexOf("SR") > -1)
+                {
+                    PriceText = PriceText.Remove(PriceText.IndexOf("SR"), 2);
+                    currency = "SAR";
+                }
+
+                PriceSourceItem priceSourceItem = new PriceSourceItem()
+                {
+                    Name = nameText,
+                    Price = double.Parse(PriceText),
+                    Selector = priceSource.Selector,
+                    PriceCurrency = currency
+                };
+                if (!string.IsNullOrWhiteSpace(imageUrl))
+                    priceSourceItem.ImageUrl = imageUrl;
+                
+                priceSourceItems.Add(priceSourceItem);
+
+            }
+
+            return priceSourceItems;
+        }
         //aaaa ssss
         private static void LoadData()
         {
             Gpus.Clear();
             List<GPU> gpus = new List<GPU>();
-           //TODO: will be moved to databse
+            //TODO: will be moved to databse
             gpus = JsonConvert.DeserializeObject<List<GPU>>(File.ReadAllText("gpus.json"));
             foreach (var item in gpus)
             {
@@ -420,7 +433,7 @@ namespace GpuMiningInsights.Application.Services
         public static void WriteLine(string message)
         {
             bool isDebug;
-            if (bool.TryParse(ConfigurationManager.AppSettings["IsDebug"],out isDebug) && isDebug)
+            if (bool.TryParse(ConfigurationManager.AppSettings["IsDebug"], out isDebug) && isDebug)
             {
                 System.Console.WriteLine(message);
             }

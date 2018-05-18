@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Persistan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Domain", "GpuMiningInsights.Domain\GpuMiningInsights.Domain.csproj", "{64CC8B88-07B2-4DF3-99A3-DB8F380DAF37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Tests", "GpuMiningInsights.Tests\GpuMiningInsights.Tests.csproj", "{6BE53435-6166-4E71-8D7A-F4F8641F02C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,12 @@ Global
 		{64CC8B88-07B2-4DF3-99A3-DB8F380DAF37}.Demo|Any CPU.Build.0 = Debug|Any CPU
 		{64CC8B88-07B2-4DF3-99A3-DB8F380DAF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64CC8B88-07B2-4DF3-99A3-DB8F380DAF37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Demo|Any CPU.Build.0 = Debug|Any CPU
+		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

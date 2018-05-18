@@ -90,5 +90,6 @@ namespace GpuMiningInsights.Web.Controllers
 
             return View();
         }
+        
     }
 }

@@ -163,12 +163,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Models\BaseController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
-    <Compile Include="Controllers\GmiStandardController.cs" />
+    <Compile Include="Models\GmiStandardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Insighter.cs" />
-    <Compile Include="Controllers\JsonDotNetResult.cs" />
+    <Compile Include="Models\JsonDotNetResult.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
