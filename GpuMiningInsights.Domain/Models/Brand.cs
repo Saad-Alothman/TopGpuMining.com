@@ -8,7 +8,7 @@ using CreaDev.Framework.Core.Models;
 
 namespace GpuMiningInsights.Domain.Models
 {
-    public class Brand:GmiEntityBase
+    public class Brand : GmiEntityBase
     {
 
         //[Display(Name = nameof(Core.Resources.Domain.CostCenter_Name), ResourceType = typeof(Core.Resources.Domain))]
@@ -20,7 +20,10 @@ namespace GpuMiningInsights.Domain.Models
         //private List<GPU> Gpus { get; set; }
         public override void Update(object objectWithNewData)
         {
-     
-    }
+            var updateData = objectWithNewData as Brand;
+            this.Name = updateData.Name;
+            this.Description = updateData.Description;
+
+        }
     }
 }

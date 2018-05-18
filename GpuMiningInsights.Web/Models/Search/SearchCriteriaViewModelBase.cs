@@ -26,6 +26,7 @@ namespace GpuMiningInsights.Web.Models.Search
         public override SearchCriteria<Brand> ToSearchCriteria()
         {
             //Get base Values
+            
             SearchCriteria<Brand> searchCriteria = base.ToSearchCriteria();
 
             ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AndCondition(brand => brand.Name.Arabic.Contains(Name) || brand.Name.English.Contains(Name)));

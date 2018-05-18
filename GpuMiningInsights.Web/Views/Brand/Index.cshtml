@@ -1,106 +1,123 @@
 ﻿
-@{
-    ViewBag.Name = "Index";
-}
 
 
 
+@using CreaDev.Framework.Core.Extensions
 @using CreaDev.Framework.Core.Resources
 @using GpuMiningInsights.Domain.Models
 @using GpuMiningInsights.Web.Models.Search
 @model CreaDev.Framework.Core.Models.SearchResult<GpuMiningInsights.Domain.Models.Brand>
 
 
-<br />
-<button type="button" class="btn green" onclick="showAddBrand()">
-    @Common.Add
-</button>
+
+@{
+    ViewBag.Name = "Index";
+    string itemName = "brand";
+    string itemDisplayName= "Brand";
+    string itemNameUpperFirstLetter = itemName.ToProperCase();
+    string controllerName = itemNameUpperFirstLetter;
+    string panelSelector = $"#{itemName}-list-panel";
+    string listId = $"{itemName}-list";
+    string listSelector = $"#{listId}";
+
+    //Add Modal
+    string addItemModalId = $"add-{itemName}-modal";
+    string addItemDivId = $"add-{itemName}-div";
+    string addItemAlert = $"add-{itemName}-alert";
+    string addItemFormId = $"add-{itemName}-form";
+
+    //Edit Modal 
+    string editItemModalId = $"edit-{itemName}-modal";
+    string editItemDivId = $"edit-{itemName}-div";
+    string editItemAlertId = $"edit-{itemName}-alert";
+    string editItemFormId = $"edit-{itemName}-form";
+    string editItemFormDivId = $"edit-{itemName}-form-div";
+
+    //delete Modal 
+    string deleteItemModalId = $"delete-{itemName}-modal";
+    string deleteItemDivId = $"delete-{itemName}-div";
+    string deleteItemAlertId = $"delete-{itemName}-alert";
+    string deleteItemFormId = $"delete-{itemName}-form";
+    string deleteItemFormDivId = $"delete-{itemName}-form-div";
+
+
+}
 
 <br />
 <br />
-<div class="portlet light" id="brand-list-portlet">
-    <div class="portlet-title">
-        <div class="caption">
-            <i class="icon-list"></i>
-            <span class="caption-subject font-green bold uppercase">
-                Brands
-            </span>
+<br />
+<div class="panel panel-default" id="">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h4 style="display: inline-block">Brands </h4>
+        <div style="float: right">
+            <button type="button" class="btn btn-primary" onclick="showAddBrand()">
+                + @Common.Add
+            </button>
         </div>
     </div>
-    <div class="portlet-body form" id="form-portlet">
-        <div class="portlet light bordered">
-            <div class="portlet-title">
-                <div class="caption font-green-sharp">
-                    <i class="fa fa-search"></i>
-                    <span class="caption-subject bold uppercase">
-                        @Common.Search
-                    </span>
-                </div>
+    <div class="panel-body">
+        <p>
+            @using (Ajax.BeginForm("Search", new { }, new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                OnBegin = $"block('{panelSelector}')",
+                OnComplete = $"unblock('{panelSelector }')",
+                UpdateTargetId = listId
+            }, new { id = "form-search", @class = "auto-search" }))
+            {
+                @Html.Partial("_SearchForm", new BrandSearchCrietriaViewModel())
+                <br />
+                <button type="submit" class="btn green btn-block">
+                    @Common.Search
+                </button>
+            }
+        </p>
+    </div>
 
-            </div>
-            <div class="portlet-body form" >
-                <br/>
-
-                @using (Ajax.BeginForm("Search", new { }, new AjaxOptions()
-                {
-                    HttpMethod = "POST",
-                    OnBegin = "block('#brand-list-portlet')",
-                    OnComplete = "unblock('#brand-list-portlet')",
-                    UpdateTargetId = "brand-list"
-                }, new { id = "form-search",@class="auto-search" }))
-                {
-                    @Html.Partial("_SearchForm", new BrandSearchCrietriaViewModel())
-                    <br />
-                    <button type="submit" class="btn green btn-block">
-                        @Common.Search
-                    </button>
-                }
-            </div>
-        </div>
-        <br/>
-
-        <div id="brand-list">
-            @Html.Partial("_List")
-        </div>
+    <!-- Table -->
+    <div id="@listId">
+        @Html.Partial("_List")
     </div>
 </div>
 
 
+
 <div class="modal fade"
-     id="add-brand-modal"
+     id="@addItemModalId"
      role="basic"
      tabindex="-1"
      aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="add-brand-div">
+        <div class="modal-content" id="@addItemDivId">
 
-            @using (Ajax.BeginForm("Add", "Brand", new { }, new AjaxOptions()
+            @using (Ajax.BeginForm("Add", controllerName, new { }, new AjaxOptions()
             {
-                OnBegin = "block('#add-brand-div')",
-                OnComplete = "onAjaxComplete(xhr, status, '#add-brand-div', '#add-brand-alert', '#brand-list')",
-                OnFailure = "onAjaxFailed(xhr, status, error, '#add-brand-alert')",
-                OnSuccess = "onAjaxSuccess(xhr, status, '#add-brand-modal')"
-            }, new { id = "add-brand-form", @role = "form" }))
+                OnBegin = $"block('#{addItemDivId}')",
+                OnComplete = $"onAjaxComplete(xhr, status, '#{addItemDivId}', '#{addItemAlert}', '#{listId}')",
+                OnFailure = $"onAjaxFailed(xhr, status, error, '#{addItemAlert}')",
+                OnSuccess = $"onAjaxSuccess(xhr, status, '#{addItemModalId}')"
+            }, new { id = addItemFormId, @role = "form" }))
             {
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">Add Brand</h4>
+                    <h4 class="modal-title">Add @itemDisplayName</h4>
                 </div>
 
-                        <div class="modal-body">
-                            <div id="add-brand-alert"></div>
-                            @Html.Partial("_Form", new Brand())
-                        </div>
+                <div class="modal-body">
+                    <div id="@addItemAlert"></div>
+                    @Html.Partial("_Form", new Brand())
+                </div>
 
-                        <div class="modal-footer">
-                            <button type="submit" class="btn green">
-                                @Common.Add
-                            </button>
-                            <button type="button" data-dismiss="modal" class="btn red">
-                                @Common.Cancel
-                            </button>
-                        </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @Common.Add
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @Common.Cancel
+                    </button>
+                </div>
             }
         </div>
     </div>
@@ -109,21 +126,21 @@
 
 
 <div class="modal fade"
-     id="edit-brand-modal"
+     id="@editItemModalId"
      role="basic"
      tabindex="-1"
      aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="edit-brand-div">
+        <div class="modal-content" id="@editItemDivId">
 
             @using (Ajax.BeginForm("Update", "Brand", new { }, new AjaxOptions()
             {
-                OnBegin = "block('#edit-brand-div')",
-                OnComplete = "onAjaxComplete(xhr, status, '#edit-brand-div', '#edit-brand-alert', '#brand-list')",
-                OnFailure = "onAjaxFailed(xhr, status, error, '#edit-brand-alert')",
-                OnSuccess = "onAjaxSuccess(xhr, status, '#edit-brand-modal')"
-            }, new { id = "edit-brand-form", @role = "form" }))
+                OnBegin = $"block('#{editItemDivId}')",
+                OnComplete = $"onAjaxComplete(xhr, status, '#{editItemDivId}', '#{editItemAlertId}', '#{listId}')",
+                OnFailure = $"onAjaxFailed(xhr, status, error, '#{editItemAlertId}')",
+                OnSuccess = $"onAjaxSuccess(xhr, status, '#{editItemModalId}')"
+            }, new { id = editItemFormId, @role = "form" }))
             {
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -131,21 +148,21 @@
                 </div>
 
                 <div class="modal-body">
-                    <div id="edit-brand-alert"></div>
+                    <div id="@editItemAlertId"></div>
 
-                    <div id="edit-brand-form-div">
+                    <div id="@editItemFormDivId">
                         @Html.Partial("_Form", new Brand())
                     </div>
                 </div>
 
-                        <div class="modal-footer">
-                            <button type="submit" class="btn green">
-                                @Common.Save
-                            </button>
-                            <button type="button" data-dismiss="modal" class="btn red">
-                                @Common.Cancel
-                            </button>
-                        </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @Common.Save
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @Common.Cancel
+                    </button>
+                </div>
             }
         </div>
     </div>
@@ -153,21 +170,21 @@
 
 
 <div class="modal fade"
-     id="delete-brand-modal"
+     id="@deleteItemModalId"
      role="basic"
      tabindex="-1"
      aria-hidden="true">
 
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="delete-brand-div">
+        <div class="modal-content" id="@deleteItemDivId">
 
             @using (Ajax.BeginForm("Delete", "Brand", new { }, new AjaxOptions()
             {
-                OnBegin = "block('#delete-brand-div')",
-                OnComplete = "onAjaxComplete(xhr, status, '#delete-brand-div', '#delete-brand-alert', '#brand-list')",
-                OnFailure = "onAjaxFailed(xhr, status, error, '#delete-brand-alert')",
-                OnSuccess = "onAjaxSuccess(xhr, status, '#delete-brand-modal')"
-            }, new { id = "delete-brand-form", @role = "form" }))
+                OnBegin = $"block('#{deleteItemDivId}')",
+                OnComplete = $"onAjaxComplete(xhr, status, '#{deleteItemDivId}', '#{deleteItemAlertId}', '#{listId}')",
+                OnFailure = $"onAjaxFailed(xhr, status, error, '#{deleteItemAlertId}')",
+                OnSuccess = $"onAjaxSuccess(xhr, status, '#{deleteItemModalId}')"
+            }, new { id = deleteItemFormId, @role = "form" }))
             {
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -175,16 +192,16 @@
                 </div>
 
                 <div class="modal-body">
-                    <div id="delete-brand-alert"></div>
+                    <div id="@deleteItemAlertId"></div>
 
-                    <div id="delete-brand-form-div">
+                    <div id="@deleteItemFormDivId">
                         @Html.Partial("_DeleteForm", new Brand())
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="submit" class="btn green">
-                        @Common.Delete    
+                        @Common.Delete
                     </button>
                     <button type="button" data-dismiss="modal" class="btn red">
                         @Common.Cancel
@@ -199,22 +216,26 @@
 
 @section scripts{
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
+        @{
+            string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
+            string editFunctionName = $"showEdit{itemNameUpperFirstLetter}";
+            string deleteFunctionName = $"showDelete{itemNameUpperFirstLetter}";
+        }
+        function @(addFunctionName)() {
 
-        function showAddBrand() {
-
-            $("#add-brand-modal").modal('show');
+            $("#@addItemModalId").modal('show');
         }
 
-        function showEditBrand() {
+        function @(editFunctionName)() {
 
-            $("#edit-brand-modal").modal('show');
+            $("#@editItemModalId").modal('show');
         }
 
-        function showDeleteBrand() {
-            $("#delete-brand-alert").html('');
-            $("#delete-brand-modal").modal('show');
+        function @(deleteFunctionName)() {
+            $("#@deleteItemAlertId").html('');
+            $("#@deleteItemModalId").modal('show');
         }
-    </script>
+</script>
 }

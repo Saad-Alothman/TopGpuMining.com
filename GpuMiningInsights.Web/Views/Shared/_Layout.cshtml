@@ -4,10 +4,46 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-         Best GPUs for mining
+        Best GPUs for mining
     </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <style>
+        /* Side notes for calling out things
+-------------------------------------------------- */
+
+/* Base styles (regardless of theme) */
+        .bs-callout {
+            margin: 20px 0;
+            padding: 15px 30px 15px 15px;
+            border-left: 5px solid #eee;
+        }
+        .bs-callout h4 {
+            margin-top: 0;
+        }
+        .bs-callout p:last-child {
+            margin-bottom: 0;
+        }
+        .bs-callout code,
+        .bs-callout .highlight {
+            background-color: #fff;
+        }
+
+        /* Themes for different contexts */
+        .bs-callout-danger {
+            background-color: #fcf2f2;
+            border-color: #dFb5b4;
+        }
+        .bs-callout-warning {
+            background-color: #fefbed;
+            border-color: #f1e7bc;
+        }
+        .bs-callout-info {
+            background-color: #f0f7fd;
+            border-color: #d0e3f0;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,9 +59,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Brands", "Index", "Brand")</li>
-        @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
             </div>
         </div>
@@ -38,8 +74,22 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/jquery.blockui.min.js" type="text/javascript"></script>
+
+    <script src="~/Scripts/validations/jquery.validate.min.js"></script>
+    <script src="~/Scripts/validations/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/validations/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/validations/jquery.validate.unobtrusive.bootstrap.min.js"></script>
+    <script src="~/Scripts/validations/jquery.validation.custom.method.js"></script>
+
+
+<script src="~/Scripts/toastr.min.js"></script>
+
+    <script src="~/Scripts/main.js"></script>
     @RenderSection("scripts", required: false)
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115499049-1"></script>

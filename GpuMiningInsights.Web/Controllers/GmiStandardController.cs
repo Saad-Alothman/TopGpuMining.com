@@ -122,7 +122,7 @@ namespace GpuMiningInsights.Web.Controllers
         [HttpPost]
         public ActionResult Search(TSearchCriteriaViewModelBase searchCriteriaViewModel)
         {
-            return SimpleSearchAjaxAction<TModel, TSearchCriteriaViewModelBase>(searchCriteriaViewModel, ListPartialViewName, criteria => Service.Search(searchCriteriaViewModel.ToSearchCriteria()));
+            return SimpleSearchAjaxAction<TModel, TSearchCriteriaViewModelBase>(searchCriteriaViewModel, ListPartialViewName, Service.Search);
         }
     }
 }

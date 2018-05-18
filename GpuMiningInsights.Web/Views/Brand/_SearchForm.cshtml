@@ -1,16 +1,13 @@
-﻿@*@model BrandSearchViewModel
+﻿@using CreaDev.Framework.Web.Mvc.Html.Helpers.Bootstrap
+@model GpuMiningInsights.Web.Models.Search.BrandSearchCrietriaViewModel
 
-@{ 
-    var companies = CompanyService.Instance.Get();
-    
 
-}
 <div class="row">
     <div class="col-md-4">
-        @Html.BootstrapTextBoxFor(a => a.Text)
+        @Html.BootstrapTextBoxFor(a => a.Name)
     </div>
     <div class="col-md-4">
-        @Html.BootstrapDropDownListFor(m => m.CompanyId, companies.ToSelectListItems(addEmptyItem: true), new { @class = "form-control" })
+        
     </div>
-</div>*@
+</div>
 
