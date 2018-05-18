@@ -1,4 +1,4 @@
-﻿@model BrandSearchViewModel
+﻿@*@model BrandSearchViewModel
 
 @{ 
     var companies = CompanyService.Instance.Get();
@@ -12,5 +12,5 @@
     <div class="col-md-4">
         @Html.BootstrapDropDownListFor(m => m.CompanyId, companies.ToSelectListItems(addEmptyItem: true), new { @class = "form-control" })
     </div>
-</div>
+</div>*@
 

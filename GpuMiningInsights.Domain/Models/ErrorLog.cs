@@ -13,8 +13,6 @@ namespace GpuMiningInsights.Domain.Models
 {
     public class ErrorLog : GmiEntityBase
     {
-        [ForeignKey("UniqueErrorLog")]
-        public int? UniqueErrorLogId { get; set; }
         public DateTime Date { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }

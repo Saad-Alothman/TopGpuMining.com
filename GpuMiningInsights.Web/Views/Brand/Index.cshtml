@@ -23,7 +23,7 @@
         <div class="caption">
             <i class="icon-list"></i>
             <span class="caption-subject font-green bold uppercase">
-                @Common.Brands
+                Brands
             </span>
         </div>
     </div>
@@ -60,7 +60,7 @@
         <br/>
 
         <div id="brand-list">
-            @Html.Partial("_BrandList")
+            @Html.Partial("_List")
         </div>
     </div>
 </div>
@@ -85,12 +85,12 @@
             {
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">@Common.AddBrand</h4>
+                    <h4 class="modal-title">Add Brand</h4>
                 </div>
 
                         <div class="modal-body">
                             <div id="add-brand-alert"></div>
-                            @Html.Partial("_BrandForm", new Brand())
+                            @Html.Partial("_Form", new Brand())
                         </div>
 
                         <div class="modal-footer">
@@ -134,7 +134,7 @@
                     <div id="edit-brand-alert"></div>
 
                     <div id="edit-brand-form-div">
-                        @Html.Partial("_BrandForm", new Brand())
+                        @Html.Partial("_Form", new Brand())
                     </div>
                 </div>
 

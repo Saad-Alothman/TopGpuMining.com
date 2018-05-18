@@ -18,7 +18,7 @@ using GpuMiningInsights.Web.Models.Filters;
 
 namespace GpuMiningInsights.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ExceptionHandlerFilter]
     public class BaseController : Controller
     {

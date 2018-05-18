@@ -10,12 +10,16 @@ using GpuMiningInsights.Web.Models.Search;
 
 namespace GpuMiningInsights.Web.Controllers
 {
-    public class BrandController : GmiStandardController<Brand,BrandService, BrandSearchCrietriaViewModel>
+    public class BrandController : GmiStandardController<Brand, BrandService, BrandSearchCrietriaViewModel>
     {
-        
+
     }
     //public class BrandController : BaseController
     //{
+    //    public BrandController()
+    //    {
+
+    //    }
     //    private string BrandListPartial = "~/Views/Brand/_List.cshtml";
     //    private string BrandFormPartial = "~/Views/Brand/_Form.cshtml";
     //    private string BrandDeleteFormPartial = "~/Views/Brand/_DeleteForm.cshtml";
@@ -87,7 +91,7 @@ namespace GpuMiningInsights.Web.Controllers
 
     //        try
     //        {
-    //            BrandService.Instance.Delete(model.ID);
+    //            BrandService.Instance.Delete(model.Id);
     //            SetSuccess(result);
     //            var search = new SearchCriteria<Brand>();
     //            var modeltoView = BrandService.Instance.Search(search);
@@ -101,11 +105,11 @@ namespace GpuMiningInsights.Web.Controllers
     //        return Json(result);
     //    }
 
-    //    [HttpPost]
-    //    public ActionResult Search(BrandSearchViewModel model)
-    //    {
-    //        return SimpleSearchAjaxActionSearchViewModelBase<Brand, BrandSearchViewModel>(model, BrandListPartial, criteria => BrandService.Instance.Search(model.ToSearchModel()));
-    //    }
+    //    //[HttpPost]
+    //    //public ActionResult Search(BrandSearchViewModel model)
+    //    //{
+    //    //    return SimpleSearchAjaxActionSearchViewModelBase<Brand, BrandSearchViewModel>(model, BrandListPartial, criteria => BrandService.Instance.Search(model.ToSearchModel()));
+    //    //}
 
     //}
 }
