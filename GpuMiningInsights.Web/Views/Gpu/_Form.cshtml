@@ -1,0 +1,110 @@
+﻿@using CreaDev.Framework.Core.Resources
+@using CreaDev.Framework.Web.Mvc.Helpers
+@using CreaDev.Framework.Web.Mvc.Html.Helpers.Bootstrap
+@using GpuMiningInsights.Application.Services
+@model Gpu
+
+@{
+    var titleArabic = $"{Html.DisplayNameFor(a => a.Name)} {Common.Arabic}";
+    var titleEnglish = $"{Html.DisplayNameFor(a => a.Name)} {Common.English}";
+
+    var descArabic = $"{Html.DisplayNameFor(a => a.Description)} {Common.Arabic}";
+    var descEnglish = $"{Html.DisplayNameFor(a => a.Description)} {Common.English}";
+
+    var brands = BrandService.Instance.GetAll().ToSelectListItems(brand => brand.Name, brand => brand.Id, Model.BrandId?.ToString() ?? "", true);
+    var models = ModelService.Instance.GetAll().ToSelectListItems(model => model.Name, model => model.Id, Model.ModelId?.ToString()??"", true);
+}
+<div class="bs-callout bs-callout-info">
+    <p> If the GPU is on amazon, you can type in the ASIN number and it click Get info to fetch the data</p>
+</div>
+@Html.HiddenFor(a => a.Id)
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Name)
+            </label>
+            @Html.TextBoxFor(a => a.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.Name, "", new { @class = "help-block" })
+        </div>
+    </div>
+    
+</div>
+<div class="row">
+   
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Brand)
+            </label>
+            @Html.BootstrapDropDownListFor(a => a.BrandId, brands)
+            @Html.ValidationMessageFor(a => a.BrandId, "", new { @class = "help-block" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m=>m.Model)
+            </label>
+            @Html.BootstrapDropDownListFor(a => a.ModelId,models)
+            @Html.ValidationMessageFor(a => a.ModelId, "", new { @class = "help-block" })
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                
+                @Html.DisplayNameFor(m => m.Asin)
+            </label>
+            <div class="input-group">
+                @Html.BootstrapTextBoxFor(a => a.Asin)
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" onclick="getGpuInfo()">Get Info!</button>
+                </span>
+            </div><!-- /input-group -->
+            @Html.ValidationMessageFor(a => a.Asin, "", new { @class = "help-block" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Ean)
+            </label>
+            @Html.BootstrapTextBoxFor(a => a.Ean)
+            @Html.ValidationMessageFor(a => a.Ean, "", new { @class = "help-block" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Description)
+            </label>
+            @Html.TextAreaFor(a => a.Description, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.ImageUrl)
+            </label>
+            @Html.BootstrapTextBoxFor(a => a.ImageUrl)
+        </div>
+    </div>
+    <div class="col-md-6">
+        <img class="img-responsive" id="gpu-image"/>
+    </div>
+</div>
+
+
+
+
+

@@ -8,6 +8,14 @@ using GpuMiningInsights.Web.Models.Search;
 
 namespace GpuMiningInsights.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
+    public class GmiAuthorizeStandardController<TModel, TService, TSearchCriteriaViewModelBase> : GmiStandardController<TModel, TService, TSearchCriteriaViewModelBase> where TModel : GmiEntityBase
+        where TService : GmiServiceBase<TModel, TService>, new()
+        where TSearchCriteriaViewModelBase : GmiSearchCriteriaViewModelBase<TModel>, new()
+    {
+
+    }
+
     public  class GmiStandardController<TModel, TService,TSearchCriteriaViewModelBase> : BaseController 
         where TModel: GmiEntityBase
         where TService : GmiServiceBase<TModel,TService>, new()

@@ -12,16 +12,15 @@ namespace CreaDev.Framework.Web.Mvc.Helpers
 {
     public static class SelectListItemHelper
     {
-        
-        
-        public static List<System.Web.Mvc.SelectListItem> ToSelectListItems<TModel, TDisplayProperty, TValueyProperty>(this List<TModel> departments, Expression<Func<TModel, TDisplayProperty>> displayExpression, Expression<Func<TModel, TValueyProperty>> valueExpression, string selectedValue = "", bool addEmptyItem = false)
+
+
+        public static List<System.Web.Mvc.SelectListItem> ToSelectListItems<TModel, TDisplayProperty, TValueyProperty>(this List<TModel> items, Expression<Func<TModel, TDisplayProperty>> displayExpression, Expression<Func<TModel, TValueyProperty>> valueExpression, string selectedValue = "", bool addEmptyItem = false)
         {
             List<SelectListItem> selectListItems = new List<SelectListItem>();
-            foreach (var department in departments)
+            foreach (var item in items)
             {
-
-                string textPropertyName = ((displayExpression.Body as MemberExpression).Member as PropertyInfo).GetValue(department).ToString();
-                string valuePropertyName = ((valueExpression.Body as MemberExpression).Member as PropertyInfo).GetValue(department).ToString();
+                string textPropertyName = ((displayExpression.Body as MemberExpression).Member as PropertyInfo).GetValue(item).ToString();
+                string valuePropertyName = ((valueExpression.Body as MemberExpression).Member as PropertyInfo).GetValue(item).ToString();
                 selectListItems.Add(new SelectListItem()
                 {
                     Value = valuePropertyName,
@@ -56,10 +55,10 @@ namespace CreaDev.Framework.Web.Mvc.Helpers
 
         public static List<SelectListItem> GetSortSelectListItem()
         {
-            
+
             List<SelectListItem> selectListItems = new List<SelectListItem>();
-            selectListItems.Add(new SelectListItem(){Text = Common.Ascending,Value = ((int)SortDirection.Ascending).ToString()});
-            selectListItems.Add(new SelectListItem(){Text = Common.Descending, Value = ((int)SortDirection.Descending).ToString() });
+            selectListItems.Add(new SelectListItem() { Text = Common.Ascending, Value = ((int)SortDirection.Ascending).ToString() });
+            selectListItems.Add(new SelectListItem() { Text = Common.Descending, Value = ((int)SortDirection.Descending).ToString() });
             return selectListItems;
 
         }

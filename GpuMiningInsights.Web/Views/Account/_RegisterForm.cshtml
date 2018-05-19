@@ -1,0 +1,79 @@
+﻿@model RegisterViewModel
+
+@using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "register-form" }))
+{
+    @Html.AntiForgeryToken()
+    <h3 class="form-title">
+        @Common.RegisterNewAccount
+    </h3>
+
+
+    <div class="form-group">
+        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+        <label class="control-label visible-ie8 visible-ie9">
+            @Html.DisplayNameFor(a => a.NationalID)
+        </label>
+        <div class="input-icon">
+            <i class="fa fa-user"></i>
+            @Html.TextBoxFor(a => a.NationalID, new { @class = "form-control placeholder-no-fix", autocomplete = "off", placeholder = Html.DisplayNameFor(a => a.NationalID) })
+        </div>
+        @Html.ValidationMessageFor(a => a.NationalID, null, new { @class = "help-block" })
+    </div>
+
+    <div class="form-group">
+        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+        <label class="control-label visible-ie8 visible-ie9">
+            @Html.DisplayNameFor(a => a.EmployeeID)
+        </label>
+        <div class="input-icon">
+            <i class="fa fa-user"></i>
+            @Html.TextBoxFor(a => a.EmployeeID, new { @class = "form-control placeholder-no-fix", autocomplete = "off", placeholder = Html.DisplayNameFor(a => a.EmployeeID) })
+        </div>
+        @Html.ValidationMessageFor(a => a.EmployeeID, null, new { @class = "help-block" })
+    </div>
+
+    <div class="form-group">
+        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+        <label class="control-label visible-ie8 visible-ie9">
+            @Html.DisplayNameFor(a => a.Email)
+        </label>
+        <div class="input-icon">
+            <i class="fa fa-envelope"></i>
+            @Html.TextBoxFor(a => a.Email, new { @class = "form-control placeholder-no-fix", autocomplete = "off", placeholder = Html.DisplayNameFor(a => a.Email) })
+        </div>
+        @Html.ValidationMessageFor(a => a.Email, null, new { @class = "help-block" })
+    </div>
+
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">
+            @Html.DisplayNameFor(a => a.Password)
+        </label>
+        <div class="input-icon">
+            <i class="fa fa-lock"></i>
+            @Html.PasswordFor(a => a.Password, new { placeholder = Html.DisplayNameFor(a => a.Password), autocomplete = "off", @class = "form-control placeholder-no-fix" })
+        </div>
+        @Html.ValidationMessageFor(a => a.Password, null, new { @class = "help-block" })
+    </div>
+
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">
+            @Html.DisplayNameFor(a => a.ConfirmPassword)
+        </label>
+        <div class="input-icon">
+            <i class="fa fa-lock"></i>
+            @Html.PasswordFor(a => a.ConfirmPassword, new { placeholder = Html.DisplayNameFor(a => a.ConfirmPassword), autocomplete = "off", @class = "form-control placeholder-no-fix" })
+        </div>
+        @Html.ValidationMessageFor(a => a.ConfirmPassword, null, new { @class = "help-block" })
+    </div>
+
+    <hr/>
+    <div class="form-actions">
+        <button id="register-back-btn" type="button" class="btn red btn-outline">
+            @Common.Back 
+        </button>
+        <button type="submit" id="register-submit-btn" class="btn green pull-right">
+            @Common.Register 
+        </button>
+    </div>
+
+}

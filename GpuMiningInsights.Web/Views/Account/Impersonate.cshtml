@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@{
+
+    bool isRegisterView = false;
+
+    if (ViewData[Constants.REGISTER_VIEW] != null)
+    {
+        isRegisterView = (bool)ViewData[Constants.REGISTER_VIEW];
+    }
+
+
+    var currentRouteValue = this.ViewContext.RouteData.Values;
+    var controller = currentRouteValue["controller"] as string;
+    var action = currentRouteValue["action"] as string;
+
+    RouteValueDictionary routeValues = new RouteValueDictionary(currentRouteValue);
+
+    if (!routeValues.ContainsKey("culture"))
+    {
+        routeValues.Add("culture", "ar");
+    }
+    routeValues["culture"] = "ar";
+    string arabicUrl = Url.Action(action, controller, routeValues);
+
+    routeValues["culture"] = "en";
+    string englishUrl = Url.Action(action, controller, routeValues);
+
+    var employeId = EmployeeService.Instance.SearchNoPermissionCheck(new SearchCriteria<Employee>(int.MaxValue,1,employee => employee.User != null)).Result.Select(e=>new SelectListItem() {Text = e.FullNameComposite.ToString(),Value = e.ID.ToString()});
+}
+
+
+@using (Html.BeginForm("Impersonate", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "login-form"}))
+{
+    @Html.DropDownList("employeId", employeId)
+    <button type="submit">submit</button>
+}
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        $(function () {
+            @if (isRegisterView)
+            {
+                <text>
+            $("#register-btn").trigger('click');
+            </text>
+            }
+
+        })
+    </script>
+
+}

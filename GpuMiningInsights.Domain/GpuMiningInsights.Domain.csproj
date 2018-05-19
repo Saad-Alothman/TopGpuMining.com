@@ -55,9 +55,11 @@
     <Compile Include="Models\Brand.cs" />
     <Compile Include="Models\CurrencyPricesResponse.cs" />
     <Compile Include="Models\ErrorLog.cs" />
-    <Compile Include="Models\GPU.cs" />
+    <Compile Include="Models\Gpu.cs" />
+    <Compile Include="Models\GPUOld.cs" />
     <Compile Include="Models\HashPricePerSource.cs" />
     <Compile Include="Models\MiningProfitability.cs" />
+    <Compile Include="Models\Model.cs" />
     <Compile Include="Models\PriceSource.cs" />
     <Compile Include="Models\GmiEntityBase.cs" />
     <Compile Include="Models\Role.cs" />

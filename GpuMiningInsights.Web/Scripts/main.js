@@ -92,23 +92,40 @@ function showAlert(alert, container) {
     var dismissable = alert.isAutoHide;
 
     console.log(container);
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-full-width",
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 
-    App.alert({
-        container: container,
-        // alerts parent container place: 'append', 
-        // append or prepent in container type: 'success', 
-        // alert's type message: 'Test alert', 
-        // alert's message
-        type: type,
-        message: message,
-        close: dismissable,
-        focus: false,
-        // make alert closable reset: false, 
-        // close all previouse alerts first focus: true, 
-        // auto scroll to the alert after shown closeInSeconds: 10000, 
-        // auto close after defined seconds icon:
-        // put icon class before the message });
-    });
+
+    switch (type) {
+    case "warning": //Warning
+        toastr.warning(alert.Title, alert.message);
+        break;
+    case "info": //Info
+        toastr.info(alert.Title, alert.message);
+        break;
+    case "success": //Success
+        toastr.success(alert.Title, alert.message);
+        break;
+    case "danger": //Error
+        toastr.error(alert.Title, alert.message);
+        break;
+    default:
+        toastr.info(alert.Title, alert.message);
+        break;
+    }
+  
 }
 
 function showAutoHideAlert(alert) {
@@ -256,7 +273,7 @@ function onAjaxComplete(xhr, status, blockDiv, alertDiv, divToReplace, formId,ca
 
     unblock(blockDiv);
     if (callBack)
-    callBack();
+    callBack(data.data);
 
 
 
@@ -497,7 +514,7 @@ function creaDevAjax(blockDiv, alertDiv, divToReplace, dataToSend, method, url,c
             onAjaxFailed(xhr);
         })
         .always(function (xhr, status) {
-            onAjaxComplete(xhr, status, blockDiv, alertDiv, divToReplace, callback);
+            onAjaxComplete(xhr, status, blockDiv, alertDiv, divToReplace,'', callback);
         });
 }
 

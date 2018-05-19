@@ -12,13 +12,13 @@ namespace GpuMiningInsights.Domain.Models
         {
 
         }
-        public ClientGpuListData(List<GPU> results, DateTime now)
+        public ClientGpuListData(List<GPUOld> results, DateTime now)
         {
             this.Gpus= results;
             this.Date= now.ToString((string) Settings.DateFormat);
         }
 
-        public List<GPU> Gpus { get; set; }
+        public List<GPUOld> Gpus { get; set; }
         public string Date { get; set; }
     }
     public class PriceSource
@@ -105,5 +105,10 @@ namespace GpuMiningInsights.Domain.Models
         public string Merchant { get; set; }
         public string ImageUrl { get; set; }
         public double PriceUSD { get; set; }
+        public string Model { get; set; }
+        public string ModelYear { get; set; }
+        public string Brand { get; set; }
+        public string Manufacturer { get; set; }
+        public string Ean { get; set; }
     }
 }

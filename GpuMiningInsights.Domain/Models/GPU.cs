@@ -1,69 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using CreaDev.Framework.Core.Models;
+using CreaDev.Framework.Core.Resources;
 
 namespace GpuMiningInsights.Domain.Models
 {
-    [Serializable]
-    public class GPU
+    public class Gpu : GmiEntityBase
     {
+        public Brand Brand { get; set; }
+        public int? BrandId { get; set; }
+
+        public Model Model { get; set; }
+        public int? ModelId { get; set; }
+
+        [Display(Name = nameof(Common.Name), ResourceType = typeof(Common))]
         public string Name { get; set; }
-        public string WhatToMineUrl { get; set; }
-        public List<PriceSource> PriceSources { get; set; }
 
-        public PriceSource LowestPriceSource
+        [Display(Name = nameof(Common.Description), ResourceType = typeof(Common))]
+
+        public string Description { get; set; }
+
+        public string Asin { get; set; }
+        public string Ean { get; set; }
+        public string ImageUrl { get; set; }
+
+
+        public override void Update(object objectWithNewData)
         {
-            get
-            {
-                PriceSource lowestPriceSource = null;
-                var priceSourcesWithPriceSourceItems = PriceSources.Where(s => s.PriceSourceItems.Any()).ToList();
-                if (priceSourcesWithPriceSourceItems.Any())
-                    lowestPriceSource = priceSourcesWithPriceSourceItems.OrderBy(p => p.PriceSourceItems.Min(m => m.Price)).FirstOrDefault();
+            var updateData = objectWithNewData as Gpu;
+            this.Name = updateData.Name;
+            this.Description = updateData.Description;
+            this.BrandId = updateData.BrandId;
+            this.ModelId = updateData.ModelId;
+            this.Asin = updateData.Asin;
+            this.Ean = updateData.Ean;
+            this.ImageUrl = updateData.ImageUrl;
 
-                return lowestPriceSource;
-            }
         }
-        public double AnnualRevenue { get
-            {
-                return ProfitPerDayUsd * 365;
-            }
-        }
-        public double ROI { get {
-                double roi = ((AnnualRevenue - PriceSources.FirstOrDefault(s => s.Name == LowestHashPrice.Source).PriceSourceItems.Min(a => a.Price)) / PriceSources.FirstOrDefault(s => s.Name == LowestHashPrice.Source).PriceSourceItems.Min(a => a.Price));
-                roi = Math.Round(roi * 100, 2);
-                return roi;
-            } }
-        public HashPricePerSource LowestHashPrice => HashPricePerSourceList.OrderBy(p => p.HashPrice).FirstOrDefault();
-        public List<HashPricePerSource> HashPricePerSourceList { get; set; }
-        //MHs/s
-        public double Hashrate { get; set; }
-        public string CoinToStudyName { get; set; }
-        public MiningProfitability MiningProfitability { get; set; }
-        public double RevenuePerDayUsd { get; set; }
-        public double ProfitPerDayUsd { get; set; }
-        [JsonIgnore]
-        public double? ProfitPerYearMinusCostUsd {
-            get
-            {
-                double? profitPerYearMinusCostUsd = null;
-                if (LowestPriceSource!= null && LowestPriceSource.PriceSourceItems != null && LowestPriceSource.PriceSourceItems.Any())
-                    profitPerYearMinusCostUsd = (ProfitPerDayUsd * 365) - (LowestPriceSource.PriceSourceItems.Min(p => p.PriceUSD));
-                return profitPerYearMinusCostUsd;
-            }
-        }
-
-        public GPU()
-        {
-            CoinToStudyName = "Ethereum(ETH)";
-            this.MiningProfitability = new MiningProfitability();
-            this.PriceSources = new List<PriceSource>();
-            this.HashPricePerSourceList = new List<HashPricePerSource>();
-        }
-
     }
-
-
-    
- 
 }

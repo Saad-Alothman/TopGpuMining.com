@@ -6,39 +6,45 @@
     <title>
         Best GPUs for mining
     </title>
-    @Styles.Render("~/Content/css")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/toastr.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
     <style>
         /* Side notes for calling out things
--------------------------------------------------- */
+        -------------------------------------------------- */
 
-/* Base styles (regardless of theme) */
+        /* Base styles (regardless of theme) */
         .bs-callout {
             margin: 20px 0;
             padding: 15px 30px 15px 15px;
             border-left: 5px solid #eee;
         }
-        .bs-callout h4 {
-            margin-top: 0;
-        }
-        .bs-callout p:last-child {
-            margin-bottom: 0;
-        }
-        .bs-callout code,
-        .bs-callout .highlight {
-            background-color: #fff;
-        }
+
+            .bs-callout h4 {
+                margin-top: 0;
+            }
+
+            .bs-callout p:last-child {
+                margin-bottom: 0;
+            }
+
+            .bs-callout code,
+            .bs-callout .highlight {
+                background-color: #fff;
+            }
 
         /* Themes for different contexts */
         .bs-callout-danger {
             background-color: #fcf2f2;
             border-color: #dFb5b4;
         }
+
         .bs-callout-warning {
             background-color: #fefbed;
             border-color: #f1e7bc;
         }
+
         .bs-callout-info {
             background-color: #f0f7fd;
             border-color: #d0e3f0;
@@ -59,9 +65,11 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Brands", "Index", "Brand")</li>
+                    <li>@Html.ActionLink("Gpus", "Index", "Gpu")</li>
+                    <li>@Html.ActionLink("Models", "Index", "Model")</li>
                     @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
             </div>
         </div>

@@ -1,0 +1,73 @@
+﻿@using CHRS.Web.Models
+<!DOCTYPE html>
+
+@{
+}
+
+@{
+
+    bool isRegisterView = false;
+
+    //if (ViewData[Constants.REGISTER_VIEW] != null)
+    //{
+    //    isRegisterView = (bool)ViewData[Constants.REGISTER_VIEW];
+    //}
+
+
+    var currentRouteValue = this.ViewContext.RouteData.Values;
+    var controller = currentRouteValue["controller"] as string;
+    var action = currentRouteValue["action"] as string;
+
+    RouteValueDictionary routeValues = new RouteValueDictionary(currentRouteValue);
+
+    if (!routeValues.ContainsKey("culture"))
+    {
+        routeValues.Add("culture", "ar");
+    }
+    routeValues["culture"] = "ar";
+    string arabicUrl = Url.Action(action, controller, routeValues);
+
+    routeValues["culture"] = "en";
+    string englishUrl = Url.Action(action, controller, routeValues);
+
+
+}
+
+
+<ul class="list-inline">
+    <li>
+        <a href="@arabicUrl">
+            عربي
+        </a>
+    </li>
+    <li>
+        <a href="@englishUrl">
+            English
+        </a>
+    </li>
+</ul>
+@Html.Partial("_LoginForm", new LoginViewModel())
+
+
+@*@Html.Partial("_ForgetPassword", new ForgetPasswordViewModel())
+
+
+@Html.Partial("_RegisterForm", new RegisterViewModel())*@
+
+
+@*@section scripts{
+
+    <script type="text/javascript">
+
+        $(function () {
+            @if (isRegisterView)
+            {
+                <text>
+            $("#register-btn").trigger('click');
+            </text>
+            }
+
+        })
+    </script>
+
+}*@

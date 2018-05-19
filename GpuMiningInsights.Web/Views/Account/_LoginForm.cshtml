@@ -1,0 +1,79 @@
+﻿<!-- BEGIN LOGIN FORM -->
+@using CreaDev.Framework.Core.Resources
+@model CHRS.Web.Models.LoginViewModel
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login-form" }))
+{
+    @Html.AntiForgeryToken()
+    <h3 class="form-title">
+        @Common.LoginToAccount
+    </h3>
+
+
+    <div class="form-group">
+        <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+        <label class="control-label visible-ie8 visible-ie9">
+            @Html.DisplayNameFor(a => a.Email)
+        </label>
+        <div class="input-icon">
+            <i class="fa fa-user"></i>
+            @Html.TextBoxFor(a => a.Email, new { @class = "form-control placeholder-no-fix", autocomplete = "off", placeholder = Html.DisplayNameFor(a => a.Email) })
+        </div>
+        @Html.ValidationMessageFor(a => a.Email, null, new { @class = "help-block" })
+
+
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">
+            @Html.DisplayNameFor(a => a.Password)
+        </label>
+        <div class="input-icon">
+            <i class="fa fa-lock"></i>
+            @Html.PasswordFor(a => a.Password, new { placeholder = Html.DisplayNameFor(a => a.Password), autocomplete = "off", @class = "form-control placeholder-no-fix" })
+        </div>
+        @Html.ValidationMessageFor(a => a.Password, null, new { @class = "help-block" })
+    </div>
+    <div class="form-actions">
+        <div class="form-group">
+
+            <div class="input-group">
+                <div class="icheck-list">
+
+                    <label>
+                        <input type="checkbox" name="@Html.NameFor(a=> a.RememberMe)" value="true" class="icheck">
+                        @Common.RememberMe
+                    </label>
+
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn green pull-right">
+            @Common.Login
+        </button>
+    </div>
+    
+    <div class="forget-password">
+        <h4>
+            @Common.ForgetPassword
+        </h4>
+        <p>
+            @Html.Raw(String.Format(Common.ClickHereToResetPassword, $"<a href=\"javascript:;\" id=\"forget-password\"> {@Common.Here} </a>"))
+
+        </p>
+    </div>
+
+    @*if (FeatureService.Instance.Features.Registration)
+    {
+        <div class="create-account">
+            <p>
+                @Common.DontHaveAcount&nbsp;
+                <a href="javascript:;" id="register-btn">
+                    @Common.CreateAccount
+                </a>
+            </p>
+        </div>
+    }*@
+
+}
+<!-- END LOGIN FORM -->

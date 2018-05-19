@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GpuMiningInsights.Core;
 using GpuMiningInsights.Domain.Models;
+using Newtonsoft.Json;
 
 namespace GpuMiningInsights.Application.Amazon
 {
@@ -88,7 +89,10 @@ namespace GpuMiningInsights.Application.Amazon
                 var searchOperation = wrapper.ItemLookupOperation(new List<string>() { term });
                 ExtendedWebResponse xmlResponse = wrapper.Request(searchOperation);
                 var itemLookupResponse = XmlHelper.ParseXml<ItemLookupResponse>(xmlResponse.Content);
-
+                if (itemLookupResponse?.Items?.Item?.FirstOrDefault() != null)
+                {
+                    string itemJson = JsonConvert.SerializeObject(itemLookupResponse.Items.Item.FirstOrDefault());
+                }
                 results.AddRange(itemLookupResponse.ToPriceSourceItems());
             }
             return results;
@@ -98,7 +102,7 @@ namespace GpuMiningInsights.Application.Amazon
 
 
 
-            return results;
+            
         }
     }
 
@@ -184,7 +188,13 @@ namespace GpuMiningInsights.Application.Amazon
                 string asin = item.ASIN;
                 string url = item.DetailPageURL;
                 string imageUrl = item.LargeImage.URL;
-                string itemName = item.ItemAttributes.Model;
+                string itemName = item.ItemAttributes.Title;
+           
+                string model = item.ItemAttributes.Model;
+                string modelYear = item.ItemAttributes.ModelYear;
+                string brand = item.ItemAttributes.Brand;
+                string manufacturer = item.ItemAttributes.Manufacturer;
+                string ean = item.ItemAttributes.EAN;
                 if (string.IsNullOrWhiteSpace(itemName))
                     itemName = item.ToString();
 
@@ -201,6 +211,11 @@ namespace GpuMiningInsights.Application.Amazon
                             priceSourceItem.URL = url;
                             priceSourceItem.ImageUrl = imageUrl;
                             priceSourceItem.Name = itemName;
+                            priceSourceItem.Model = model;
+                            priceSourceItem.ModelYear = modelYear;
+                            priceSourceItem.Brand = brand;
+                            priceSourceItem.Manufacturer = manufacturer;
+                            priceSourceItem.Ean = ean;
                             string priceStr = offerListing.Price.Amount;
                             priceSourceItem.Name = itemName;
                             priceSourceItem.PriceCurrency = offerListing.Price.CurrencyCode;
@@ -229,7 +244,12 @@ namespace GpuMiningInsights.Application.Amazon
                         priceSourceItem.Name = itemName;
                         priceSourceItem.URL = url;
                         priceSourceItem.ImageUrl = imageUrl;
-                        priceSourceItem.Name = itemName;
+                        priceSourceItem.Model = model;
+                        priceSourceItem.ModelYear = modelYear;
+                        priceSourceItem.Brand = brand;
+                        priceSourceItem.Manufacturer = manufacturer;
+                        priceSourceItem.Ean = ean;
+
                         string priceStr = item.OfferSummary.LowestNewPrice.Amount;
                         priceSourceItem.PriceCurrency = item.OfferSummary.LowestNewPrice.CurrencyCode;
                         if (priceStr.Length >= 2)

@@ -6,23 +6,12 @@
 @{
     ViewBag.Title = "Best GPUs for mining";
     string lastUpdate = Model.Date;
-    
+
 }
 
-<div class="jumbotron">
-    <h1>Top GPU Mining</h1>
-    <br />
-    <p class="lead">
-        Top GPU Mining provides you with the right information for getting the best GPUs that are most profitable for mining, by considering various parameters.
-    </p>
-    <p>
-        Last Update : @lastUpdate &nbsp;
-        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
-        {
-            <button type="submit" class="btn btn-primary btn-lg"> Refresh</button>
-        }
-    </p>
-</div>
+<br />
+<br />
+<br />
 
 <div class="row">
     <div class="col-md-12">
@@ -31,15 +20,15 @@
                 <thead>
                     @*
 
-                        System.Console.WriteLine($"GPU {gpuName} ,
-                        ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd},
-                        Revenue ($/Day) = {item.RevenuePerDayUsd},
-                        Profit ($/Day) = {item.ProfitPerDayUsd}  ,
-                        HashRate = {item.Hashrate},
-                        HashCost = {hashPrice},
-                        FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
+                                System.Console.WriteLine($"GPU {gpuName} ,
+                                ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd},
+                                Revenue ($/Day) = {item.RevenuePerDayUsd},
+                                Profit ($/Day) = {item.ProfitPerDayUsd}  ,
+                                HashRate = {item.Hashrate},
+                                HashCost = {hashPrice},
+                                FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
 
-                ($"GPU {gpuName} HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");*@
+                        ($"GPU {gpuName} HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");*@
 
 
                     <tr>
@@ -59,31 +48,31 @@
                 <tbody>
                     @for (int i = 0; i < Model.Gpus.Count; i++)
                     {
-                        GPU gpu = Model.Gpus[i];
+                        GPUOld gpuOld = Model.Gpus[i];
                         int index = i;
-                        string hashPrice = gpu.LowestHashPrice.HashPrice.ToString();
-                        string hashPriceSource = gpu.LowestHashPrice.Source;
-                        double? gpuPriceFromSource = gpu.LowestPriceSource?.LowestPriceSourceItem?.Price;
-                        string currency = gpu.LowestPriceSource.LowestPriceSourceItem.PriceCurrency;
-                        double lowestGpuPriceUsd = gpu.LowestPriceSource.LowestPriceSourceItem.PriceUSD;
-                        double annualRevenue = gpu.AnnualRevenue;
-                        
-                        string roistyle = gpu.ROI >= 0 ? "" : "style=\"color:#de6c6c\"";
-                        if (gpu.ROI > 30)
+                        string hashPrice = gpuOld.LowestHashPrice.HashPrice.ToString();
+                        string hashPriceSource = gpuOld.LowestHashPrice.Source;
+                        double? gpuPriceFromSource = gpuOld.LowestPriceSource?.LowestPriceSourceItem?.Price;
+                        string currency = gpuOld.LowestPriceSource.LowestPriceSourceItem.PriceCurrency;
+                        double lowestGpuPriceUsd = gpuOld.LowestPriceSource.LowestPriceSourceItem.PriceUSD;
+                        double annualRevenue = gpuOld.AnnualRevenue;
+
+                        string roistyle = gpuOld.ROI >= 0 ? "" : "style=\"color:#de6c6c\"";
+                        if (gpuOld.ROI > 30)
                         {
                             roistyle = "style=\"color:#0fc304\"";
                         }
                         <tr>
-                            <td>@gpu.Name</td>
-                            <td>@gpu.RevenuePerDayUsd</td>
-                            <td>@gpu.ProfitPerDayUsd</td>
-                            <td>@gpu.ProfitPerYearMinusCostUsd</td>
-                            <td>@gpu.Hashrate</td>
+                            <td>@gpuOld.Name</td>
+                            <td>@gpuOld.RevenuePerDayUsd</td>
+                            <td>@gpuOld.ProfitPerDayUsd</td>
+                            <td>@gpuOld.ProfitPerYearMinusCostUsd</td>
+                            <td>@gpuOld.Hashrate</td>
                             <td>@hashPrice (@hashPriceSource)</td>
                             <td>@gpuPriceFromSource @currency </td>
                             <td>@lowestGpuPriceUsd $</td>
                             <td>@annualRevenue </td>
-                            <td @Html.Raw(roistyle)>@(gpu.ROI) %</td>
+                            <td @Html.Raw(roistyle)>@(gpuOld.ROI) %</td>
                             <td>
                                 <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options!</button>
                             </td>
@@ -105,11 +94,11 @@
         <div class="hidden">
             @for (int i = 0; i < Model.Gpus.Count; i++)
             {
-                GPU gpu = Model.Gpus[i];
+                GPUOld gpuOld = Model.Gpus[i];
                 <h3></h3>
                 <table class="table table-bordered table-striped" id="gpuprices-@i">
                     <caption>
-                        Buying options for @gpu.Name
+                        Buying options for @gpuOld.Name
                     </caption>
                     <thead>
                         <tr>
@@ -121,12 +110,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var priceSource in gpu.PriceSources)
+                        @foreach (var priceSource in gpuOld.PriceSources)
                         {
                             foreach (var priceSourceItem in priceSource.PriceSourceItems)
                             {
                                 string name = priceSourceItem.Name;
-                                name = string.IsNullOrWhiteSpace(name) ?gpu.Name : name;
+                                name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
                                 <tr>
                                     <td>
                                         <a href="@priceSourceItem.URL">
@@ -155,12 +144,24 @@
     </div>
 
 </div>
+
+<div class="jumbotron">
+    <h1>Top GPU Mining</h1>
+    <br />
+    <p class="lead">
+        Top GPU Mining provides you with the right information for getting the best GPUs that are most profitable for mining, by considering various parameters.
+    </p>
+    <p>
+        Last Update : @lastUpdate &nbsp;
+        
+    </p>
+</div>
 <p>
     by <a href="https://stackoverflow.com/users/690785/saad-alothman">Saad Alothman</a> - <a href="https://twitter.com/saad_o77">@@saad_o77</a>
     <br />
     Email: me@saadalothman.com
-    
-    <br/>
+
+    <br />
 
     Hash rates info from : http://www.whattomine.com
 

@@ -20,7 +20,7 @@ namespace GpuMiningInsights.Application.Services
     public static class InsighterService
     {
 
-        public static List<GPU> Gpus = new List<GPU>();
+        public static List<GPUOld> Gpus = new List<GPUOld>();
         public static Dictionary<string, double> pricesDict;
         private static string baseCurrency = "USD";
 
@@ -34,7 +34,7 @@ namespace GpuMiningInsights.Application.Services
             driver.Dispose();
 
         }
-        public static List<GPU> GetInsights()
+        public static List<GPUOld> GetInsights()
         {
             //PhantomJs & Selenium
 
@@ -59,15 +59,15 @@ namespace GpuMiningInsights.Application.Services
             return Gpus;
         }
 
-        private static void FindHashCost(List<GPU> gpus)
+        private static void FindHashCost(List<GPUOld> gpus)
         {
             gpus.ForEach(FindHashCost);
         }
-        private static void FindHashCost(GPU gpu)
+        private static void FindHashCost(GPUOld gpuOld)
         {
-            gpu.HashPricePerSourceList.Clear();
+            gpuOld.HashPricePerSourceList.Clear();
 
-            foreach (var item in gpu.PriceSources)
+            foreach (var item in gpuOld.PriceSources)
             {
                 //TODO:now using the lowest price from the results, maybe use different hash price for each source
                 //price for the GPU / Hashrate
@@ -77,15 +77,15 @@ namespace GpuMiningInsights.Application.Services
                     HashPricePerSource hashPricePerSource = new HashPricePerSource()
                     {
                         Source = item.Name,
-                        HashPrice = price / gpu.Hashrate
+                        HashPrice = price / gpuOld.Hashrate
                     };
-                    gpu.HashPricePerSourceList.Add(hashPricePerSource);
+                    gpuOld.HashPricePerSourceList.Add(hashPricePerSource);
                 }
 
             }
         }
 
-        public static void GatherInfo(List<GPU> gpus)
+        public static void GatherInfo(List<GPUOld> gpus)
         {
             foreach (var gpu in gpus)
             {
@@ -99,7 +99,7 @@ namespace GpuMiningInsights.Application.Services
             CalculatePricesBasedOnUSD(gpus);
         }
 
-        private static void CalculatePricesBasedOnUSD(List<GPU> gpus)
+        private static void CalculatePricesBasedOnUSD(List<GPUOld> gpus)
         {
             string baseCurrency = "USD";
             string currencyApiUrl = "http://www.apilayer.net/api/live?access_key=ff139c408a9439cd66d94f7ee26a598b&format=1&source=USD";
@@ -151,13 +151,13 @@ namespace GpuMiningInsights.Application.Services
             }
         }
 
-        private static void GetHashrate(GPU gpu)
+        private static void GetHashrate(GPUOld gpuOld)
         {
-            WriteLine($"Getting Hashrate From WhatToMine For GPU {gpu.Name}");
+            WriteLine($"Getting Hashrate From WhatToMine For GPU {gpuOld.Name}");
 
-            string response = GetHttpResponseText(gpu.WhatToMineUrl);
+            string response = GetHttpResponseText(gpuOld.WhatToMineUrl);
             string hashRateText = GetTextFromHtmlStringByCssSelector(response, "#factor_eth_hr");
-            gpu.Hashrate = double.Parse(hashRateText);
+            gpuOld.Hashrate = double.Parse(hashRateText);
         }
         //private static string GeRevenueAndProfit(string response, string CssSelector, string targetCurrency)
         //{
@@ -182,10 +182,10 @@ namespace GpuMiningInsights.Application.Services
         //    //    result = textElement.Val();
         //    return "";
         //}
-        private static string GeRevenueAndProfit(GPU gpu, string CssSelector)
+        private static string GeRevenueAndProfit(GPUOld gpuOld, string CssSelector)
         {
-            WriteLine($"Getting Revenu and profit From What to mine For GPU {gpu.Name}");
-            string response = GetHttpResponseText(gpu.WhatToMineUrl);
+            WriteLine($"Getting Revenu and profit From What to mine For GPU {gpuOld.Name}");
+            string response = GetHttpResponseText(gpuOld.WhatToMineUrl);
             CQ dom = response;
             CQ rows = dom[CssSelector];
             foreach (var row in rows)
@@ -193,13 +193,13 @@ namespace GpuMiningInsights.Application.Services
                 var firstColumn = row.ChildElements.FirstOrDefault();
                 CQ anchor = ((CQ)firstColumn.InnerHTML)["div:nth-child(2) a"];
                 string cryptoname = anchor.Text();
-                if (cryptoname != gpu.CoinToStudyName) continue;
+                if (cryptoname != gpuOld.CoinToStudyName) continue;
                 var seventhColumn = row.ChildElements.ElementAt(7);
                 string revenueText = seventhColumn.InnerText;
                 //second element bcoz of the <br />
                 string profitText = seventhColumn.ChildElements.ElementAt(1).InnerText;
-                gpu.RevenuePerDayUsd = double.Parse(revenueText.Replace("$", ""));
-                gpu.ProfitPerDayUsd = double.Parse(profitText.Replace("$", ""));
+                gpuOld.RevenuePerDayUsd = double.Parse(revenueText.Replace("$", ""));
+                gpuOld.ProfitPerDayUsd = double.Parse(profitText.Replace("$", ""));
             }
             //string nodeName = textElement.FirstElement().NodeName.ToLower();
             //string result = textElement.Text(); ;
@@ -208,12 +208,12 @@ namespace GpuMiningInsights.Application.Services
             //    result = textElement.Val();
             return "";
         }
-        private static void GetMiningProfitability(GPU gpu)
+        private static void GetMiningProfitability(GPUOld gpuOld)
         {
-            WriteLine($"Getting Mining Profitability From What to mine based on {gpu.CoinToStudyName} For GPU {gpu.Name}");
+            WriteLine($"Getting Mining Profitability From What to mine based on {gpuOld.CoinToStudyName} For GPU {gpuOld.Name}");
 
             //https://whattomine.com/coins?utf8=%E2%9C%93&adapt_q_280x=0&adapt_q_380=0&adapt_q_fury=0&adapt_q_470=0&adapt_q_480=3&adapt_q_570=1&adapt_570=true&adapt_q_580=0&adapt_q_vega56=0&adapt_q_vega64=0&adapt_q_750Ti=0&adapt_q_1050Ti=0&adapt_q_10606=0&adapt_q_1070=0&adapt_q_1070Ti=0&adapt_q_1080=0&adapt_q_1080Ti=0&eth=true&factor%5Beth_hr%5D=27.9&factor%5Beth_p%5D=120.0&factor%5Bgro_hr%5D=15.5&factor%5Bgro_p%5D=110.0&factor%5Bx11g_hr%5D=5.6&factor%5Bx11g_p%5D=110.0&factor%5Bcn_hr%5D=700.0&factor%5Bcn_p%5D=110.0&factor%5Beq_hr%5D=260.0&factor%5Beq_p%5D=110.0&factor%5Blrev2_hr%5D=5500.0&factor%5Blrev2_p%5D=110.0&factor%5Bns_hr%5D=630.0&factor%5Bns_p%5D=140.0&factor%5Blbry_hr%5D=115.0&factor%5Blbry_p%5D=115.0&factor%5Bbk2b_hr%5D=840.0&factor%5Bbk2b_p%5D=115.0&factor%5Bbk14_hr%5D=1140.0&factor%5Bbk14_p%5D=115.0&factor%5Bpas_hr%5D=580.0&factor%5Bpas_p%5D=135.0&factor%5Bskh_hr%5D=16.3&factor%5Bskh_p%5D=110.0&factor%5Bn5_hr%5D=18.0&factor%5Bn5_p%5D=110.0&factor%5Bl2z_hr%5D=420.0&factor%5Bl2z_p%5D=300.0&factor%5Bcost%5D=0.1&sort=Profitability24&volume=0&revenue=24h&factor%5Bexchanges%5D%5B%5D=&factor%5Bexchanges%5D%5B%5D=abucoins&factor%5Bexchanges%5D%5B%5D=bitfinex&factor%5Bexchanges%5D%5B%5D=bittrex&factor%5Bexchanges%5D%5B%5D=binance&factor%5Bexchanges%5D%5B%5D=cryptopia&factor%5Bexchanges%5D%5B%5D=hitbtc&factor%5Bexchanges%5D%5B%5D=poloniex&factor%5Bexchanges%5D%5B%5D=yobit&dataset=&commit=Calculate
-            string response = GetHttpResponseText(gpu.WhatToMineUrl);
+            string response = GetHttpResponseText(gpuOld.WhatToMineUrl);
             // get the table
 
             // get the first row
@@ -226,14 +226,14 @@ namespace GpuMiningInsights.Application.Services
             //8th column second line, profitability
             //$('').text()
             string profitability = GetTextFromHtmlStringByCssSelector(response, "body table tbody tr:first td:nth-child(8) strong");
-            gpu.MiningProfitability.CryptoName = cryptoName;
-            gpu.MiningProfitability.CryptoAlgo = cryptoAlgo;
+            gpuOld.MiningProfitability.CryptoName = cryptoName;
+            gpuOld.MiningProfitability.CryptoAlgo = cryptoAlgo;
             string profitabilityText = profitability;
             if (profitabilityText.IndexOf("$") > -1)
             {
                 profitabilityText = profitabilityText.Remove(profitabilityText.IndexOf("$"), 1);
             }
-            gpu.MiningProfitability.Profitability24Hours = double.Parse(profitabilityText);
+            gpuOld.MiningProfitability.Profitability24Hours = double.Parse(profitabilityText);
         }
 
         private static string GetTextFromHtmlStringByCssSelector(string response, string CssSelector)
@@ -348,24 +348,24 @@ namespace GpuMiningInsights.Application.Services
         //    return responseText;
         //}
 
-        public static void GetPrices(GPU gpu)
+        public static void GetPrices(GPUOld gpuOld)
         {
-            foreach (var priceSource in gpu.PriceSources)
+            foreach (var priceSource in gpuOld.PriceSources)
             {
-                var priceSourceItems =GetPrice(gpu, priceSource);
+                var priceSourceItems =GetPrice(gpuOld, priceSource);
                 priceSource.PriceSourceItems.AddRange(priceSourceItems);
             }
             //Calculate USD Price
-            foreach (var priceSourceItem in gpu.PriceSources.SelectMany(s => s.PriceSourceItems))
+            foreach (var priceSourceItem in gpuOld.PriceSources.SelectMany(s => s.PriceSourceItems))
             {
                 FillUSDPrice(priceSourceItem);
             }
         }
 
-        public static List<PriceSourceItem> GetPrice(GPU gpu, PriceSource priceSource)
+        public static List<PriceSourceItem> GetPrice(GPUOld gpuOld, PriceSource priceSource)
         {
             List<PriceSourceItem> priceSourceItems = new List<PriceSourceItem>();
-            WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
+            WriteLine($"Getting Price From {priceSource.Name} For GPU {gpuOld.Name}");
             //is it an api or something, else we are going to scrape the shit out of it...
             if (priceSource.PriceSourceAction != null)
             {
@@ -417,9 +417,9 @@ namespace GpuMiningInsights.Application.Services
         private static void LoadData()
         {
             Gpus.Clear();
-            List<GPU> gpus = new List<GPU>();
+            List<GPUOld> gpus = new List<GPUOld>();
             //TODO: will be moved to databse
-            gpus = JsonConvert.DeserializeObject<List<GPU>>(File.ReadAllText("gpus.json"));
+            gpus = JsonConvert.DeserializeObject<List<GPUOld>>(File.ReadAllText("gpus.json"));
             foreach (var item in gpus)
             {
                 foreach (var psources in item.PriceSources.Where(s => s.Name.ToLower().Contains("amazon")))

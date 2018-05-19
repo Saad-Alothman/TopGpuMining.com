@@ -7,6 +7,7 @@ using OpenQA.Selenium;
 using Newtonsoft.Json;
 using System.Linq;
 using GpuMiningInsights.Application;
+using GpuMiningInsights.Application.Amazon;
 using GpuMiningInsights.Application.Services;
 using GpuMiningInsights.Domain.Models;
 
@@ -22,6 +23,7 @@ namespace GpuMiningInsights.Web.Controllers
             SaveData(clientGpuListData);
             return View(clientGpuListData);
         }
+
         public ActionResult Index()
         {
             ClientGpuListData clientGpuListData = LoadClientGpuListData();
@@ -34,12 +36,19 @@ namespace GpuMiningInsights.Web.Controllers
             string fullPath = Server.MapPath(Settings.DataPath);
             List<string> allFiles = System.IO.Directory.GetFiles(fullPath).ToList();
             DateTime dt = DateTime.Now;
-            string lastFileName = allFiles.Where(r => DateTime.TryParseExact(r.Replace(fullPath, "").Replace("\\", ""), Settings.DateFormat, null, System.Globalization.DateTimeStyles.None, out dt)).OrderByDescending(s => DateTime.ParseExact(s.Replace(fullPath, "").Replace("\\", ""), Settings.DateFormat, null)).FirstOrDefault();
+            string lastFileName = allFiles
+                .Where(r => DateTime.TryParseExact(r.Replace(fullPath, "").Replace("\\", ""), Settings.DateFormat, null,
+                    System.Globalization.DateTimeStyles.None, out dt)).OrderByDescending(s =>
+                    DateTime.ParseExact(s.Replace(fullPath, "").Replace("\\", ""), Settings.DateFormat, null))
+                .FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(lastFileName))
-                clientGpuListData = JsonConvert.DeserializeObject<ClientGpuListData>(System.IO.File.ReadAllText(lastFileName));
+                clientGpuListData =
+                    JsonConvert.DeserializeObject<ClientGpuListData>(System.IO.File.ReadAllText(lastFileName));
             else if (allFiles.Select(s => s.Replace(fullPath, "").Replace("\\", "")).Contains(Settings.DummyFileName))
             {
-                clientGpuListData = JsonConvert.DeserializeObject<ClientGpuListData>(System.IO.File.ReadAllText(fullPath + "\\" + "dummy.json"));
+                clientGpuListData =
+                    JsonConvert.DeserializeObject<ClientGpuListData>(
+                        System.IO.File.ReadAllText(fullPath + "\\" + "dummy.json"));
 
 
             }
@@ -53,15 +62,16 @@ namespace GpuMiningInsights.Web.Controllers
             string result = true.ToString();
             try
             {
-                ClientGpuListData clientGpuListData = JsonConvert.DeserializeObject<ClientGpuListData>(clientGpuListDataJson);
+                ClientGpuListData clientGpuListData =
+                    JsonConvert.DeserializeObject<ClientGpuListData>(clientGpuListDataJson);
                 SaveData(clientGpuListData);
             }
             catch (Exception ex)
             {
                 result = ex.Message;
             }
-            
-            return Json(new { message = result});
+
+            return Json(new { message = result });
         }
 
         private ClientGpuListData SaveData(ClientGpuListData ClientGpuListData)
@@ -69,7 +79,8 @@ namespace GpuMiningInsights.Web.Controllers
             DateTime dateTime = DateTime.Now;
             string json = JsonConvert.SerializeObject(ClientGpuListData);
             DateTime date = DateTime.Now;
-            if (!DateTime.TryParseExact(ClientGpuListData.Date, Settings.DateFormat, null, System.Globalization.DateTimeStyles.None, out date))
+            if (!DateTime.TryParseExact(ClientGpuListData.Date, Settings.DateFormat, null,
+                System.Globalization.DateTimeStyles.None, out date))
                 date = DateTime.Now;
 
             string FullfileName = Server.MapPath(Settings.DataPath) + "/" + date.ToString(Settings.DateFormat);
@@ -90,6 +101,25 @@ namespace GpuMiningInsights.Web.Controllers
 
             return View();
         }
-        
+
+        public ActionResult Test()
+        {
+            string asinNumber = "B06Y15M48C";
+
+            PriceSource priceSource = new PriceSource()
+            {
+                PriceSourceItemIdentifier = asinNumber,
+                PriceSourceAction = AmazonService.SearchItemLookupOperation
+            };
+
+            GPUOld gpuOld = new GPUOld()
+            {
+                PriceSources = new List<PriceSource>() { priceSource },
+
+            };
+
+            List<PriceSourceItem> priceSourceItems = InsighterService.GetPrice(gpuOld, priceSource);
+            return Json(priceSourceItems.FirstOrDefault(), JsonRequestBehavior.AllowGet);
+        }
     }
 }
