@@ -1,0 +1,110 @@
+﻿@model SearchResult<Algorithm>
+
+@using CreaDev.Framework.Core.Extensions
+@using CreaDev.Framework.Core.Resources
+@using X.PagedList.Mvc;
+@using CreaDev.Framework.Web.Mvc.Html.Ajax
+@using GpuMiningInsights.Web.Models.Search
+@{
+    //IF following convention, and standard controller, you need to change only the following:
+    //1- Model Type SearchResult<THE_MODEL_HERE>
+    //2- itemName variable
+    //3- searchCrietriaViewModel type
+    //4- Model specific columns and headers
+
+
+
+
+    //settings
+    string itemName = "algorithm";
+    string itemNameUpperFirstLetter = itemName.ToProperCase();
+    string controllerName = itemNameUpperFirstLetter;
+
+    string listId = $"{itemName}-list";
+    string listSelector = $"#{listId}";
+    string editFormSelector = $"#edit-{itemName}-form-div";
+    string deleteFormSelector = $"#delete-{itemName}-form-div";
+    //Example showEditBrand();
+    string editAlgorithmJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
+    string deletealgorithmJavascriptMethod = $"showDelete{itemName.ToProperCase()}()";
+
+    var searchCrietriaViewModel = new BrandSearchCrietriaViewModel();
+    // usually this is null the first time entering the page
+    if (ViewData[Constants.SEARCH_MODEL] != null)
+    {
+        searchCrietriaViewModel = ViewData[Constants.SEARCH_MODEL] as BrandSearchCrietriaViewModel;
+    }
+}
+@if (Model?.Result?.Any() ?? false)
+{
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+
+            <tr>
+                @* Begin Model specific Headers *@
+                <th>
+                    @Html.DisplayNameFor(a => a.Result.First().Name)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(a => a.Result.First().Description)
+                </th>
+                @* END Model specific Headers *@
+
+
+                <th>
+                    @Common.Actions
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Result)
+            {
+            <tr>
+                @* Begin Model specific columns *@
+
+                <td>
+                    @(item.Name?.ToString())
+                </td>
+                <td>
+                    @(item.Description?.ToString())
+                </td>
+                @* END Model specific columns *@
+
+                <td>
+
+
+                    <a href="@Url.Action("Edit", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(editFormSelector, listSelector, onCompleteMethod: $"{editAlgorithmJavascriptMethod};"))
+                       class="btn btn-primary green">
+                        <i class="fa fa-edit"></i>
+                        @Common.Edit
+                    </a>
+
+                    <a href="@Url.Action("Delete", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(deleteFormSelector, listSelector, httpMethod: FormMethod.Get, onCompleteMethod: $"{deletealgorithmJavascriptMethod};"))
+                       class="btn btn-danger">
+                        <i class="fa fa-remove"></i>
+                        @Common.Delete
+                    </a>
+                </td>
+            </tr>
+            }
+
+        </table>
+
+    </div>
+    @Html.PagedListPager(Model.ToPagedList(), page => Url.Action("Search", controllerName, searchCrietriaViewModel.ToRouteValueDictionary(page))
+        , PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            OnBegin = $"block('{listSelector}')",
+            OnComplete = $"unblock('{listSelector}')",
+            UpdateTargetId = listId
+        }))
+}
+else
+{
+    <div class="bs-callout bs-callout-info">
+        <h4>No Results</h4>
+        <p> No results werer found, try changing the search criteria</p>
+    </div>
+}

@@ -85,6 +85,7 @@
     <Compile Include="Identity\CHRSUserStore.cs" />
     <Compile Include="Identity\Extension.cs" />
     <Compile Include="Identity\GmiUserManager.cs" />
+    <Compile Include="Services\AlgorithmService.cs" />
     <Compile Include="Services\Base\GenericService.cs" />
     <Compile Include="Services\Base\GmiServiceBase.cs" />
     <Compile Include="Services\BrandService.cs" />

@@ -12,6 +12,7 @@ namespace GpuMiningInsights.Persistance
     public class GmiContext : IdentityDbContext<User, Role, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>
     {
         public virtual DbSet<Brand> Brands { get; set; }
+        public virtual DbSet<Algorithm> Algorithms { get; set; }
         public virtual DbSet<Model> Models { get; set; }
         public virtual DbSet<Gpu> Gpus { get; set; }
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
