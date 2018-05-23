@@ -1735,6 +1735,15 @@ namespace CreaDev.Framework.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hashrate (Mh/s).
+        /// </summary>
+        public static string HashrateValue {
+            get {
+                return ResourceManager.GetString("HashrateValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to هنا.
         /// </summary>
         public static string Here {

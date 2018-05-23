@@ -91,6 +91,7 @@
     <Compile Include="Services\BrandService.cs" />
     <Compile Include="CHRSApp.cs" />
     <Compile Include="Services\GpuService.cs" />
+    <Compile Include="Services\HashrateService.cs" />
     <Compile Include="Services\Insighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ModelService.cs" />

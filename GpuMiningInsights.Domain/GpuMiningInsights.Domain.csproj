@@ -59,6 +59,7 @@
     <Compile Include="Models\Gpu.cs" />
     <Compile Include="Models\GPUOld.cs" />
     <Compile Include="Models\HashPricePerSource.cs" />
+    <Compile Include="Models\Hashrate.cs" />
     <Compile Include="Models\MiningProfitability.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\PriceSource.cs" />

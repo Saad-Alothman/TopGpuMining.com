@@ -202,6 +202,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlgorithmController.cs" />
     <Compile Include="Controllers\GpuController.cs" />
+    <Compile Include="Controllers\HashrateController.cs" />
     <Compile Include="Controllers\ModelController.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseController.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Models\GpuViewModel.cs" />
     <Compile Include="Models\Search\GmiSearchCriteriaViewModelBase.cs" />
     <Compile Include="Models\Search\GpuSearchCrietriaViewModel.cs" />
+    <Compile Include="Models\Search\HashrateSearchCrietriaViewModel.cs" />
     <Compile Include="Models\Search\ModelSearchCrietriaViewModel.cs" />
     <Compile Include="Models\Search\SearchCriteriaViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -330,6 +332,11 @@
     <Content Include="Views\Algorithm\_List.cshtml" />
     <Content Include="Views\Algorithm\_SearchForm.cshtml" />
     <Content Include="Views\Algorithm\Index.cshtml" />
+    <Content Include="Views\Hashrate\Index.cshtml" />
+    <Content Include="Views\Hashrate\_SearchForm.cshtml" />
+    <Content Include="Views\Hashrate\_List.cshtml" />
+    <Content Include="Views\Hashrate\_Form.cshtml" />
+    <Content Include="Views\Hashrate\_DeleteForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

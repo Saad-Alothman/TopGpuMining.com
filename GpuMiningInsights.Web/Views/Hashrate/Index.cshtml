@@ -1,0 +1,248 @@
+﻿
+
+
+
+@using CreaDev.Framework.Core.Extensions
+@using CreaDev.Framework.Core.Resources
+@using GpuMiningInsights.Domain.Models
+@using GpuMiningInsights.Web.Models.Search
+@model CreaDev.Framework.Core.Models.SearchResult<GpuMiningInsights.Domain.Models.Hashrate>
+
+
+
+@{
+    ViewBag.Name = "Index";
+    string itemName = "hashrate";
+    string itemDisplayName= "Hashrate";
+    string itemNameUpperFirstLetter = itemName.ToProperCase();
+    string controllerName = itemNameUpperFirstLetter;
+    string panelSelector = $"#{itemName}-list-panel";
+    string listId = $"{itemName}-list";
+    string listSelector = $"#{listId}";
+
+    //Add Modal
+    string addItemModalId = $"add-{itemName}-modal";
+    string addItemDivId = $"add-{itemName}-div";
+    string addItemAlert = $"add-{itemName}-alert";
+    string addItemFormId = $"add-{itemName}-form";
+
+    //Edit Modal 
+    string editItemModalId = $"edit-{itemName}-modal";
+    string editItemDivId = $"edit-{itemName}-div";
+    string editItemAlertId = $"edit-{itemName}-alert";
+    string editItemFormId = $"edit-{itemName}-form";
+    string editItemFormDivId = $"edit-{itemName}-form-div";
+
+    //delete Modal 
+    string deleteItemModalId = $"delete-{itemName}-modal";
+    string deleteItemDivId = $"delete-{itemName}-div";
+    string deleteItemAlertId = $"delete-{itemName}-alert";
+    string deleteItemFormId = $"delete-{itemName}-form";
+    string deleteItemFormDivId = $"delete-{itemName}-form-div";
+
+
+}
+
+<br />
+<br />
+<br />
+<div class="panel panel-default" id="">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h4 style="display: inline-block">@itemDisplayName </h4>
+        <div style="float: right">
+            <button type="button" class="btn btn-primary" onclick="showAddHashrate()">
+                + @Common.Add
+            </button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <p>
+            @using (Ajax.BeginForm("Search", new { }, new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                OnBegin = $"block('{panelSelector}')",
+                OnComplete = $"unblock('{panelSelector }')",
+                UpdateTargetId = listId
+            }, new { id = "form-search", @class = "auto-search" }))
+            {
+                @Html.Partial("_SearchForm", new HashrateSearchCrietriaViewModel())
+                <br />
+                <button type="submit" class="btn green btn-block">
+                    @Common.Search
+                </button>
+            }
+        </p>
+    </div>
+
+    <!-- Table -->
+    <div id="@listId">
+        @Html.Partial("_List")
+    </div>
+</div>
+
+
+
+<div class="modal fade"
+     id="@addItemModalId"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="@addItemDivId">
+
+            @using (Ajax.BeginForm("Add", controllerName, new { }, new AjaxOptions()
+            {
+                OnBegin = $"block('#{addItemDivId}')",
+                OnComplete = $"onAjaxComplete(xhr, status, '#{addItemDivId}', '#{addItemAlert}', '#{listId}')",
+                OnFailure = $"onAjaxFailed(xhr, status, error, '#{addItemAlert}')",
+                OnSuccess = $"onAjaxSuccess(xhr, status, '#{addItemModalId}')"
+            }, new { id = addItemFormId, @role = "form" }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Add @itemDisplayName</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div id="@addItemAlert"></div>
+                    @Html.Partial("_Form", new Hashrate())
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @Common.Add
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @Common.Cancel
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade"
+     id="@editItemModalId"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="@editItemDivId">
+
+            @using (Ajax.BeginForm("Update", "Hashrate", new { }, new AjaxOptions()
+            {
+                OnBegin = $"block('#{editItemDivId}')",
+                OnComplete = $"onAjaxComplete(xhr, status, '#{editItemDivId}', '#{editItemAlertId}', '#{listId}')",
+                OnFailure = $"onAjaxFailed(xhr, status, error, '#{editItemAlertId}')",
+                OnSuccess = $"onAjaxSuccess(xhr, status, '#{editItemModalId}')"
+            }, new { id = editItemFormId, @role = "form" }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">@Common.Edit</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div id="@editItemAlertId"></div>
+
+                    <div id="@editItemFormDivId">
+                        @Html.Partial("_Form", new Hashrate())
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @Common.Save
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @Common.Cancel
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade"
+     id="@deleteItemModalId"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="@deleteItemDivId">
+
+            @using (Ajax.BeginForm("Delete", "Hashrate", new { }, new AjaxOptions()
+            {
+                OnBegin = $"block('#{deleteItemDivId}')",
+                OnComplete = $"onAjaxComplete(xhr, status, '#{deleteItemDivId}', '#{deleteItemAlertId}', '#{listId}')",
+                OnFailure = $"onAjaxFailed(xhr, status, error, '#{deleteItemAlertId}')",
+                OnSuccess = $"onAjaxSuccess(xhr, status, '#{deleteItemModalId}')"
+            }, new { id = deleteItemFormId, @role = "form" }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">@Common.AreYouSure</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div id="@deleteItemAlertId"></div>
+
+                    <div id="@deleteItemFormDivId">
+                        @Html.Partial("_DeleteForm", new Hashrate())
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @Common.Delete
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @Common.Cancel
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+<script type="text/javascript">
+
+        @{
+            string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
+            string editFunctionName = $"showEdit{itemNameUpperFirstLetter}";
+            string deleteFunctionName = $"showDelete{itemNameUpperFirstLetter}";
+        }
+        function @(addFunctionName)() {
+
+            $("#@addItemModalId").modal('show');
+        }
+
+        function @(editFunctionName)() {
+
+            $("#@editItemModalId").modal('show');
+        }
+
+        function @(deleteFunctionName)() {
+            $("#@deleteItemAlertId").html('');
+            $("#@deleteItemModalId").modal('show');
+        }
+
+
+       
+
+     
+
+      
+</script>
+}

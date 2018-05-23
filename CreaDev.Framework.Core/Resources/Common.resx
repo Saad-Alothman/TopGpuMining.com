@@ -1299,4 +1299,7 @@
   <data name="SortBy" xml:space="preserve">
     <value>فرز حسب</value>
   </data>
+  <data name="HashrateValue" xml:space="preserve">
+    <value>Hashrate (Mh/s)</value>
+  </data>
 </root>
