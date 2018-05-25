@@ -1,0 +1,48 @@
+﻿@using CreaDev.Framework.Core.Resources
+@using CreaDev.Framework.Web.Mvc.Helpers
+@using CreaDev.Framework.Web.Mvc.Html.Helpers.Bootstrap
+@using GpuMiningInsights.Application.Services
+@model PriceSource
+
+@{
+	var titleArabic = $"{Html.DisplayNameFor(a => a.Name)} {Common.Arabic}";
+
+	var url = $"{Html.DisplayNameFor(a => a.Url)} {Common.Arabic}";
+	var isScrape = $"{Html.DisplayNameFor(a => a.IsScrape)} {Common.Arabic}";
+	var requiresJavascript = $"{Html.DisplayNameFor(a => a.RequiresJavascript)} {Common.Arabic}";
+
+
+}
+
+@Html.HiddenFor(a => a.Id)
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Name)
+            </label>
+            @Html.TextBoxFor(a => a.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.Name, "", new { @class = "help-block" })
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="row">
+    
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Url)
+            </label>
+            @Html.TextAreaFor(a => a.Url, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

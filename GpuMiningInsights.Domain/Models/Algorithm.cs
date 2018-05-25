@@ -19,7 +19,6 @@ namespace GpuMiningInsights.Domain.Models
 
         public LocalizableText Description { get; set; }
 
-        //private List<GPU> Gpus { get; set; }
         public override void Update(object objectWithNewData)
         {
             var updateData = objectWithNewData as Algorithm;

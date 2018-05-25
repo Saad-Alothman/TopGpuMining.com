@@ -3538,6 +3538,15 @@ namespace CreaDev.Framework.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الرابط.
+        /// </summary>
+        public static string Url {
+            get {
+                return ResourceManager.GetString("Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم المستخدم.
         /// </summary>
         public static string Username {

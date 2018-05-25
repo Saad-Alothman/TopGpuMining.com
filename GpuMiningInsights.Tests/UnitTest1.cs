@@ -14,14 +14,14 @@ namespace GpuMiningInsights.Tests
         public void TestMethod1()
         {
             string asinNumber = "B06Y15M48C";
-            PriceSource priceSource = new PriceSource()
+            PriceSourceOld priceSource = new PriceSourceOld()
             {
                 PriceSourceItemIdentifier = asinNumber,
                 PriceSourceAction = AmazonService.SearchItemLookupOperation
             };
             GPUOld gpuOld= new GPUOld()
             {
-                PriceSources = new List<PriceSource>() { priceSource },
+                PriceSources = new List<PriceSourceOld>() { priceSource },
                 
             };
             InsighterService.GetPrice(gpuOld, priceSource);

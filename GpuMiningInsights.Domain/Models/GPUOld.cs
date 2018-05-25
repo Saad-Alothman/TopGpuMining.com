@@ -10,13 +10,13 @@ namespace GpuMiningInsights.Domain.Models
     {
         public string Name { get; set; }
         public string WhatToMineUrl { get; set; }
-        public List<PriceSource> PriceSources { get; set; }
+        public List<PriceSourceOld> PriceSources { get; set; }
 
-        public PriceSource LowestPriceSource
+        public PriceSourceOld LowestPriceSource
         {
             get
             {
-                PriceSource lowestPriceSource = null;
+                PriceSourceOld lowestPriceSource = null;
                 var priceSourcesWithPriceSourceItems = PriceSources.Where(s => s.PriceSourceItems.Any()).ToList();
                 if (priceSourcesWithPriceSourceItems.Any())
                     lowestPriceSource = priceSourcesWithPriceSourceItems.OrderBy(p => p.PriceSourceItems.Min(m => m.Price)).FirstOrDefault();
@@ -57,7 +57,7 @@ namespace GpuMiningInsights.Domain.Models
         {
             CoinToStudyName = "Ethereum(ETH)";
             this.MiningProfitability = new MiningProfitability();
-            this.PriceSources = new List<PriceSource>();
+            this.PriceSources = new List<PriceSourceOld>();
             this.HashPricePerSourceList = new List<HashPricePerSource>();
         }
 

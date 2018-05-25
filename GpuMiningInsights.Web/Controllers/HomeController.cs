@@ -106,7 +106,7 @@ namespace GpuMiningInsights.Web.Controllers
         {
             string asinNumber = "B06Y15M48C";
 
-            PriceSource priceSource = new PriceSource()
+            PriceSourceOld priceSource = new PriceSourceOld()
             {
                 PriceSourceItemIdentifier = asinNumber,
                 PriceSourceAction = AmazonService.SearchItemLookupOperation
@@ -114,7 +114,7 @@ namespace GpuMiningInsights.Web.Controllers
 
             GPUOld gpuOld = new GPUOld()
             {
-                PriceSources = new List<PriceSource>() { priceSource },
+                PriceSources = new List<PriceSourceOld>() { priceSource },
 
             };
 

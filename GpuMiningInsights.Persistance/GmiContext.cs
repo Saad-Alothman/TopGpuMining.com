@@ -16,6 +16,7 @@ namespace GpuMiningInsights.Persistance
         public virtual DbSet<Model> Models { get; set; }
         public virtual DbSet<Gpu> Gpus { get; set; }
         public virtual DbSet<Hashrate> Hashrates { get; set; }
+        public virtual DbSet<PriceSource> PriceSources { get; set; }
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
 
         public GmiContext() : base("DefaultConnection")

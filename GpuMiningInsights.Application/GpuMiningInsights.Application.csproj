@@ -95,6 +95,7 @@
     <Compile Include="Services\Insighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ModelService.cs" />
+    <Compile Include="Services\PriceSourceService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CreaDev.Framework.Core\CreaDev.Framework.Core.csproj">

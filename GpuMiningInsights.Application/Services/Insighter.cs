@@ -362,7 +362,7 @@ namespace GpuMiningInsights.Application.Services
             }
         }
 
-        public static List<PriceSourceItem> GetPrice(GPUOld gpuOld, PriceSource priceSource)
+        public static List<PriceSourceItem> GetPrice(GPUOld gpuOld, PriceSourceOld priceSource)
         {
             List<PriceSourceItem> priceSourceItems = new List<PriceSourceItem>();
             WriteLine($"Getting Price From {priceSource.Name} For GPU {gpuOld.Name}");
