@@ -26,7 +26,7 @@ namespace GpuMiningInsights.Web.Models.Search
 
             SearchCriteria<PriceSource> searchCriteria = base.ToSearchCriteria();
 
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AndCondition(priceSource => priceSource.Name.LocalizedText.Contains(Name)));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AndCondition(priceSource => priceSource.Name.Contains(Name)));
 
             return searchCriteria;
         }

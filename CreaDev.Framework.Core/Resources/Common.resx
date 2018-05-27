@@ -1302,6 +1302,9 @@
   <data name="HashrateValue" xml:space="preserve">
     <value>Hashrate (Mh/s)</value>
   </data>
+  <data name="PriceSourceType" xml:space="preserve">
+    <value>المصدر</value>
+  </data>
   <data name="Url" xml:space="preserve">
     <value>الرابط</value>
   </data>

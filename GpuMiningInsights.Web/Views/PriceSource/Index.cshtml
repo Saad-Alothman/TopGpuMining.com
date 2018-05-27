@@ -1,8 +1,4 @@
-﻿
-
-
-
-@using CreaDev.Framework.Core.Extensions
+﻿@using CreaDev.Framework.Core.Extensions
 @using CreaDev.Framework.Core.Resources
 @using GpuMiningInsights.Domain.Models
 @using GpuMiningInsights.Web.Models.Search
@@ -13,8 +9,8 @@
 @{
     ViewBag.Name = "Index";
     string itemName = "priceSource";
-    string itemDisplayName= "PriceSource";
-    string itemNameUpperFirstLetter = itemName.ToProperCase();
+    string itemDisplayName= "Price Source";
+    string itemNameUpperFirstLetter = itemName.ToProperCaseTowWords();
     string controllerName = itemNameUpperFirstLetter;
     string panelSelector = $"#{itemName}-list-panel";
     string listId = $"{itemName}-list";
@@ -219,9 +215,10 @@
 <script type="text/javascript">
 
         @{
-            string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
-            string editFunctionName = $"showEdit{itemNameUpperFirstLetter}";
-            string deleteFunctionName = $"showDelete{itemNameUpperFirstLetter}";
+			string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
+			//string addFunctionName = "showaddPricesource";
+			string editFunctionName = $"showEdit{itemNameUpperFirstLetter}";
+			string deleteFunctionName = $"showDelete{itemNameUpperFirstLetter}";
         }
         function @(addFunctionName)() {
 

@@ -17,7 +17,7 @@
 
     //settings
     string itemName = "priceSource";
-    string itemNameUpperFirstLetter = itemName.ToProperCase();
+    string itemNameUpperFirstLetter = itemName.ToProperCaseTowWords();
     string controllerName = itemNameUpperFirstLetter;
 
     string listId = $"{itemName}-list";
@@ -26,7 +26,7 @@
     string deleteFormSelector = $"#delete-{itemName}-form-div";
     //Example showEditGpu();
     string editPriceSourceJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
-    string deletePriceSourceJavascriptMethod = $"showDelete{itemName.ToProperCase()}()";
+    string deletePriceSourceJavascriptMethod = $"showDelete{itemName.ToProperCaseTowWords()}()";
 
     var searchCrietriaViewModel = new PriceSourceSearchCrieteriaViewModel();
     // usually this is null the first time entering the page
@@ -56,6 +56,9 @@
 	            <th>
 		            @Html.DisplayNameFor(a => a.Result.First().RequiresJavascript)
 	            </th>
+	            <th>
+		            @Html.DisplayNameFor(a => a.Result.First().PriceSourceType)
+	            </th>
                 @* END Model specific Headers *@
 
 
@@ -81,7 +84,11 @@
 	            <td>
 		            @(item.RequiresJavascript.ToString())
 	            </td>
-                @* END Model specific columns *@
+				
+	            <td>
+		            @(item.PriceSourceType.ToString())
+	            </td>
+	            @* END Model specific columns *@
 
                 <td>
 

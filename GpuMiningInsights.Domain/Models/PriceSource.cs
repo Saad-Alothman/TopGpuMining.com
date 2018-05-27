@@ -9,22 +9,20 @@ using CreaDev.Framework.Core.Resources;
 
 namespace GpuMiningInsights.Domain.Models
 {
-    public class PriceSource : GmiEntityBase
+    public  class PriceSource : GmiEntityBase
     {
-
         [Display(Name = nameof(Common.Name), ResourceType = typeof(Common))]
-        public LocalizableTextRequired Name { get; set; }
+        public string Name { get; set; }
 
         [Display(Name = nameof(Common.Url), ResourceType = typeof(Common))]
-
-        public LocalizableText Url { get; set; }
+        public string Url { get; set; }
+        [Display(Name = nameof(Common.PriceSourceType), ResourceType = typeof(Common))]
+        public PriceSourceType PriceSourceType { get; set; }
 
         public bool IsScrape = false;
         public bool RequiresJavascript = false;
-        public  enum  PriceSourceType
-        {
-            AmazonUs=0, AmazonUk=1, AmazonCanada=2, AmazonIndia=3, NewEgg=4
-        }
+
+
         public override void Update(object objectWithNewData)
         {
             if (!(objectWithNewData is PriceSource updateData)) return;
@@ -32,6 +30,7 @@ namespace GpuMiningInsights.Domain.Models
             this.Url = updateData.Url;
             this.IsScrape = updateData.IsScrape;
             this.RequiresJavascript = updateData.RequiresJavascript;
+            this.PriceSourceType = updateData.PriceSourceType;
         }
     }
 }

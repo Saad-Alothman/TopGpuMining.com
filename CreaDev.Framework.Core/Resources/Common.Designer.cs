@@ -2698,6 +2698,15 @@ namespace CreaDev.Framework.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المصدر.
+        /// </summary>
+        public static string PriceSourceType {
+            get {
+                return ResourceManager.GetString("PriceSourceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to طباعة القائمة.
         /// </summary>
         public static string PrintList {
