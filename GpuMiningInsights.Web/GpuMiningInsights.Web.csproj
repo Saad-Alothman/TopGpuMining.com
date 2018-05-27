@@ -203,6 +203,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlgorithmController.cs" />
     <Compile Include="Controllers\GpuController.cs" />
+    <Compile Include="Controllers\GPUPriceSourceController.cs" />
     <Compile Include="Controllers\HashrateController.cs" />
     <Compile Include="Controllers\ModelController.cs" />
     <Compile Include="Controllers\PriceSourceController.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Models\Filters\ExceptionHandlerFilter.cs" />
     <Compile Include="Models\GpuViewModel.cs" />
     <Compile Include="Models\Search\GmiSearchCriteriaViewModelBase.cs" />
+    <Compile Include="Models\Search\GpuPSSearchCriteriaViewModelBase.cs" />
     <Compile Include="Models\Search\GpuSearchCrietriaViewModel.cs" />
     <Compile Include="Models\Search\HashrateSearchCrietriaViewModel.cs" />
     <Compile Include="Models\Search\ModelSearchCrietriaViewModel.cs" />
@@ -345,6 +347,11 @@
     <Content Include="Views\PriceSource\_List.cshtml" />
     <Content Include="Views\PriceSource\_SearchForm.cshtml" />
     <Content Include="Views\PriceSource\Index.cshtml" />
+    <Content Include="Views\GPUPriceSource\_DeleteForm.cshtml" />
+    <Content Include="Views\GPUPriceSource\_Form.cshtml" />
+    <Content Include="Views\GPUPriceSource\_List.cshtml" />
+    <Content Include="Views\GPUPriceSource\_SearchForm.cshtml" />
+    <Content Include="Views\GPUPriceSource\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

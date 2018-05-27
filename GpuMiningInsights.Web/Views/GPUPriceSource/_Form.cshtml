@@ -1,0 +1,69 @@
+﻿@using CreaDev.Framework.Core.Resources
+@using CreaDev.Framework.Web.Mvc.Helpers
+@using CreaDev.Framework.Web.Mvc.Html.Helpers.Bootstrap
+@using GpuMiningInsights.Application.Services
+@model GPUPriceSource
+
+@{
+    var titleArabic = $"{Html.DisplayNameFor(a => a.Name)} {Common.Arabic}";
+    var titleEnglish = $"{Html.DisplayNameFor(a => a.Name)} {Common.English}";
+
+    var descArabic = $"{Html.DisplayNameFor(a => a.Desc)} {Common.Arabic}";
+    var descEnglish = $"{Html.DisplayNameFor(a => a.Desc)} {Common.English}";
+
+    var Gpus = GpuService.Instance.GetAll().ToSelectListItems(gpu => gpu.Name, gpu => gpu.Id, Model.GpuId?.ToString() ?? "", true);
+    var priceSources = PriceSourceService.Instance.GetAll().ToSelectListItems(PriceSource => PriceSource.Name, PriceSource => PriceSource.Id, Model.PriceSourceId?.ToString()??"", true);
+}
+
+@Html.HiddenFor(a => a.Id)
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Name)
+            </label>
+            @Html.TextBoxFor(a => a.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.Name, "", new { @class = "help-block" })
+        </div>
+    </div>
+    
+</div>
+<div class="row">
+   
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Gpu)
+            </label>
+            @Html.BootstrapDropDownListFor(a => a.GpuId, Gpus)
+            @Html.ValidationMessageFor(a => a.GpuId, "", new { @class = "help-block" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m=>m.PriceSource)
+            </label>
+            @Html.BootstrapDropDownListFor(a => a.PriceSourceId,priceSources)
+            @Html.ValidationMessageFor(a => a.PriceSourceId, "", new { @class = "help-block" })
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Desc)
+            </label>
+            @Html.TextAreaFor(a => a.Desc, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
