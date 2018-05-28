@@ -11,7 +11,7 @@ namespace GpuMiningInsights.Application.Services
         }
         private static void InitializeServiceLocator()
         {
-         //   ServiceLocator.Add<IEmployeeService>(EmployeeService.Instance);
+            ServiceLocator.Add<IAlgorithmService>(AlgorithmService.Instance);
         }
     }
 }

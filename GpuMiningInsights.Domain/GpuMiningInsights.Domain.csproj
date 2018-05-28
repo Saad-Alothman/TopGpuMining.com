@@ -54,6 +54,7 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Models\Algorithm.cs" />
     <Compile Include="Models\Brand.cs" />
+    <Compile Include="Models\Coin.cs" />
     <Compile Include="Models\CurrencyPricesResponse.cs" />
     <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\Gpu.cs" />

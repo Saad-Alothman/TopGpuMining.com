@@ -19,6 +19,12 @@ namespace GpuMiningInsights.Domain.Models
 
         public LocalizableText Description { get; set; }
 
+        public Algorithm()
+        {
+            this.Name = new LocalizableTextRequired();
+            this.Description = new LocalizableText();
+        }
+
         public override void Update(object objectWithNewData)
         {
             var updateData = objectWithNewData as Algorithm;

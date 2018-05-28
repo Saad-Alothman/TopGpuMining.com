@@ -32,7 +32,7 @@ namespace CreaDev.Framework.Core.Models
             foreach (var entity in entites)
             {
                 if (entity is IAuditable<TUser>)
-                    (entity as IAuditableCommon<TEntity>).InsertAudit();
+                    (entity as IAuditableCommon<TEntity>)?.InsertAudit();
                 dbSet.Add(entity);
             }
 
