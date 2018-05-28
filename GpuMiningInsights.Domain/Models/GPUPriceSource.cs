@@ -9,7 +9,7 @@ using CreaDev.Framework.Core.Resources;
 
 namespace GpuMiningInsights.Domain.Models
 {
-    public class GPUPriceSource : GmiEntityBase
+    public class GPUPriceSource  : GmiEntityBase
     {
         [Display(Name = nameof(Common.Name), ResourceType = typeof(Common))]
         public string Name { get; set; }
