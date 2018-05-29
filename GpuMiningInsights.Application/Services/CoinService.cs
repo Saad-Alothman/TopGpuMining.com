@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using CreaDev.Framework.Core.Models;
 using GpuMiningInsights.Domain.Models;
+using GpuMiningInsights.Domain.Services;
 using REME.Persistance;
 
 namespace GpuMiningInsights.Application.Services
 {
-    public class CoinService : GmiServiceBase<Coin, CoinService>
+    public class CoinService : GmiServiceBase<Coin, CoinService>, ICoinService
     {
 
         //Coins.Json
@@ -80,6 +81,11 @@ namespace GpuMiningInsights.Application.Services
                 unitOfWork.GenericRepository.Create(newCoinsToInsert);
                 unitOfWork.Commit();
             }
+        }
+
+        public override SearchResult<Coin> Search(SearchCriteria<Coin> searchCriteria)
+        {
+            return base.Search(searchCriteria);
         }
     }
 }

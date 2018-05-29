@@ -49,7 +49,7 @@ namespace GpuMiningInsights.Console
 
             }
             
-            //return;
+            return;
 
 
             // TestCurrencyApi();

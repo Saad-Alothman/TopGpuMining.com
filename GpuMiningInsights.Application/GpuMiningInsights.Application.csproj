@@ -100,6 +100,7 @@
     <Compile Include="Services\GpusInsightsReportService.cs" />
     <Compile Include="Services\HashrateService.cs" />
     <Compile Include="Services\IAlgorithmService.cs" />
+    <Compile Include="Services\ICoinService.cs" />
     <Compile Include="Services\Insighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ModelService.cs" />

@@ -74,6 +74,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ICoinService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CreaDev.Framework.Core\CreaDev.Framework.Core.csproj">
@@ -92,8 +93,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
