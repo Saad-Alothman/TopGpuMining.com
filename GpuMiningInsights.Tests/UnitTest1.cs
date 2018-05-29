@@ -18,6 +18,7 @@ namespace GpuMiningInsights.Tests
             try
             {
                 GmiApp.Initialize();
+                ApiLayerService.LoadCurrencies();
                 var coin =WhatToMineService.GetCoinInfo(1);
 
             }

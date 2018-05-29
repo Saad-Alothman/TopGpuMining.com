@@ -86,12 +86,14 @@
     <Compile Include="Identity\Extension.cs" />
     <Compile Include="Identity\GmiUserManager.cs" />
     <Compile Include="Services\AlgorithmService.cs" />
+    <Compile Include="ExternalServices\ApiLayerService.cs" />
     <Compile Include="Services\Base\GenericService.cs" />
     <Compile Include="Services\Base\GmiServiceBase.cs" />
     <Compile Include="Services\Base\IGmiServiceBase.cs" />
     <Compile Include="Services\BrandService.cs" />
     <Compile Include="CHRSApp.cs" />
     <Compile Include="Services\CoinService.cs" />
+    <Compile Include="Services\FiatCurrencyService.cs" />
     <Compile Include="Services\GPUPriceSourceService.cs" />
     <Compile Include="Services\GpuService.cs" />
     <Compile Include="Services\HashrateService.cs" />
@@ -100,7 +102,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ModelService.cs" />
     <Compile Include="Services\PriceSourceService.cs" />
-    <Compile Include="Services\WhatToMineService.cs" />
+    <Compile Include="ExternalServices\WhatToMineService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CreaDev.Framework.Core\CreaDev.Framework.Core.csproj">

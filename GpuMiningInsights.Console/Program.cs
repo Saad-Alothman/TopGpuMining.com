@@ -36,8 +36,9 @@ namespace GpuMiningInsights.Console
         {
             GmiApp.Initialize();
             //TEST ONLY
-            
+
             //var coin = WhatToMineService.GetCoinInfo(1);
+            FiatCurrencyService.Instance.AddOrUpdate();
 
             return;
 

@@ -352,7 +352,7 @@ namespace GpuMiningInsights.Application.Services
         {
             foreach (var priceSource in gpuOld.PriceSources)
             {
-                var priceSourceItems =GetPrice(gpuOld, priceSource);
+                var priceSourceItems = GetPrice(gpuOld, priceSource);
                 priceSource.PriceSourceItems.AddRange(priceSourceItems);
             }
             //Calculate USD Price
@@ -406,7 +406,7 @@ namespace GpuMiningInsights.Application.Services
                 };
                 if (!string.IsNullOrWhiteSpace(imageUrl))
                     priceSourceItem.ImageUrl = imageUrl;
-                
+
                 priceSourceItems.Add(priceSourceItem);
 
             }

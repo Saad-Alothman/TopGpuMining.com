@@ -57,6 +57,7 @@
     <Compile Include="Models\Coin.cs" />
     <Compile Include="Models\CurrencyPricesResponse.cs" />
     <Compile Include="Models\ErrorLog.cs" />
+    <Compile Include="Models\FiatCurrency.cs" />
     <Compile Include="Models\Gpu.cs" />
     <Compile Include="Models\GPUOld.cs" />
     <Compile Include="Models\GPUPriceSource.cs" />
@@ -88,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
