@@ -55,7 +55,7 @@ namespace GpuMiningInsights.Console
             //int hashRatePowerMega = 88;
             //double blockReward = 2.91;
             //double DifficultyMega = 3287008653;//3,287,008,653;
-
+            
             //double perDay = CryptoUtils.CalculateCoinRevenuePerDay(hashRatePowerMega, DifficultyMega, blockReward);
             //int currentUsdExchangeRate = 600;
             //double perDayUsd = perDay *currentUsdExchangeRate ;
