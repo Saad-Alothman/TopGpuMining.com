@@ -34,7 +34,12 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
-              
+            GmiApp.Initialize();
+            //TEST ONLY
+            CoinService.Instance.AddOrUpdateCoins();
+            return;
+
+
             // TestCurrencyApi();
             string searchTerm = "B06Y15M48C,B06Y144RLK,B06ZYC3SW1";// "B071Y7CKM2";
                                                                    // var resultttt2US = AmazonService.SearchItemLookupOperation(searchTerm, Nager.AmazonProductAdvertising.AmazonEndpoint.US);

@@ -88,15 +88,19 @@
     <Compile Include="Services\AlgorithmService.cs" />
     <Compile Include="Services\Base\GenericService.cs" />
     <Compile Include="Services\Base\GmiServiceBase.cs" />
+    <Compile Include="Services\Base\IGmiServiceBase.cs" />
     <Compile Include="Services\BrandService.cs" />
     <Compile Include="CHRSApp.cs" />
+    <Compile Include="Services\CoinService.cs" />
     <Compile Include="Services\GPUPriceSourceService.cs" />
     <Compile Include="Services\GpuService.cs" />
     <Compile Include="Services\HashrateService.cs" />
+    <Compile Include="Services\IAlgorithmService.cs" />
     <Compile Include="Services\Insighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ModelService.cs" />
     <Compile Include="Services\PriceSourceService.cs" />
+    <Compile Include="Services\WhatToMineService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CreaDev.Framework.Core\CreaDev.Framework.Core.csproj">
