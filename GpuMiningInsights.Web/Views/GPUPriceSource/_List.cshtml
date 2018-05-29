@@ -1,4 +1,4 @@
-﻿@model SearchResult<PriceSource>
+﻿@model SearchResult<GPUPriceSource>
 
 @using CreaDev.Framework.Core.Extensions
 @using CreaDev.Framework.Core.Resources
@@ -16,7 +16,7 @@
 
 
     //settings
-    string itemName = "priceSource";
+    string itemName = "gPUPriceSource";
     string itemNameUpperFirstLetter = itemName.ToProperCaseTowWords();
     string controllerName = itemNameUpperFirstLetter;
 
@@ -25,14 +25,14 @@
     string editFormSelector = $"#edit-{itemName}-form-div";
     string deleteFormSelector = $"#delete-{itemName}-form-div";
     //Example showEditGpu();
-    string editPriceSourceJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
-    string deletePriceSourceJavascriptMethod = $"showDelete{itemName.ToProperCaseTowWords()}()";
+    string editGpuPSJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
+    string deleteGpuPSJavascriptMethod = $"showDelete{itemName.ToProperCase()}()";
 
-    var searchCrietriaViewModel = new PriceSourceSearchCrieteriaViewModel();
+    var searchCrietriaViewModel = new GpuPSSearchCriteriaViewModelBase();
     // usually this is null the first time entering the page
     if (ViewData[Constants.SEARCH_MODEL] != null)
     {
-        searchCrietriaViewModel = ViewData[Constants.SEARCH_MODEL] as PriceSourceSearchCrieteriaViewModel;
+        searchCrietriaViewModel = ViewData[Constants.SEARCH_MODEL] as GpuPSSearchCriteriaViewModelBase;
     }
 }
 @if (Model?.Result?.Any() ?? false)
@@ -47,18 +47,9 @@
                     @Html.DisplayNameFor(a => a.Result.First().Name)
                 </th>
 
-	            <th>
-		            @Html.DisplayNameFor(a => a.Result.First().Url)
-	            </th>
-	            <th>
-		            @Html.DisplayNameFor(a => a.Result.First().IsScrape)
-	            </th>
-	            <th>
-		            @Html.DisplayNameFor(a => a.Result.First().RequiresJavascript)
-	            </th>
-	            <th>
-		            @Html.DisplayNameFor(a => a.Result.First().PriceSourceType)
-	            </th>
+                <th>
+                    @Html.DisplayNameFor(a => a.Result.First().Desc)
+                </th>
                 @* END Model specific Headers *@
 
 
@@ -75,31 +66,21 @@
                 <td>
                     @(item.Name?.ToString())
                 </td>
-	            <td>
-		            @(item.Url?.ToString())
-	            </td>
-	            <td>
-		            @(item.IsScrape.ToString())
-	            </td>
-	            <td>
-		            @(item.RequiresJavascript.ToString())
-	            </td>
-				
-	            <td>
-		            @(item.PriceSourceType.ToString())
-	            </td>
-	            @* END Model specific columns *@
+                <td>
+                    @(item.Desc?.ToString())
+                </td>
+                @* END Model specific columns *@
 
                 <td>
 
 
-                    <a href="@Url.Action("Edit", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(editFormSelector, listSelector, onCompleteMethod: $"{editPriceSourceJavascriptMethod};"))
+                    <a href="@Url.Action("Edit", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(editFormSelector, listSelector, onCompleteMethod: $"{editGpuPSJavascriptMethod};"))
                        class="btn btn-primary green">
                         <i class="fa fa-edit"></i>
                         @Common.Edit
                     </a>
 
-                    <a href="@Url.Action("Delete", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(deleteFormSelector, listSelector, httpMethod: FormMethod.Get, onCompleteMethod: $"{deletePriceSourceJavascriptMethod};"))
+                    <a href="@Url.Action("Delete", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(deleteFormSelector, listSelector, httpMethod: FormMethod.Get, onCompleteMethod: $"{deleteGpuPSJavascriptMethod};"))
                        class="btn btn-danger">
                         <i class="fa fa-remove"></i>
                         @Common.Delete

@@ -1,4 +1,7 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Routing;
 using CreaDev.Framework.Core.Helpers;
 using CreaDev.Framework.Core.Models;
@@ -6,9 +9,10 @@ using GpuMiningInsights.Domain.Models;
 
 namespace GpuMiningInsights.Web.Models.Search
 {
-    public class PriceSourceSearchCrieteriaViewModel: GmiSearchCriteriaViewModelBase<PriceSource>
+    public class GpuPSSearchCriteriaViewModelBase : GmiSearchCriteriaViewModelBase<GPUPriceSource>
     {
         public string Name { get; set; }
+
         public override RouteValueDictionary ToRouteValueDictionary(int page, string prefix = "")
         {
             //Get The Base Values
@@ -17,16 +21,16 @@ namespace GpuMiningInsights.Web.Models.Search
             ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => routeValueDictionary.Add(nameof(Name), Name));
 
             return routeValueDictionary;
-
         }
 
-        public override SearchCriteria<PriceSource> ToSearchCriteria()
+        public override SearchCriteria<GPUPriceSource> ToSearchCriteria()
         {
             //Get base Values
 
-            SearchCriteria<PriceSource> searchCriteria = base.ToSearchCriteria();
+            SearchCriteria<GPUPriceSource> searchCriteria = base.ToSearchCriteria();
 
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AndCondition(priceSource => priceSource.Name.Contains(Name)));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name),
+                () => searchCriteria.AndCondition(gpuPriceSource => gpuPriceSource.Name.Contains(Name)));
 
             return searchCriteria;
         }

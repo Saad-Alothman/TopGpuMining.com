@@ -2,14 +2,14 @@
 @using CreaDev.Framework.Core.Resources
 @using GpuMiningInsights.Domain.Models
 @using GpuMiningInsights.Web.Models.Search
-@model CreaDev.Framework.Core.Models.SearchResult<GpuMiningInsights.Domain.Models.PriceSource>
+@model CreaDev.Framework.Core.Models.SearchResult<GpuMiningInsights.Domain.Models.GPUPriceSource>
 
 
 
 @{
     ViewBag.Name = "Index";
-    string itemName = "priceSource";
-    string itemDisplayName= "Price Source";
+    string itemName = "gPUPriceSource";
+    string itemDisplayName= "GPU Price Source";
     string itemNameUpperFirstLetter = itemName.ToProperCaseTowWords();
     string controllerName = itemNameUpperFirstLetter;
     string panelSelector = $"#{itemName}-list-panel";
@@ -47,7 +47,7 @@
     <div class="panel-heading">
         <h4 style="display: inline-block">@itemDisplayName </h4>
         <div style="float: right">
-            <button type="button" class="btn btn-primary" onclick="showAddPriceSource()">
+            <button type="button" class="btn btn-primary" onclick="showAddGPUPriceSource()">
                 + @Common.Add
             </button>
         </div>
@@ -62,7 +62,7 @@
                 UpdateTargetId = listId
             }, new { id = "form-search", @class = "auto-search" }))
             {
-                @Html.Partial("_SearchForm", new PriceSourceSearchCrieteriaViewModel())
+                @Html.Partial("_SearchForm", new GpuPSSearchCriteriaViewModelBase())
                 <br />
                 <button type="submit" class="btn green btn-block">
                     @Common.Search
@@ -103,7 +103,7 @@
 
                 <div class="modal-body">
                     <div id="@addItemAlert"></div>
-                    @Html.Partial("_Form", new PriceSource())
+                    @Html.Partial("_Form", new GPUPriceSource())
                 </div>
 
                 <div class="modal-footer">
@@ -130,7 +130,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content" id="@editItemDivId">
 
-            @using (Ajax.BeginForm("Update", "PriceSource", new { }, new AjaxOptions()
+            @using (Ajax.BeginForm("Update", "GPUPriceSource", new { }, new AjaxOptions()
             {
                 OnBegin = $"block('#{editItemDivId}')",
                 OnComplete = $"onAjaxComplete(xhr, status, '#{editItemDivId}', '#{editItemAlertId}', '#{listId}')",
@@ -147,7 +147,7 @@
                     <div id="@editItemAlertId"></div>
 
                     <div id="@editItemFormDivId">
-                        @Html.Partial("_Form", new PriceSource())
+                        @Html.Partial("_Form", new GPUPriceSource())
                     </div>
                 </div>
 
@@ -174,7 +174,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content" id="@deleteItemDivId">
 
-            @using (Ajax.BeginForm("Delete", "PriceSource", new { }, new AjaxOptions()
+            @using (Ajax.BeginForm("Delete", "GPUPriceSource", new { }, new AjaxOptions()
             {
                 OnBegin = $"block('#{deleteItemDivId}')",
                 OnComplete = $"onAjaxComplete(xhr, status, '#{deleteItemDivId}', '#{deleteItemAlertId}', '#{listId}')",
@@ -191,7 +191,7 @@
                     <div id="@deleteItemAlertId"></div>
 
                     <div id="@deleteItemFormDivId">
-                        @Html.Partial("_DeleteForm", new PriceSource())
+                        @Html.Partial("_DeleteForm", new GPUPriceSource())
                     </div>
                 </div>
 
@@ -212,28 +212,27 @@
 
 @section scripts{
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
-        @{
+		@{
 			string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
-			//string addFunctionName = "showaddPricesource";
 			string editFunctionName = $"showEdit{itemNameUpperFirstLetter}";
 			string deleteFunctionName = $"showDelete{itemNameUpperFirstLetter}";
-        }
-        function @(addFunctionName)() {
+		}
+		function @(addFunctionName)() {
 
-            $("#@addItemModalId").modal('show');
-        }
+			$("#@addItemModalId").modal('show');
+		}
 
-        function @(editFunctionName)() {
+		function @(editFunctionName)() {
 
-            $("#@editItemModalId").modal('show');
-        }
+			$("#@editItemModalId").modal('show');
+		}
 
-        function @(deleteFunctionName)() {
-            $("#@deleteItemAlertId").html('');
-            $("#@deleteItemModalId").modal('show');
-        }
+		function @(deleteFunctionName)() {
+			$("#@deleteItemAlertId").html('');
+			$("#@deleteItemModalId").modal('show');
+		}
 
 
        
@@ -241,5 +240,6 @@
      
 
       
-</script>
+	</script>
 }
+

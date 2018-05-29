@@ -92,6 +92,7 @@
     <Compile Include="Services\BrandService.cs" />
     <Compile Include="CHRSApp.cs" />
     <Compile Include="Services\CoinService.cs" />
+    <Compile Include="Services\GPUPriceSourceService.cs" />
     <Compile Include="Services\GpuService.cs" />
     <Compile Include="Services\HashrateService.cs" />
     <Compile Include="Services\IAlgorithmService.cs" />
