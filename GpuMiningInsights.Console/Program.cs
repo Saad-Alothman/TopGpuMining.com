@@ -36,7 +36,9 @@ namespace GpuMiningInsights.Console
         {
             GmiApp.Initialize();
             //TEST ONLY
-            CoinService.Instance.AddOrUpdateCoins();
+            
+            //var coin = WhatToMineService.GetCoinInfo(1);
+
             return;
 
 

@@ -12,10 +12,14 @@ namespace GpuMiningInsights.Application.Services
 {
     public static class WhatToMineService
     {
-        public static List<Coin> GetAllCoins()
+        public static List<Coin> GetAllCoinsFromCalculators()
         {
             List<Coin> allCoins = new List<Coin>();
-            string coinsUrl = "https://whattomine.com/coins.json";// "https://whattomine.com/calculators.json";
+            /*
+             this has all coins "https://whattomine.com/calculators.json", but limited coin info , example
+             "id":74,"tag":"365","algorithm":"Keccak","lagging":true,"listed":false,"status":"No available stats","testing":false
+             */
+            string coinsUrl = "https://whattomine.com/calculators.json";//"https://whattomine.com/coins.json";// 
             string response = InsighterService.GetHttpResponseText(coinsUrl);
             //  var values = CreaDev.Framework.Core.Utils.Serialization.DeSerialize<Dictionary<string, string>>(response);
             JObject json = JObject.Parse(response);
@@ -31,6 +35,50 @@ namespace GpuMiningInsights.Application.Services
 
             return allCoins;
         }
+        public static List<Coin> GetCoinsInfoFromCoinsJson()
+        {
+            List<Coin> allCoins = new List<Coin>();
+            /*
+             this has all coins "https://whattomine.com/calculators.json", but limited coin info , example
+             "id":74,"tag":"365","algorithm":"Keccak","lagging":true,"listed":false,"status":"No available stats","testing":false
+             */
+            string coinsUrl = "https://whattomine.com/coins.json";
+            string response = InsighterService.GetHttpResponseText(coinsUrl);
+            //  var values = CreaDev.Framework.Core.Utils.Serialization.DeSerialize<Dictionary<string, string>>(response);
+            JObject json = JObject.Parse(response);
+            JToken coinsjson = json.SelectToken("coins");
+            foreach (JToken property in coinsjson.Children())
+            {
+                JProperty p = property as JProperty;
+                string coinName = p.Name;
+                string values = p.Value.ToString();
+                WhatToMineCoinResponse whatToMineCoinResponse = CreaDev.Framework.Core.Utils.Serialization.DeSerialize<WhatToMineCoinResponse>(values);
+                allCoins.Add(whatToMineCoinResponse.ToCoin(coinName));
+            }
+
+            return allCoins;
+        }
+
+        public static Coin GetCoinInfo(int coinWhatToMineId)
+        {
+            //Note that coins it could throw an error if not active!
+            //{"errors":["Could not find active coin with id 74"]}
+            try
+            {
+                string coinUrl = $"https://whattomine.com/coins/{coinWhatToMineId}.json";
+                string response = InsighterService.GetHttpResponseText(coinUrl);
+                //  var values = CreaDev.Framework.Core.Utils.Serialization.DeSerialize<Dictionary<string, string>>(response);
+                WhatToMineCoinResponse whatToMineCoinResponse = CreaDev.Framework.Core.Utils.Serialization.DeSerialize<WhatToMineCoinResponse>(response);
+
+                return whatToMineCoinResponse.ToCoin(whatToMineCoinResponse.name);
+            }
+            catch
+            {
+            }
+
+            return null;
+
+        }
     }
 
     public class WhatToMineCoinResponse
@@ -44,7 +92,7 @@ namespace GpuMiningInsights.Application.Services
         public int last_block { get; set; }
         public double difficulty { get; set; }
         public double difficulty24 { get; set; }
-        public long nethash { get; set; }
+        public double nethash { get; set; }
         public double exchange_rate { get; set; }
         public double exchange_rate24 { get; set; }
         public double exchange_rate_vol { get; set; }
@@ -59,6 +107,18 @@ namespace GpuMiningInsights.Application.Services
         public bool lagging { get; set; }
         public int timestamp { get; set; }
 
+        //These are found when querying specific coin
+        public string name { get; set; }
+        public double block_reward3 { get; set; }
+        public double block_reward7 { get; set; }
+        public double difficulty3 { get; set; }
+        public double difficulty7 { get; set; }
+        public double exchange_rate7 { get; set; }
+        public string pool_fee { get; set; }
+        public string revenue { get; set; }
+        public string cost { get; set; }
+        public string profit { get; set; }
+        public string status { get; set; }
         public Coin ToCoin(string name)
         {
             Coin coin = new Coin() { Name = name };

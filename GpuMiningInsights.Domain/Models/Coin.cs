@@ -59,7 +59,7 @@ namespace GpuMiningInsights.Domain.Models
         public int LastBlock { get; set; }
         public double Difficulty { get; set; }
         public double Difficulty24 { get; set; }
-        public long Nethash { get; set; }
+        public double Nethash { get; set; }
         public double ExchangeRate { get; set; }
         public double ExchangeRate24 { get; set; }
         public double ExchangeRateVol { get; set; }
