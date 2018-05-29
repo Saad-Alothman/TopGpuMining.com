@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using CreaDev.Framework.Core.Models;
 using CreaDev.Framework.Core.Resources;
 
@@ -14,6 +15,7 @@ namespace GpuMiningInsights.Domain.Models
 
         public LocalizableText Description { get; set; }
 
+        public List<Hashrate> HashRates { get; set; }
         //private List<GPU> Gpus { get; set; }
         public override void Update(object objectWithNewData)
         {

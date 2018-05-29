@@ -80,7 +80,7 @@ namespace GpuMiningInsights.Tests
             PriceSourceOld priceSource = new PriceSourceOld()
             {
                 PriceSourceItemIdentifier = asinNumber,
-                PriceSourceAction = AmazonService.SearchItemLookupOperation
+                PriceSourceAction = AmazonService.SearchItemLookupOperationOld
             };
             GPUOld gpuOld= new GPUOld()
             {

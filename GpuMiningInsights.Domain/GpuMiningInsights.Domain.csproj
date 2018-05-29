@@ -61,11 +61,13 @@
     <Compile Include="Models\Gpu.cs" />
     <Compile Include="Models\GPUOld.cs" />
     <Compile Include="Models\GPUPriceSource.cs" />
+    <Compile Include="Models\GpusInsightsReport.cs" />
     <Compile Include="Models\HashPricePerSource.cs" />
     <Compile Include="Models\Hashrate.cs" />
     <Compile Include="Models\MiningProfitability.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\PriceSource.cs" />
+    <Compile Include="Models\PriceSourceItem.cs" />
     <Compile Include="Models\PriceSourceOld.cs" />
     <Compile Include="Models\GmiEntityBase.cs" />
     <Compile Include="Models\PriceSourceType.cs" />

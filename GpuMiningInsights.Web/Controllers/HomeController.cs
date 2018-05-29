@@ -29,7 +29,12 @@ namespace GpuMiningInsights.Web.Controllers
             ClientGpuListData clientGpuListData = LoadClientGpuListData();
             return View(clientGpuListData);
         }
-
+        public ActionResult IndexNew()
+        {
+            var report =GpusInsightsReportService.Instance.GetLatestReport();
+            return View(report);
+        }
+        
         private ClientGpuListData LoadClientGpuListData(bool loadDummyOnNoData = true)
         {
             ClientGpuListData clientGpuListData = null;
@@ -109,7 +114,7 @@ namespace GpuMiningInsights.Web.Controllers
             PriceSourceOld priceSource = new PriceSourceOld()
             {
                 PriceSourceItemIdentifier = asinNumber,
-                PriceSourceAction = AmazonService.SearchItemLookupOperation
+                PriceSourceAction = AmazonService.SearchItemLookupOperationOld
             };
 
             GPUOld gpuOld = new GPUOld()
@@ -118,7 +123,7 @@ namespace GpuMiningInsights.Web.Controllers
 
             };
 
-            List<PriceSourceItem> priceSourceItems = InsighterService.GetPrice(gpuOld, priceSource);
+            List<PriceSourceItemOld> priceSourceItems = InsighterService.GetPrice(gpuOld, priceSource);
             return Json(priceSourceItems.FirstOrDefault(), JsonRequestBehavior.AllowGet);
         }
     }

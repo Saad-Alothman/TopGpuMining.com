@@ -21,7 +21,9 @@ namespace GpuMiningInsights.Persistance
         public virtual DbSet<GPUPriceSource> GpuPriceSources { get; set; }
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
         public virtual DbSet<FiatCurrency> FiatCurrencies { get; set; }
+        public virtual DbSet<GpusInsightsReport> GpusInsightsReports { get; set; }
         
+
         public GmiContext() : base("DefaultConnection")
         {
             this.Configuration.ProxyCreationEnabled = false;

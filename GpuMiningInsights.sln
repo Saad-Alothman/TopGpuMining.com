@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Domain", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Tests", "GpuMiningInsights.Tests\GpuMiningInsights.Tests.csproj", "{6BE53435-6166-4E71-8D7A-F4F8641F02C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpuMiningInsights.Scheduling.Console", "GpuMiningInsights.Scheduling.Console\GpuMiningInsights.Scheduling.Console.csproj", "{982D8714-519D-4ECD-BDF1-FC711869FAC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,12 @@ Global
 		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Demo|Any CPU.Build.0 = Debug|Any CPU
 		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE53435-6166-4E71-8D7A-F4F8641F02C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{982D8714-519D-4ECD-BDF1-FC711869FAC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{982D8714-519D-4ECD-BDF1-FC711869FAC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{982D8714-519D-4ECD-BDF1-FC711869FAC4}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
+		{982D8714-519D-4ECD-BDF1-FC711869FAC4}.Demo|Any CPU.Build.0 = Debug|Any CPU
+		{982D8714-519D-4ECD-BDF1-FC711869FAC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{982D8714-519D-4ECD-BDF1-FC711869FAC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

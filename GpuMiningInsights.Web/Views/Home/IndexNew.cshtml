@@ -1,0 +1,175 @@
+﻿@using GpuMiningInsights.Web.Models
+@using GpuMiningInsights.Core;
+@using Newtonsoft.Json
+@using System.Configuration
+@model GpusInsightsReport
+
+@{
+    ViewBag.Title = "Best GPUs for mining";
+    string lastUpdate = Model.Date;
+
+}
+
+<br />
+<br />
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div style="display:inline-block;width:100%;scroll-x:auto">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    @*
+
+                                System.Console.WriteLine($"GPU {gpuName} ,
+                                ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd},
+                                Revenue ($/Day) = {item.RevenuePerDayUsd},
+                                Profit ($/Day) = {item.ProfitPerDayUsd}  ,
+                                HashRate = {item.Hashrate},
+                                HashCost = {hashPrice},
+                                FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
+
+                        ($"GPU {gpuName} HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");*@
+
+
+                    <tr>
+                        <th>GPU</th>
+                        <th>Revenue ($/Day)</th>
+                        <th>Profit ($/Day)</th>
+                        <th>Profit(Minus GPU Cost Usd)/Year </th>
+                        <th>Hashrate</th>
+                        <th>Price USD</th>
+                        <th>Revenue</th>
+                        <th>ROI</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.GpuInsightReports.Count; i++)
+                    {
+                        GpuInsightReport gpuInsightReport = Model.GpuInsightReports[i];
+
+                        Gpu gpuOld = gpuInsightReport.Gpu;
+                        int index = i;
+                        double? lowestGpuPriceUsd = gpuInsightReport.LowestPriceSourceItem?.PriceUSD;
+                        double annualRevenue = gpuOld.AnnualRevenue;
+
+                        string roistyle = gpuOld.ROI >= 0 ? "" : "style=\"color:#de6c6c\"";
+                        if (gpuOld.ROI > 30)
+                        {
+                            roistyle = "style=\"color:#0fc304\"";
+                        }
+                        <tr>
+                            <td>@gpuOld.Name</td>
+                            <td>@gpuOld.RevenuePerDayUsd</td>
+                            <td>@gpuOld.ProfitPerDayUsd</td>
+                            <td>@gpuOld.ProfitPerYearMinusCostUsd</td>
+                            <td>@gpuOld.Hashrate</td>
+                            <td>@gpuPriceFromSource @currency </td>
+                            <td>@lowestGpuPriceUsd $</td>
+                            <td>@annualRevenue </td>
+                            <td @Html.Raw(roistyle)>@(gpuOld.ROI) %</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options!</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+
+
+            </table>
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-offset-6 col-md-6" id="price-details-div">
+
+            </div>
+        </div>
+        <div class="hidden">
+            @for (int i = 0; i < Model.Gpus.Count; i++)
+            {
+                GPUOld gpuOld = Model.Gpus[i];
+                <h3></h3>
+                <table class="table table-bordered table-striped" id="gpuprices-@i">
+                    <caption>
+                        Buying options for @gpuOld.Name
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>GPU</th>
+                            <th>Price</th>
+                            <th>Price (USD)</th>
+                            <th>From</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var priceSource in gpuOld.PriceSources)
+                        {
+                            foreach (var priceSourceItem in priceSource.PriceSourceItems)
+                            {
+                                string name = priceSourceItem.Name;
+                                name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
+                                <tr>
+                                    <td>
+                                        <a href="@priceSourceItem.URL">
+                                            @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
+                                            {
+                                                <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
+                                            }
+                                            @name
+                                        </a>
+                                    </td>
+                                    <td>@priceSourceItem.Price @priceSourceItem.PriceCurrency</td>
+                                    <td>@priceSourceItem.PriceUSD $ </td>
+                                    <td>@priceSource.Name </td>
+                                    <td>
+                                        <a href="@priceSourceItem.URL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSource.Name!</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            }
+        </div>
+
+    </div>
+
+</div>
+
+<div class="jumbotron">
+    <h1>Top GPU Mining</h1>
+    <br />
+    <p class="lead">
+        Top GPU Mining provides you with the right information for getting the best GPUs that are most profitable for mining, by considering various parameters.
+    </p>
+    <p>
+        Last Update : @lastUpdate &nbsp;
+        
+    </p>
+</div>
+<p>
+    by <a href="https://stackoverflow.com/users/690785/saad-alothman">Saad Alothman</a> - <a href="https://twitter.com/saad_o77">@@saad_o77</a>
+    <br />
+    Email: me@saadalothman.com
+
+    <br />
+
+    Hash rates info from : http://www.whattomine.com
+
+    Version Number: @ConfigurationManager.AppSettings["VersionNumber"]
+</p>
+
+@section scripts
+{
+    <script>
+        function onBuyNowClick(i) {
+            $('#price-details-div').html($('#gpuprices-' + i).clone());
+        }
+    </script>
+
+}

@@ -18,7 +18,7 @@ namespace GpuMiningInsights.Web.Controllers
             PriceSourceOld priceSource = new PriceSourceOld()
             {
                 PriceSourceItemIdentifier = asinNumber,
-                PriceSourceAction = AmazonService.SearchItemLookupOperation
+                PriceSourceAction = AmazonService.SearchItemLookupOperationOld
             };
 
             GPUOld gpuOld = new GPUOld()
@@ -27,7 +27,7 @@ namespace GpuMiningInsights.Web.Controllers
 
             };
 
-            List<PriceSourceItem> priceSourceItems = InsighterService.GetPrice(gpuOld, priceSource);
+            List<PriceSourceItemOld> priceSourceItems = InsighterService.GetPrice(gpuOld, priceSource);
             string data = string.Empty;
             if (priceSourceItems.FirstOrDefault() != null)
                 data = CreaDev.Framework.Core.Utils.Serialization.SerializeJavaScript(priceSourceItems.FirstOrDefault());

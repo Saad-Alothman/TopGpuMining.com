@@ -131,7 +131,7 @@ namespace GpuMiningInsights.Application.Services
             var pricesDictResponse = JsonConvert.DeserializeObject<CurrencyPricesResponse>(respomseText);
             pricesDict = pricesDictResponse.quotes;
         }
-        private static void FillUSDPrice(PriceSourceItem priceSourceItem)
+        private static void FillUSDPrice(PriceSourceItemOld priceSourceItem)
         {
 
             if (priceSourceItem == null || priceSourceItem.Price <= 0 || string.IsNullOrWhiteSpace(priceSourceItem.PriceCurrency))
@@ -362,14 +362,14 @@ namespace GpuMiningInsights.Application.Services
             }
         }
 
-        public static List<PriceSourceItem> GetPrice(GPUOld gpuOld, PriceSourceOld priceSource)
+        public static List<PriceSourceItemOld> GetPrice(GPUOld gpuOld, PriceSourceOld priceSource)
         {
-            List<PriceSourceItem> priceSourceItems = new List<PriceSourceItem>();
+            List<PriceSourceItemOld> priceSourceItems = new List<PriceSourceItemOld>();
             WriteLine($"Getting Price From {priceSource.Name} For GPU {gpuOld.Name}");
             //is it an api or something, else we are going to scrape the shit out of it...
             if (priceSource.PriceSourceAction != null)
             {
-                List<PriceSourceItem> result = priceSource.PriceSourceAction.Invoke(priceSource.PriceSourceItemIdentifier);
+                List<PriceSourceItemOld> result = priceSource.PriceSourceAction.Invoke(priceSource.PriceSourceItemIdentifier);
                 priceSourceItems.AddRange(result);
 
             }
@@ -397,7 +397,7 @@ namespace GpuMiningInsights.Application.Services
                     currency = "SAR";
                 }
 
-                PriceSourceItem priceSourceItem = new PriceSourceItem()
+                PriceSourceItemOld priceSourceItem = new PriceSourceItemOld()
                 {
                     Name = nameText,
                     Price = double.Parse(PriceText),
@@ -424,7 +424,7 @@ namespace GpuMiningInsights.Application.Services
             {
                 foreach (var psources in item.PriceSources.Where(s => s.Name.ToLower().Contains("amazon")))
                 {
-                    psources.PriceSourceAction = AmazonService.SearchItemLookupOperation;
+                    psources.PriceSourceAction = AmazonService.SearchItemLookupOperationOld;
                 }
             }
             Gpus = gpus;

@@ -352,6 +352,7 @@
     <Content Include="Views\GPUPriceSource\_List.cshtml" />
     <Content Include="Views\GPUPriceSource\_SearchForm.cshtml" />
     <Content Include="Views\GPUPriceSource\Index.cshtml" />
+    <Content Include="Views\Home\IndexNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

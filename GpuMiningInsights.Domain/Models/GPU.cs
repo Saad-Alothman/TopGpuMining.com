@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using CreaDev.Framework.Core.Models;
 using CreaDev.Framework.Core.Resources;
 
@@ -23,6 +24,7 @@ namespace GpuMiningInsights.Domain.Models
         public string Ean { get; set; }
         public string ImageUrl { get; set; }
 
+        public List<GPUPriceSource> GPUPriceSources { get; set; }
 
         public override void Update(object objectWithNewData)
         {

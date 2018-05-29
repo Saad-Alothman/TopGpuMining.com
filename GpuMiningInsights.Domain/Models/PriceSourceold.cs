@@ -25,18 +25,18 @@ namespace GpuMiningInsights.Domain.Models
     {
         public PriceSourceOld()
         {
-            this.PriceSourceItems = new List<PriceSourceItem>();
+            this.PriceSourceItems = new List<PriceSourceItemOld>();
         }
         public string Name { get; set; }
         public string URL { get; set; }
         public string Selector { get; set; }
         public string ImageUrl { get; set; }
         public string ImageUrlSelector { get; set; }
-        public PriceSourceItem LowestPriceSourceItem
+        public PriceSourceItemOld LowestPriceSourceItem
         {
             get
             {
-                PriceSourceItem priceSourceItem = null;
+                PriceSourceItemOld priceSourceItem = null;
                 if (PriceSourceItems == null || !PriceSourceItems.Any())
                 {
                     return priceSourceItem;
@@ -58,16 +58,16 @@ namespace GpuMiningInsights.Domain.Models
                 return priceSourceItem;
             }
         }
-        public List<PriceSourceItem> PriceSourceItems { get; set; }
+        public List<PriceSourceItemOld> PriceSourceItems { get; set; }
         public bool RequiresJavascript { get; set; }
         [JsonIgnore]
-        public Func<string, List<PriceSourceItem>> PriceSourceAction { get; set; }
+        public Func<string, List<PriceSourceItemOld>> PriceSourceAction { get; set; }
         public string PriceSourceItemIdentifier { get; set; }
         public string ItemNameSelector { get; set; }
 
         public void AddPriceSourceItem(string price, string nameText, string currency)
         {
-            PriceSourceItem priceSourceItem = new PriceSourceItem()
+            PriceSourceItemOld priceSourceItem = new PriceSourceItemOld()
             {
                 Name = nameText,
                 Price = double.Parse(price),
@@ -78,7 +78,7 @@ namespace GpuMiningInsights.Domain.Models
         }
         public void AddPriceSourceItem(string price,string nameText, string currency, string imageUrl)
         {
-            PriceSourceItem priceSourceItem = new PriceSourceItem()
+            PriceSourceItemOld priceSourceItem = new PriceSourceItemOld()
             {
                 Name = nameText,
                 Price = double.Parse(price),
@@ -94,7 +94,7 @@ namespace GpuMiningInsights.Domain.Models
         }
     }
 
-    public class PriceSourceItem
+    public class PriceSourceItemOld
     {
         public string Name { get; set; }
         public string URL { get; set; }

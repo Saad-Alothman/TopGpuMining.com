@@ -34,13 +34,22 @@ namespace GpuMiningInsights.Console
 
         static void Main(string[] args)
         {
-            GmiApp.Initialize();
-            //TEST ONLY
+            try
+            {
+                GmiApp.Initialize();
+                //TEST ONLY
 
-            //var coin = WhatToMineService.GetCoinInfo(1);
-            FiatCurrencyService.Instance.AddOrUpdate();
+                //CoinService.Instance.AddOrUpdate();
+                //FiatCurrencyService.Instance.AddOrUpdate();
+                var report =GpuInsightsService.GenerateReport();
+                GpusInsightsReportService.Instance.Add(report);
+            }
+            catch (Exception ex)
+            {
 
-            return;
+            }
+            
+            //return;
 
 
             // TestCurrencyApi();
