@@ -86,7 +86,7 @@ namespace GpuMiningInsights.Domain.Models
                     else
                     {
                         double exchangeRate = coinService.GetLiveUsdExchangeRate(coin.Tag);
-                        coinService.UpdateUsdExchangeRate(exchangeRate);
+                        coinService.UpdateUsdExchangeRate(coin.Id,exchangeRate);
                         revenuePerDayUsd = CryptoUtils.CalculateCoinRevenuePerDay(double.Parse(hashrate.HashrateNumber), coin.Difficulty, coin.BlockReward, exchangeRate);
                     }
 
