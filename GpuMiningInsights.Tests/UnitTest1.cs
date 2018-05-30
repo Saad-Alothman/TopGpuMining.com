@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GpuMiningInsights.Application.Amazon;
 using GpuMiningInsights.Application.Services;
+using GpuMiningInsights.Core.Utils;
 using GpuMiningInsights.Domain.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -12,6 +13,34 @@ namespace GpuMiningInsights.Tests
     public class UnitTest1
 
     {
+
+
+
+
+        [TestMethod]
+        public void CalculateCoinRevenuePerDayTest()
+        {
+            try
+            {
+                int hashRatePowerMega = 88;
+                double blockReward = 2.91;
+
+                double DifficultyMega = 3177938414649540;
+
+                //double DifficultyMega = 3172139086;
+                double perDay = CryptoUtils.CalculateCoinRevenuePerDay(hashRatePowerMega, DifficultyMega, blockReward);
+                double testperDay = perDay / 15;
+                int currentUsdExchangeRate = 600;
+                double perDayUsd = perDay * currentUsdExchangeRate;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+
+        }
         [TestMethod]
         public void GetCoinInfoTest()
         {
@@ -19,7 +48,7 @@ namespace GpuMiningInsights.Tests
             {
                 GmiApp.Initialize();
                 ApiLayerService.LoadCurrencies();
-                var coin =WhatToMineService.GetCoinInfo(1);
+                var coin = WhatToMineService.GetCoinInfo(1);
 
             }
             catch (Exception e)
@@ -82,10 +111,10 @@ namespace GpuMiningInsights.Tests
                 PriceSourceItemIdentifier = asinNumber,
                 PriceSourceAction = AmazonService.SearchItemLookupOperationOld
             };
-            GPUOld gpuOld= new GPUOld()
+            GPUOld gpuOld = new GPUOld()
             {
                 PriceSources = new List<PriceSourceOld>() { priceSource },
-                
+
             };
             InsighterService.GetPrice(gpuOld, priceSource);
         }

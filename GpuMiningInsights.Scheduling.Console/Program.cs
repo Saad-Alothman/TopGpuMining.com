@@ -18,7 +18,9 @@ namespace GpuMiningInsights.Scheduling.Console
 
             //Update Crypto Currencies info, and update Algorithms
             TryHelper.Try(CoinService.Instance.AddOrUpdate);
-
+            //Update USD Exchange Rates;
+            TryHelper.Try(CoinService.Instance.UpdateUsdExchangeRates);
+            
             //Generate Profitability Report
             GpusInsightsReport report =TryHelper.Try(GpuInsightsService.GenerateReport);
 

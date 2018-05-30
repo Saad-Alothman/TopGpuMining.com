@@ -109,22 +109,16 @@ namespace GpuMiningInsights.Web.Controllers
 
         public ActionResult Test()
         {
-            string asinNumber = "B06Y15M48C";
-
-            PriceSourceOld priceSource = new PriceSourceOld()
+            try
             {
-                PriceSourceItemIdentifier = asinNumber,
-                PriceSourceAction = AmazonService.SearchItemLookupOperationOld
-            };
+                var result = CryptoCompareService.GetUsdBtcExchangeRate();
 
-            GPUOld gpuOld = new GPUOld()
+            }
+            catch (Exception e)
             {
-                PriceSources = new List<PriceSourceOld>() { priceSource },
-
-            };
-
-            List<PriceSourceItemOld> priceSourceItems = InsighterService.GetPrice(gpuOld, priceSource);
-            return Json(priceSourceItems.FirstOrDefault(), JsonRequestBehavior.AllowGet);
+                Console.WriteLine(e);
+            }
+            return Json("", JsonRequestBehavior.AllowGet);
         }
     }
 }

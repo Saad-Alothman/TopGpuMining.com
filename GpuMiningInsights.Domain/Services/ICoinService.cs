@@ -12,7 +12,12 @@ namespace GpuMiningInsights.Domain.Services
     {
         void AddOrUpdate();
         void FetchAndAddOrUpdateCoins();
-        SearchResult<Coin> Search(SearchCriteria<Coin> searchCriteria);
+        SearchResult<Coin> Search(SearchCriteria<Coin> searchCriteria,bool validCoinsOnly);
+        
         void UpdateCoinsInfo();
+        void UpdateUsdExchangeRate(int id, double exchangeRate);
+        double GetUsdBtcExchangeRate();
+        double GetLiveUsdExchangeRate(string cryptoCurrencyCode);
+
     }
 }

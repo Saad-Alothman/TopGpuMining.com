@@ -5,6 +5,7 @@ using CreaDev.Framework.Core.Resources;
 
 namespace GpuMiningInsights.Domain.Models
 {
+    //TODO: Rename to Chipset
     public class Model : GmiEntityBase
     {
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CreaDev.Framework.Core;
+using CreaDev.Framework.Core.Linq;
 using CreaDev.Framework.Core.Models;
 using GpuMiningInsights.Domain.Models;
 using GpuMiningInsights.Domain.Services;
@@ -20,6 +22,97 @@ namespace GpuMiningInsights.Application.Services
             FetchAndAddOrUpdateCoins();
             UpdateCoinsInfo();
         }
+        public void UpdateUsdExchangeRates()
+        {
+
+            using (GmiUnitOfWork gmiUnitOfWork = new GmiUnitOfWork())
+            {
+
+                //Get Coins from DB,
+                int allCoinsInDBCount = gmiUnitOfWork.GenericRepository.Count(new SearchCriteria<Coin>(int.MaxValue,1) { FilterExpression = c => c.Difficulty > 0 && c.BlockReward > 0 && c.LastBlock > 0 });
+                
+
+                int pageNumber = 1;
+                int pageSize = 30;
+                int lastPage = allCoinsInDBCount / pageSize;
+
+                string usdCode = "USD";
+                
+                while (pageNumber<= lastPage)
+                {
+                    var searchCriteria = new SearchCriteria<Coin>(pageSize, pageNumber){FilterExpression = c => c.Difficulty > 0 && c.BlockReward > 0 && c.LastBlock > 0 };
+                    var partialResult =gmiUnitOfWork.GenericRepository.Search(searchCriteria).Result;
+                    var coinNames = partialResult.Select(s => s.Tag.ToUpper()).ToList();
+                    List<CryptoComparePriceResult> exchangeRatesPartial = CryptoCompareService.GetCryptoComparePriceExchangeRateMultiSource(coinNames, usdCode);
+                    foreach (var cryptoComparePriceResult in exchangeRatesPartial)
+                    {
+                        var coin = partialResult.FirstOrDefault(c =>
+                            c.Tag.ToUpper() == cryptoComparePriceResult.SourceCurrenceCode.ToUpper());
+                        if (coin == null)
+                            continue;
+                        coin.ExchangeRateUsd = cryptoComparePriceResult.ExchangeRates[usdCode];
+
+                    }
+                    pageNumber++;
+                }
+                
+                gmiUnitOfWork.Commit();
+            }
+
+        }
+
+        private double? _usdBtcExchangeRate;
+        public void UpdateUsdExchangeRate(int id,double exchangeRate)
+        {
+            using (GmiUnitOfWork gmiUnitOfWork = new GmiUnitOfWork())
+            {
+
+                Coin coin = gmiUnitOfWork.GenericRepository.GetByID<Coin>(id);
+                Guard.AgainstNull(coin);
+                coin.ExchangeRateUsd = exchangeRate;
+                gmiUnitOfWork.Commit();
+            }
+        }
+
+        
+
+        public double GetUsdBtcExchangeRate()
+        {
+            if (_usdBtcExchangeRate == null)
+            {
+                var cryptoCompareResult = CryptoCompareService.GetUsdBtcExchangeRate();
+                _usdBtcExchangeRate=cryptoCompareResult.ExchangeRates.Values.FirstOrDefault();
+            }
+            return _usdBtcExchangeRate.Value;
+            
+        }
+
+        public double GetLiveUsdExchangeRate(string cryptoCurrencyCode)
+        {
+            return CryptoCompareService.GetCryptoComparePriceExchangeRate(cryptoCurrencyCode, "USD").ExchangeRates.Values.FirstOrDefault();
+        }
+
+        public double AddOrUpdateUsdExchangeRates()
+        {
+            if (_usdBtcExchangeRate == null)
+            {
+                var cryptoCompareResult = CryptoCompareService.GetUsdBtcExchangeRate();
+                _usdBtcExchangeRate = cryptoCompareResult.ExchangeRates.Values.FirstOrDefault();
+            }
+            return _usdBtcExchangeRate.Value;
+
+        }
+
+        
+        
+        public SearchResult<Coin> Search(SearchCriteria<Coin> searchCriteria, bool validCoinsOnly)
+        {
+            if (validCoinsOnly)
+                searchCriteria.FilterExpression =
+                    searchCriteria.FilterExpression.And(c => c.Difficulty > 0 && c.BlockReward > 0 && c.LastBlock > 0);
+            return Search(searchCriteria);
+        }
+
         public void UpdateCoinsInfo()
         {
 

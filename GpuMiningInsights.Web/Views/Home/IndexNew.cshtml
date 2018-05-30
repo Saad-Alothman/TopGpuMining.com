@@ -6,7 +6,7 @@
 
 @{
     ViewBag.Title = "Best GPUs for mining";
-    string lastUpdate = Model?.Date?.ToString("dd-MM-yyyy");
+    string lastUpdate = Model?.Date.ToString("dd-MM-yyyy");
 
 }
 
@@ -38,6 +38,8 @@
                         <th>Profit ($/Day)</th>
                         <th>Hashrate</th>
                         <th>Coin</th>
+                        <th>Coin Difficulty</th>
+                        <th>Coin Block Reward</th>
                         <th>Price USD</th>
                         <th>Revenue</th>
                         <th>ROI</th>
@@ -45,34 +47,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < Model.GpuInsightReports.Count; i++)
-                    {
-                        GpuInsightReport gpuInsightReport = Model.GpuInsightReports[i];
+                @{
+                    int index = 0;
+                }
+                @foreach (var gpuInsightReport in Model.GpuInsightReports)
+                {
 
-                        Gpu gpuOld = gpuInsightReport.Gpu;
-                        int index = i;
-                        double? lowestGpuPriceUsd = gpuInsightReport.LowestPriceSourceItem?.PriceUSD;
-                        double annualRevenue = gpuInsightReport.HighestRevenueHash.AnualRevenue;
 
-                        string roistyle = gpuInsightReport.ROI >= 0 ? "" : "style=\"color:#de6c6c\"";
-                        if (gpuInsightReport.ROI > 30)
-                        {
-                            roistyle = "style=\"color:#0fc304\"";
-                        }
+
+
+
+
                     <tr>
-                        <td>@gpuOld.Name</td>
-                        <td>@gpuInsightReport.HighestRevenueHash.RevenuePerDay</td>
+                        <td>@gpuInsightReport.Gpu.Name</td>
+                        <td>@gpuInsightReport.HighestRevenueCoin.RevenuePerDay</td>
                         <td>@gpuInsightReport.ProfitPerDay</td>
-                        <td>@gpuInsightReport.HighestRevenueHash.Hashrate.HashrateNumber</td>
-                        <td>@gpuInsightReport.HighestRevenueHash.Coin.Name</td>
-                        <td>@lowestGpuPriceUsd $</td>
-                        <td>@annualRevenue </td>
-                        <td @Html.Raw(roistyle)>@(gpuInsightReport.ROI) %</td>
+                        <td>@gpuInsightReport.HighestRevenueCoin.Hashrate.HashrateNumber</td>
+                        <td>@gpuInsightReport.HighestRevenueCoin.Coin.Name</td>
+                        <td>@gpuInsightReport.HighestRevenueCoin.Coin.Difficulty</td>
+                        <td>@gpuInsightReport.HighestRevenueCoin.Coin.BlockReward</td>
+                        <td>@(gpuInsightReport.LowestPriceSourceItem?.PriceUSD) $</td>
+                        <td>@(gpuInsightReport.HighestRevenueCoin.AnualRevenue) </td>
+                        <td @Html.Raw(gpuInsightReport.CssStyle)>@(gpuInsightReport.ROI) %</td>
                         <td>
                             <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options!</button>
                         </td>
                     </tr>
-                    }
+                    index++;
+                }
                 </tbody>
 
 
@@ -105,28 +107,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
-                            @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems)
-                            {
-                                string name = priceSourceItem.ItemName;
-                                name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
-                                <tr>
-                                    <td>
-                                        <a href="@priceSourceItem.ItemURL">
-                                            @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
-                                            {
-                                                <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
-                                            }
-                                            @name
-                                        </a>
-                                    </td>
-                                    <td>@priceSourceItem.PriceUSD $ </td>
-                                    <td>@priceSourceItem.PriceSource.Name </td>
-                                    <td>
-                                        <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.Name!</a>
-                                    </td>
-                                </tr>
-                            }
+
+                        @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems)
+                        {
+                            string name = priceSourceItem.ItemName;
+                            name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
+                            <tr>
+                                <td>
+                                    <a href="@priceSourceItem.ItemURL">
+                                        @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
+                                        {
+                                            <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
+                                        }
+                                        @name
+                                    </a>
+                                </td>
+                                <td>@priceSourceItem.PriceUSD $ </td>
+                                <td>@priceSourceItem.PriceSource.Name </td>
+                                <td>
+                                    <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.Name!</a>
+                                </td>
+                            </tr>
+                        }
 
                     </tbody>
                 </table>
@@ -145,7 +147,7 @@
     </p>
     <p>
         Last Update : @lastUpdate &nbsp;
-        
+
     </p>
 </div>
 <p>

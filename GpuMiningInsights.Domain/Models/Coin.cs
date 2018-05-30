@@ -72,5 +72,7 @@ namespace GpuMiningInsights.Domain.Models
         public int Profitability { get; set; }
         public int Profitability24 { get; set; }
         public bool Lagging { get; set; }
+        public double? ExchangeRateUsd { get; set; }
+
     }
 }

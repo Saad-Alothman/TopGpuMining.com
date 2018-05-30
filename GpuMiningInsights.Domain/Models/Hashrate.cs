@@ -8,6 +8,7 @@ using CreaDev.Framework.Core.Resources;
 
 namespace GpuMiningInsights.Domain.Models
 {
+    //Todo: Rename To ChipsetAlgorithmHashrate
     public class Hashrate : GmiEntityBase
     {
         public Algorithm Algorithm { get; set; }
@@ -16,6 +17,7 @@ namespace GpuMiningInsights.Domain.Models
         public Model Model { get; set; }
         public int? ModelId { get; set; }
 
+    //Todo: Rename To HashrateValueMhz
         [Display(Name = nameof(Common.HashrateValue), ResourceType = typeof(Common))]
         public string HashrateNumber { get; set; }
 

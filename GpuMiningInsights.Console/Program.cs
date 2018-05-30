@@ -38,11 +38,11 @@ namespace GpuMiningInsights.Console
             {
                 GmiApp.Initialize();
                 //TEST ONLY
-
+                CoinService.Instance.UpdateUsdExchangeRates();
                 //CoinService.Instance.AddOrUpdate();
                 //FiatCurrencyService.Instance.AddOrUpdate();
-                var report =GpuInsightsService.GenerateReport();
-                GpusInsightsReportService.Instance.Add(report);
+                //var report =GpuInsightsService.GenerateReport();
+                //GpusInsightsReportService.Instance.Add(report);
             }
             catch (Exception ex)
             {

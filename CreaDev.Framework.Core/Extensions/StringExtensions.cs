@@ -91,8 +91,12 @@ namespace CreaDev.Framework.Core.Extensions
             return msg;
         }
 
-        public static string ToCsv(this IEnumerable<string> stringList)
+        public static string ToCsv(this IEnumerable<string> stringList,string seperator="")
         {
+            if (string.IsNullOrWhiteSpace(seperator))
+            {
+                seperator = Common.Comma + " ";
+            }
             string result = string.Empty;
 
             if (stringList == null)
@@ -105,7 +109,7 @@ namespace CreaDev.Framework.Core.Extensions
                 if (i < stringList.Count() - 1)
                 {
                     
-                    result += Common.Comma+ " ";
+                    result += seperator;
                 }
             }
             return result;
