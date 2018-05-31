@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace GpuMiningInsights.Domain.Models
     //Todo: Rename To ChipsetAlgorithmHashrate
     public class Hashrate : GmiEntityBase
     {
+        [ForeignKey("AlogrthimId")]
         public Algorithm Algorithm { get; set; }
         public int? AlogrthimId { get; set; }
       

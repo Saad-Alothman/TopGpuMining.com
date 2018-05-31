@@ -17,30 +17,7 @@ namespace GpuMiningInsights.Tests
 
 
 
-        [TestMethod]
-        public void CalculateCoinRevenuePerDayTest()
-        {
-            try
-            {
-                int hashRatePowerMega = 88;
-                double blockReward = 2.91;
-
-                double DifficultyMega = 3177938414649540;
-
-                //double DifficultyMega = 3172139086;
-                double perDay = CryptoUtils.CalculateCoinRevenuePerDay(hashRatePowerMega, DifficultyMega, blockReward);
-                double testperDay = perDay / 15;
-                int currentUsdExchangeRate = 600;
-                double perDayUsd = perDay * currentUsdExchangeRate;
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-
-        }
+      
         [TestMethod]
         public void GetCoinInfoTest()
         {

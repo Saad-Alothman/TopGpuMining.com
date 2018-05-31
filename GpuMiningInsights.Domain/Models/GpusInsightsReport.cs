@@ -32,7 +32,7 @@ namespace GpuMiningInsights.Domain.Models
         public Coin Coin { get; set; }
         public double RevenuePerDay { get; set; }
         public double AnualRevenue => RevenuePerDay * 365;
-
+        public double CoinsPerDay { get; set; }
     }
     public class GpuInsightReport : GmiEntityBase
     {
@@ -76,24 +76,29 @@ namespace GpuMiningInsights.Domain.Models
             var coinService = ServiceLocator.Get<ICoinService>();
             foreach (var hashrate in Gpu.Model.HashRates)
             {
-                var coinsWithThisAlgorithm = coinService.Search(new SearchCriteria<Coin>(c => c.AlgorithmId == hashrate.AlogrthimId),validCoinsOnly:true).Result;
+                var coinsWithThisAlgorithm = coinService.Search(new SearchCriteria<Coin>(c => c.AlgorithmId == hashrate.AlogrthimId), validCoinsOnly: true).Result;
                 foreach (var coin in coinsWithThisAlgorithm)
                 {
                     double revenuePerDayUsd = 0;
+                    double coinsPerDay = CryptoUtils.CalculateCoinRevenuePerDayByNethashAndBlockTime(double.Parse(coin.BlockTime), coin.BlockReward, (coin.Nethash / 1000 / 1000), double.Parse(hashrate.HashrateNumber));
                     if (coin.ExchangeRateUsd.HasValue)
-                        revenuePerDayUsd = CryptoUtils.CalculateCoinRevenuePerDayUsd(double.Parse(hashrate.HashrateNumber),coin.Difficulty, coin.BlockReward, coin.ExchangeRateUsd.Value);
+                    {
+                        revenuePerDayUsd = coinsPerDay * coin.ExchangeRateUsd.Value;
+                    }
+
                     else
                     {
                         double exchangeRate = coinService.GetLiveUsdExchangeRate(coin.Tag);
-                        coinService.UpdateUsdExchangeRate(coin.Id,exchangeRate);
-                        revenuePerDayUsd = CryptoUtils.CalculateCoinRevenuePerDayUsd(double.Parse(hashrate.HashrateNumber), coin.Difficulty, coin.BlockReward, exchangeRate);
+                        coinService.UpdateUsdExchangeRate(coin.Id, exchangeRate);
+                        revenuePerDayUsd = coinsPerDay * exchangeRate;
                     }
 
                     CoinProfitabilityResult coinProfitabilityResult = new CoinProfitabilityResult()
                     {
                         Hashrate = hashrate,
                         Coin = coin,
-                        RevenuePerDay = revenuePerDayUsd
+                        RevenuePerDay = revenuePerDayUsd,
+                        CoinsPerDay = coinsPerDay
                     };
                     coinsProfitabilityResults.Add(coinProfitabilityResult);
                 }
@@ -111,7 +116,9 @@ namespace GpuMiningInsights.Domain.Models
         {
             get
             {
-                CoinProfitabilityResult highestRevenueCoin = CoinsProfitabilityResults.Aggregate((i1, i2) => i1.RevenuePerDay > i2.RevenuePerDay ? i1 : i2);
+                CoinProfitabilityResult highestRevenueCoin = null;
+                if (CoinsProfitabilityResults.Any())
+                    highestRevenueCoin = CoinsProfitabilityResults.Aggregate((i1, i2) => i1.RevenuePerDay > i2.RevenuePerDay ? i1 : i2);
                 return highestRevenueCoin;
             }
         }

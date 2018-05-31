@@ -2,11 +2,14 @@
 @using GpuMiningInsights.Core;
 @using Newtonsoft.Json
 @using System.Configuration
+@using CreaDev.Framework.Core.Extensions
+@using GpuMiningInsights.Application.Services
 @model GpusInsightsReport
 
 @{
     ViewBag.Title = "Best GPUs for mining";
     string lastUpdate = Model?.Date.ToString("dd-MM-yyyy");
+    
 
 }
 
@@ -34,47 +37,72 @@
 
                     <tr>
                         <th>GPU</th>
+                        <th>Chipset</th>
+                        <th>Best Coin To Mine (Algorithm)</th>
+                        <th>GPU Hashrate for Algorithm</th>
+                        <th>Coins /Day</th>
+                        <th>coin exchange Rate </th>
+                        <th>Coin Block Reward</th>
                         <th>Revenue ($/Day)</th>
                         <th>Profit ($/Day)</th>
-                        <th>Hashrate</th>
-                        <th>Coin</th>
-                        <th>Coin Difficulty</th>
-                        <th>Coin Block Reward</th>
-                        <th>Price USD</th>
-                        <th>Revenue</th>
-                        <th>ROI</th>
+                        <th>Lowest GPU Price</th>
+                        <th>Annual Revenue</th>
+                        <th>Annual ROI</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                @{
-                    int index = 0;
-                }
-                @foreach (var gpuInsightReport in Model.GpuInsightReports)
-                {
+                    @{
+                        int index = 0;
+                    }
+                    @foreach (var gpuInsightReport in Model.GpuInsightReports)
+                    {
 
 
 
 
 
 
-                    <tr>
-                        <td>@gpuInsightReport.Gpu.Name</td>
-                        <td>@gpuInsightReport.HighestRevenueCoin.RevenuePerDay</td>
-                        <td>@gpuInsightReport.ProfitPerDay</td>
-                        <td>@gpuInsightReport.HighestRevenueCoin.Hashrate.HashrateNumber</td>
-                        <td>@gpuInsightReport.HighestRevenueCoin.Coin.Name</td>
-                        <td>@gpuInsightReport.HighestRevenueCoin.Coin.Difficulty</td>
-                        <td>@gpuInsightReport.HighestRevenueCoin.Coin.BlockReward</td>
-                        <td>@(gpuInsightReport.LowestPriceSourceItem?.PriceUSD) $</td>
-                        <td>@(gpuInsightReport.HighestRevenueCoin.AnualRevenue) </td>
-                        <td @Html.Raw(gpuInsightReport.CssStyle)>@(gpuInsightReport.ROI) %</td>
-                        <td>
-                            <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options!</button>
-                        </td>
-                    </tr>
-                    index++;
-                }
+                        <tr>
+                            <td>
+                                @gpuInsightReport.Gpu.Name
+                                @if (!string.IsNullOrWhiteSpace(gpuInsightReport.Gpu.ImageUrl))
+                                {
+                                    <img src="@gpuInsightReport.Gpu.ImageUrl" style="max-width: 300px;" />
+                                }
+                            </td>
+                            <td>@gpuInsightReport.Gpu.Model.Name</td>
+
+                            <td>
+                                <i style="font-size: 4em;" class="cc @gpuInsightReport.HighestRevenueCoin.Coin.Tag.ToUpper()"></i>
+                              
+                                @gpuInsightReport.HighestRevenueCoin.Coin.Name (@(gpuInsightReport.HighestRevenueCoin.Hashrate.Algorithm?.Name?.ToString()))
+                            </td>
+                            <td>@gpuInsightReport.HighestRevenueCoin.Hashrate.HashrateNumber MH/s</td>
+                            <td>@Math.Round(gpuInsightReport.HighestRevenueCoin.CoinsPerDay, 5)</td>
+                            <td>@gpuInsightReport.HighestRevenueCoin.Coin.ExchangeRateUsd $</td>
+                            <td>@gpuInsightReport.HighestRevenueCoin.Coin.BlockReward</td>
+                            <td>@Math.Round(gpuInsightReport.HighestRevenueCoin.RevenuePerDay, 5)</td>
+                            <td>@Math.Round(gpuInsightReport.ProfitPerDay, 5)</td>
+
+                            <td>@(gpuInsightReport.LowestPriceSourceItem?.PriceUSD) $</td>
+                            <td>@(Math.Round(gpuInsightReport.HighestRevenueCoin.AnualRevenue,2)) </td>
+                            <td @Html.Raw(gpuInsightReport.CssStyle)>@(gpuInsightReport.ROI) %</td>
+                            <td>
+                                @{
+        var cheapestOption = gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
+                                }
+                                @if (cheapestOption != null)
+    {
+                            <a href="@cheapestOption.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!</a>
+}
+                                <br />
+                                <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options</button>
+
+                            </td>
+                        </tr>
+                        index++;
+                    }
                 </tbody>
 
 
@@ -108,7 +136,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems)
+                        @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD))
                         {
                             string name = priceSourceItem.ItemName;
                             name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
@@ -125,7 +153,7 @@
                                 <td>@priceSourceItem.PriceUSD $ </td>
                                 <td>@priceSourceItem.PriceSource.Name </td>
                                 <td>
-                                    <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.Name!</a>
+                                    <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.PriceSourceType.GetDisplayName()!</a>
                                 </td>
                             </tr>
                         }
@@ -158,7 +186,15 @@
     <br />
 
     Hash rates info from : http://www.whattomine.com
-
+    <br />
+    Other stuff used:
+    <br />
+    https://www.cryptocompare.com/
+    <br />
+    https://github.com/AllienWorks/cryptocoins
+    <br />
+    Exchange rate insert here
+    <br />
     Version Number: @ConfigurationManager.AppSettings["VersionNumber"]
 </p>
 

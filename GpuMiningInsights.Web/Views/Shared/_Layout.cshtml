@@ -10,7 +10,22 @@
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/toastr.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="/webfont/cryptocoins.css">
+
+    <!-- CSS defining icon/coin colors (optional) -->
+    <link rel="stylesheet" href="/webfont/cryptocoins-colors.css">
     <style>
+        @@font-face {
+            font-family: "cryptocoins";
+            src: url('@Url.Content("~/webfont/cryptocoins.woff2")') format('woff2'),
+                 url('@Url.Content("~/webfont/cryptocoins.woff")') format('woff'),
+                 url('@Url.Content("~/webfont/cryptocoins.ttf")') format('truetype');
+        }
+    </style>
+    <style>
+
+
         /* Side notes for calling out things
         -------------------------------------------------- */
 
@@ -21,18 +36,18 @@
             border-left: 5px solid #eee;
         }
 
-            .bs-callout h4 {
-                margin-top: 0;
-            }
+        .bs-callout h4 {
+            margin-top: 0;
+        }
 
-            .bs-callout p:last-child {
-                margin-bottom: 0;
-            }
+        .bs-callout p:last-child {
+            margin-bottom: 0;
+        }
 
-            .bs-callout code,
-            .bs-callout .highlight {
-                background-color: #fff;
-            }
+        .bs-callout code,
+        .bs-callout .highlight {
+            background-color: #fff;
+        }
 
         /* Themes for different contexts */
         .bs-callout-danger {

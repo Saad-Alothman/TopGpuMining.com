@@ -14,6 +14,8 @@ namespace GpuMiningInsights.Application.Services
                 $"{nameof(GpusInsightsReport.GpuInsightReports)}.{nameof(GpuInsightReport.Gpu)}",
                 $"{nameof(GpusInsightsReport.GpuInsightReports)}.{nameof(GpuInsightReport.Gpu)}.{nameof(Gpu.Model)}",
                 $"{nameof(GpusInsightsReport.GpuInsightReports)}.{nameof(GpuInsightReport.Gpu)}.{nameof(Gpu.Model)}.{nameof(Model.HashRates)}",
+                $"{nameof(GpusInsightsReport.GpuInsightReports)}.{nameof(GpuInsightReport.Gpu)}.{nameof(Gpu.Model)}.{nameof(Model.HashRates)}.{nameof(Hashrate.Algorithm)}",
+                $"{nameof(GpusInsightsReport.GpuInsightReports)}.{nameof(GpuInsightReport.Gpu)}.{nameof(Gpu.Model)}.{nameof(Model.HashRates)}.{nameof(Hashrate.Model)}",
                 $"{nameof(GpusInsightsReport.GpuInsightReports)}.{nameof(GpuInsightReport.PriceSourceItems)}",
                 $"{nameof(GpusInsightsReport.GpuInsightReports)}.{nameof(GpuInsightReport.PriceSourceItems)}.{nameof(PriceSourceItem.PriceSource)}"
             };
