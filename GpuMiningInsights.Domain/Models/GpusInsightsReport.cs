@@ -81,13 +81,12 @@ namespace GpuMiningInsights.Domain.Models
                 {
                     double revenuePerDayUsd = 0;
                     if (coin.ExchangeRateUsd.HasValue)
-                        revenuePerDayUsd = CryptoUtils.CalculateCoinRevenuePerDay(double.Parse(hashrate.HashrateNumber),
-                            coin.Difficulty, coin.BlockReward, coin.ExchangeRateUsd.Value);
+                        revenuePerDayUsd = CryptoUtils.CalculateCoinRevenuePerDayUsd(double.Parse(hashrate.HashrateNumber),coin.Difficulty, coin.BlockReward, coin.ExchangeRateUsd.Value);
                     else
                     {
                         double exchangeRate = coinService.GetLiveUsdExchangeRate(coin.Tag);
                         coinService.UpdateUsdExchangeRate(coin.Id,exchangeRate);
-                        revenuePerDayUsd = CryptoUtils.CalculateCoinRevenuePerDay(double.Parse(hashrate.HashrateNumber), coin.Difficulty, coin.BlockReward, exchangeRate);
+                        revenuePerDayUsd = CryptoUtils.CalculateCoinRevenuePerDayUsd(double.Parse(hashrate.HashrateNumber), coin.Difficulty, coin.BlockReward, exchangeRate);
                     }
 
                     CoinProfitabilityResult coinProfitabilityResult = new CoinProfitabilityResult()

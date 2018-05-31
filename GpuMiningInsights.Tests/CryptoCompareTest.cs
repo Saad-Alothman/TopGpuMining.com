@@ -14,6 +14,7 @@ namespace GpuMiningInsights.Tests
         {
             try
             {
+                
                 var result = CryptoCompareService.GetUsdBtcExchangeRate();
 
             }
