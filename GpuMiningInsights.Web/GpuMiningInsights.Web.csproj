@@ -202,6 +202,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlgorithmController.cs" />
+    <Compile Include="Controllers\CoinController.cs" />
     <Compile Include="Controllers\GpuController.cs" />
     <Compile Include="Controllers\GPUPriceSourceController.cs" />
     <Compile Include="Controllers\HashrateController.cs" />
@@ -220,13 +221,15 @@
     <Compile Include="Helpers\PagedListExtension.cs" />
     <Compile Include="Models\Filters\ExceptionHandlerFilter.cs" />
     <Compile Include="Models\GpuViewModel.cs" />
+    <Compile Include="Models\Search\BrandSearchCrietriaViewModel.cs" />
+    <Compile Include="Models\Search\CoinSearchCrietriaViewModel.cs" />
     <Compile Include="Models\Search\GmiSearchCriteriaViewModelBase.cs" />
     <Compile Include="Models\Search\GpuPSSearchCriteriaViewModelBase.cs" />
     <Compile Include="Models\Search\GpuSearchCrietriaViewModel.cs" />
     <Compile Include="Models\Search\HashrateSearchCrietriaViewModel.cs" />
     <Compile Include="Models\Search\ModelSearchCrietriaViewModel.cs" />
     <Compile Include="Models\Search\PriceSourceSearchCrieteriaViewModel.cs" />
-    <Compile Include="Models\Search\SearchCriteriaViewModelBase.cs" />
+    <Compile Include="Models\Search\AlgorithmSearchCrietriaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +361,11 @@
     <Content Include="webfont\cryptocoins.ttf" />
     <Content Include="webfont\cryptocoins.woff" />
     <Content Include="webfont\cryptocoins.woff2" />
+    <Content Include="Views\Coin\_DeleteForm.cshtml" />
+    <Content Include="Views\Coin\_Form.cshtml" />
+    <Content Include="Views\Coin\_List.cshtml" />
+    <Content Include="Views\Coin\_SearchForm.cshtml" />
+    <Content Include="Views\Coin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -15,24 +15,16 @@ namespace GpuMiningInsights.Web.Controllers
 {
     public class HomeController : Controller
     {
-        [HttpPost]
-        public ActionResult Index(bool isLoad = true)
-        {
-            var results = InsighterService.GetInsights();
-            ClientGpuListData clientGpuListData = new ClientGpuListData(results, DateTime.Now);
-            SaveData(clientGpuListData);
-            return View(clientGpuListData);
-        }
-
+    
         public ActionResult Index()
         {
-            ClientGpuListData clientGpuListData = LoadClientGpuListData();
-            return View(clientGpuListData);
+            return IndexNew();
+
         }
         public ActionResult IndexNew()
         {
             var report =GpusInsightsReportService.Instance.GetLatestReport();
-            return View(report);
+            return View("IndexNew",report);
         }
         
         private ClientGpuListData LoadClientGpuListData(bool loadDummyOnNoData = true)

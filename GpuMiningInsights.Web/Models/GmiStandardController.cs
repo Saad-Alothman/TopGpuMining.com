@@ -44,20 +44,20 @@ namespace GpuMiningInsights.Web.Controllers
             this.FormPartialViewName = $"{basePathToFolder}/_Form.cshtml";
             this.DeleteFormPartialViewName = $"{basePathToFolder}/_DeleteForm.cshtml";
         }
-
+        
         private TService _service;
         private TService Service => _service ?? (_service = new TService());
-        public ActionResult Index()
+        public virtual ActionResult Index()
         {
             return SimpleIndex<TModel>(Service.Search);
         }
 
         [HttpPost]
-        public ActionResult Add(TModel model)
+        public virtual ActionResult Add(TModel model)
         {
             return SimpleAjaxAdd(model, Service.Add, Service.Search, ListPartialViewName);
         }
-        public ActionResult Edit(int id)
+        public virtual ActionResult Edit(int id)
         {
             JsonResultObject result = new JsonResultObject();
 
@@ -69,7 +69,7 @@ namespace GpuMiningInsights.Web.Controllers
 
 
         [HttpPost]
-        public ActionResult Update(TModel model)
+        public virtual ActionResult Update(TModel model)
         {
             JsonResultObject result = new JsonResultObject();
 
@@ -96,7 +96,7 @@ namespace GpuMiningInsights.Web.Controllers
 
 
 
-        public ActionResult Delete(int id)
+        public virtual ActionResult Delete(int id)
         {
             JsonResultObject result = new JsonResultObject();
 
@@ -108,7 +108,7 @@ namespace GpuMiningInsights.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(TModel model)
+        public virtual ActionResult Delete(TModel model)
         {
             JsonResultObject result = new JsonResultObject();
             try
@@ -128,7 +128,7 @@ namespace GpuMiningInsights.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(TSearchCriteriaViewModelBase searchCriteriaViewModel)
+        public virtual ActionResult Search(TSearchCriteriaViewModelBase searchCriteriaViewModel)
         {
             return SimpleSearchAjaxAction<TModel, TSearchCriteriaViewModelBase>(searchCriteriaViewModel, ListPartialViewName, Service.Search);
         }

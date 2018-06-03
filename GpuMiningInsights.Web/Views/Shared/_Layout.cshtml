@@ -36,18 +36,18 @@
             border-left: 5px solid #eee;
         }
 
-        .bs-callout h4 {
-            margin-top: 0;
-        }
+            .bs-callout h4 {
+                margin-top: 0;
+            }
 
-        .bs-callout p:last-child {
-            margin-bottom: 0;
-        }
+            .bs-callout p:last-child {
+                margin-bottom: 0;
+            }
 
-        .bs-callout code,
-        .bs-callout .highlight {
-            background-color: #fff;
-        }
+            .bs-callout code,
+            .bs-callout .highlight {
+                background-color: #fff;
+            }
 
         /* Themes for different contexts */
         .bs-callout-danger {
@@ -64,6 +64,10 @@
             background-color: #f0f7fd;
             border-color: #d0e3f0;
         }
+
+        .admin-link {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -78,18 +82,34 @@
                 @Html.ActionLink("Top Gpu For Mining", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li>@Html.ActionLink("Brands", "Index", "Brand")</li>
-					<li>@Html.ActionLink("Gpus", "Index", "Gpu")</li>
-					<li>@Html.ActionLink("Models", "Index", "Model")</li>
-					<li>@Html.ActionLink("Algorithms", "Index", "Algorithm")</li>
-					<li>@Html.ActionLink("Hashrates", "Index", "Hashrate")</li>
-					<li>@Html.ActionLink("Price Sources", "Index", "PriceSource")</li>
-					<li>@Html.ActionLink("GPU Price Sources", "Index", "GPUPriceSource")</li>
-					@*<li>@Html.ActionLink("Home", "Index", "Home")</li>
-		<li>@Html.ActionLink("About", "About", "Home")</li>
-		<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-				</ul>
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Recommended Gpus", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Crypto Currencies", "Index", "Coin")</li>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li role="presentation" class="dropdown ">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Admin<span class="caret"></span> </a> 
+                            <ul class="dropdown-menu">
+                                <li class="admin-link">@Html.ActionLink("Brands", "Index", "Brand")</li>
+                                <li class="admin-link">@Html.ActionLink("Gpus", "Index", "Gpu")</li>
+                                <li class="admin-link">@Html.ActionLink("Models", "Index", "Model")</li>
+                                <li class="admin-link">@Html.ActionLink("Algorithms", "Index", "Algorithm")</li>
+                                <li class="admin-link">@Html.ActionLink("Hashrates", "Index", "Hashrate")</li>
+                                <li class="admin-link">@Html.ActionLink("Price Sources", "Index", "PriceSource")</li>
+                                <li class="admin-link">@Html.ActionLink("GPU Price Sources", "Index", "GPUPriceSource")</li>
+
+                                <li role="separator" class="divider"></li>
+                                <li class="admin-link">@Html.ActionLink("Log out", "LogOff", "Account")</li>
+                            </ul>
+                        </li>
+                        
+                    }
+
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                </ul>
             </div>
         </div>
     </div>
@@ -114,7 +134,7 @@
     <script src="~/Scripts/validations/jquery.validation.custom.method.js"></script>
 
 
-<script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
 
     <script src="~/Scripts/main.js"></script>
     @RenderSection("scripts", required: false)
