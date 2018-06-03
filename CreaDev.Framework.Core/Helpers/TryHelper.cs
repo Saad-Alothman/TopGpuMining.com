@@ -5,7 +5,7 @@ namespace CreaDev.Framework.Core.Helpers
     
     public static class TryHelper
     {
-        public static TResult Try<TResult>(Func<TResult> func)
+        public static TResult Try<TResult>(Func<TResult> func, Action<Exception> logAction = null)
         {
             TResult result = default(TResult);
             try
@@ -14,11 +14,12 @@ namespace CreaDev.Framework.Core.Helpers
             }
             catch (Exception ex)
             {
+                logAction?.Invoke(ex);
 
             }
             return result;
         }
-        public static void Try(Action action)
+        public static void Try(Action action,Action<Exception> logAction =null)
         {
             try
             {
@@ -26,7 +27,7 @@ namespace CreaDev.Framework.Core.Helpers
             }
             catch (Exception e)
             {
-
+                logAction?.Invoke(e);
             }
         }
     }

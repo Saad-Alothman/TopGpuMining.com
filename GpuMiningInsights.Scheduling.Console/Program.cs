@@ -14,21 +14,31 @@ namespace GpuMiningInsights.Scheduling.Console
         static void Main(string[] args)
         {
             //Update Fiat Currencies Exchange Rate
-            TryHelper.Try(FiatCurrencyService.Instance.AddOrUpdate);
+            TryHelper.Try(FiatCurrencyService.Instance.AddOrUpdate,Log);
 
             //Update Crypto Currencies info, and update Algorithms
-            TryHelper.Try(CoinService.Instance.AddOrUpdate);
+            TryHelper.Try(CoinService.Instance.AddOrUpdate, Log);
             //Update USD Exchange Rates;
-            TryHelper.Try(CoinService.Instance.UpdateUsdExchangeRates);
+            TryHelper.Try(CoinService.Instance.UpdateUsdExchangeRates, Log);
             
             //Generate Profitability Report
-            GpusInsightsReport report =TryHelper.Try(GpuInsightsService.GenerateReport);
+            GpusInsightsReport report =TryHelper.Try(GpuInsightsService.GenerateReport, Log);
 
             //Save the Report To DB
-            GpusInsightsReportService.Instance.Add(report);
+            TryHelper.Try(() => GpusInsightsReportService.Instance.Add(report), Log);
 
 
 
+
+        }
+
+        public static void Log(Exception ex)
+        {
+            System.Console.WriteLine(ex.ToString());
+        }
+        public static void Log(string message)
+        {
+            System.Console.WriteLine(message.ToString());
         }
     }
 }
