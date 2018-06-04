@@ -1,4 +1,5 @@
-﻿using CreaDev.Framework.Core.Helpers;
+﻿
+using CreaDev.Framework.Core.Helpers;
 using GpuMiningInsights.Application.Services;
 using GpuMiningInsights.Domain.Models;
 using System;

@@ -9,6 +9,9 @@ namespace GpuMiningInsights.Application.Services
 {
     public class HashrateService : GmiServiceBase<Hashrate, HashrateService>
     {
-
+        public HashrateService()
+        {
+            Includes.Add(nameof(Hashrate.Algorithm));
+        }
     }
 }

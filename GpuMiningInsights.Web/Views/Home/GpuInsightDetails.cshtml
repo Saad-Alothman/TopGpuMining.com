@@ -15,13 +15,15 @@
     }).Result;
     int? gpuId = ViewData[Constants.GPU_ID] as int?;
     var gpuInsightsReport = Model.GpuInsightReports.FirstOrDefault(g=>g.GpuId == gpuId);
-    var gpuHashrates= HashrateService.Instance.Search(new SearchCriteria<Hashrate>()
+    var gpuHashrates = HashrateService.Instance.Search(new SearchCriteria<Hashrate>(Int32.MaxValue, 1)
     {
         FilterExpression = g => g.ModelId == gpuInsightsReport.GpuId
     });
+    var algoIds = gpuHashrates.Result.Select(s => s.AlogrthimId).ToList();
+    //var algoIds =new List<int>(){1};
     var coinsIncluded = CoinService.Instance.Search(new SearchCriteria<Coin>()
     {
-        FilterExpression = coin => gpuHashrates.Result.Select(s => s.AlogrthimId).Contains(coin.AlgorithmId)
+        FilterExpression = coin =>coin.AlgorithmId != null && algoIds.Contains(coin.AlgorithmId.Value)
     }).Result;
 }
 <div class="row">
@@ -212,6 +214,14 @@ else
 
 
 }
+<div class="bs-callout bs-callout-info">
+    <h4>Algorithms included</h4>
+    <p>
+        Report generated and comparison included coins within the following algorithms: <br />
+        @gpuHashrates.Result.Select(s => s.Algorithm.Name.ToString()).ToList().ToCsv();
+
+    </p>
+</div>
 <h2> included Coins In the comparison</h2>
 <div class="row">
     <div class="col-md-12">
