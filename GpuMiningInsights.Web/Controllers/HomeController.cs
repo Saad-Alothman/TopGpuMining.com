@@ -10,6 +10,7 @@ using GpuMiningInsights.Application;
 using GpuMiningInsights.Application.Amazon;
 using GpuMiningInsights.Application.Services;
 using GpuMiningInsights.Domain.Models;
+using GpuMiningInsights.Web.Helpers;
 
 namespace GpuMiningInsights.Web.Controllers
 {
@@ -25,6 +26,12 @@ namespace GpuMiningInsights.Web.Controllers
         {
             var report =GpusInsightsReportService.Instance.GetLatestReport();
             return View("IndexNew",report);
+        }
+        public ActionResult GpuInsightDetails(int id,int? reportId=null)
+        {
+            GpusInsightsReport report = GpusInsightsReportService.Instance.GetLatestReport();
+            ViewData[Constants.GPU_ID] = id;
+            return View(report);
         }
         
         private ClientGpuListData LoadClientGpuListData(bool loadDummyOnNoData = true)

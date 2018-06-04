@@ -123,6 +123,7 @@
     <Compile Include="Models\EntityBase.cs" />
     <Compile Include="Models\Enumeration.cs" />
     <Compile Include="Models\GenericRepository.cs" />
+    <Compile Include="Models\GenericSoftDeleteRepository.cs" />
     <Compile Include="Models\IAuditable.cs" />
     <Compile Include="Models\IEntityBase.cs" />
     <Compile Include="Models\ILookupEntity.cs" />

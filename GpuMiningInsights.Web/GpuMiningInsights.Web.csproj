@@ -366,6 +366,7 @@
     <Content Include="Views\Coin\_List.cshtml" />
     <Content Include="Views\Coin\_SearchForm.cshtml" />
     <Content Include="Views\Coin\Index.cshtml" />
+    <Content Include="Views\Home\GpuInsightDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

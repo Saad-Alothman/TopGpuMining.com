@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nager.AmazonProductAdvertising;
 
 namespace GpuMiningInsights.Application.Services
 {
@@ -28,7 +29,7 @@ namespace GpuMiningInsights.Application.Services
                 List<PriceSourceItem> gpuPriceSourceItems = GetPrices(gpu);
 
                 GpuInsightReport gpuInsightReport = new GpuInsightReport();
-                gpuInsightReport.Gpu = gpu;
+                gpuInsightReport.GpuId = gpu.Id;
                 gpuInsightReport.PriceSourceItems = gpuPriceSourceItems;
 
                 gpusInsightsReport.GpuInsightReports.Add(gpuInsightReport);
@@ -72,14 +73,14 @@ namespace GpuMiningInsights.Application.Services
 
             List<PriceSourceItem> priceSourceItems = new List<PriceSourceItem>();
             WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
-
-            List<PriceSourceItem> result = Amazon.AmazonService.SearchItemLookupOperation(gpu.Asin);
+            AmazonEndpoint? amazonEndpoint = PriceSourceTypeHelper.ToAmazonEndpoint(priceSource.PriceSourceType);
+            List<PriceSourceItem> result = Amazon.AmazonService.SearchItemLookupOperation(gpu.Asin, amazonEndpoint);
             result.ForEach(p => p.PriceSourceId = priceSource.Id);
             priceSourceItems.AddRange(result);
 
             return priceSourceItems;
         }
-
+        
         private static void WriteLine(string v)
         {
         }

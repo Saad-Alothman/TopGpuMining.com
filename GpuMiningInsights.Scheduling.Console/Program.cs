@@ -13,6 +13,7 @@ namespace GpuMiningInsights.Scheduling.Console
     {
         static void Main(string[] args)
         {
+            GmiApp.Initialize();
             //Update Fiat Currencies Exchange Rate
             TryHelper.Try(FiatCurrencyService.Instance.AddOrUpdate,Log);
 

@@ -33,6 +33,11 @@ namespace GpuMiningInsights.Domain.Models
         public double RevenuePerDay { get; set; }
         public double AnualRevenue => RevenuePerDay * 365;
         public double CoinsPerDay { get; set; }
+
+        public double CalcProfitPerDay(double gpuPrice)
+        {
+            return (AnualRevenue - gpuPrice) / 365;
+        }
     }
     public class GpuInsightReport : GmiEntityBase
     {
@@ -42,6 +47,7 @@ namespace GpuMiningInsights.Domain.Models
             this.PriceSourceItems = new List<PriceSourceItem>();
         }
         public Gpu Gpu { get; set; }
+        public int? GpuId { get; set; }
         public List<PriceSourceItem> PriceSourceItems { get; set; }
 
         [NotMapped]
@@ -143,9 +149,7 @@ namespace GpuMiningInsights.Domain.Models
                 foreach (var item in PriceSourceItems)
                 {
                     if (item.PriceUSD < lowest.PriceUSD)
-                    {
                         lowest = item;
-                    }
                 }
                 return lowest;
             }
@@ -155,24 +159,26 @@ namespace GpuMiningInsights.Domain.Models
         {
             get
             {
-                double profitPerDay = (HighestRevenueCoin.AnualRevenue - LowestPriceSourceItem.PriceUSD) / 365;
+                double profitPerDay = HighestRevenueCoin.CalcProfitPerDay(LowestPriceSourceItem.PriceUSD);
+
                 return profitPerDay;
             }
         }
 
         public string CssStyle
         {
-            get
-            {
-                string style = "";
-                style = ROI >= 0 ? "" : "style=\"color:#de6c6c\"";
-                if (ROI > 30)
-                    style = "style=\"color:#0fc304\"";
-
-                return style;
-            }
+            get { return GetRoiCssStyle(ROI); }
         }
 
+        public static string GetRoiCssStyle(double roi)
+        {
+            string style = "";
+            style = roi >= 0 ? "" : "style=\"color:#de6c6c\"";
+            if (roi > 30)
+                style = "style=\"color:#0fc304\"";
+
+            return style;
+        }
 
 
         public override void Update(object objectWithNewData)

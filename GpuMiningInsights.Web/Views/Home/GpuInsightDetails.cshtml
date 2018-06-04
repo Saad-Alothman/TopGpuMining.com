@@ -13,6 +13,16 @@
     var topcoins = CoinService.Instance.Search(new SearchCriteria<Coin>(8, 1, coins => coins.OrderByDescending(c => c.ExchangeRateUsd), c => c.ExchangeRateUsd != null)
     {
     }).Result;
+    int? gpuId = ViewData[Constants.GPU_ID] as int?;
+    var gpuInsightsReport = Model.GpuInsightReports.FirstOrDefault(g=>g.GpuId == gpuId);
+    var gpuHashrates= HashrateService.Instance.Search(new SearchCriteria<Hashrate>()
+    {
+        FilterExpression = g => g.ModelId == gpuInsightsReport.GpuId
+    });
+    var coinsIncluded = CoinService.Instance.Search(new SearchCriteria<Coin>()
+    {
+        FilterExpression = coin => gpuHashrates.Result.Select(s => s.AlogrthimId).Contains(coin.AlgorithmId)
+    }).Result;
 }
 <div class="row">
     <div class="col-md-12">
@@ -38,7 +48,7 @@
 <br />
 <br />
 <br />
-@if (Model?.GpuInsightReports == null)
+@if (gpuInsightsReport == null)
 {
     <div class="bs-callout bs-callout-info">
         <h4>Report is being generated!</h4>
@@ -47,6 +57,31 @@
 }
 else
 {
+    <div class="row">
+        <div class="col-md-4">
+            @gpuInsightsReport.Gpu.Name
+            @if (!string.IsNullOrWhiteSpace(gpuInsightsReport.Gpu.ImageUrl))
+            {
+                <img src="@gpuInsightsReport.Gpu.ImageUrl" style="max-width: 300px;" />
+            }
+        </div>
+        <div class="col-md-4">
+            Chipset: @gpuInsightsReport.Gpu.Model.Name.ToString()
+        </div>
+        <div class="col-md-4">
+            @{
+                var cheapestOption = gpuInsightsReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
+            }
+            @if (cheapestOption != null)
+            {
+                <a href="@cheapestOption.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!</a>
+            }
+            <br />
+            <button type="button" class="btn btn-primary" onclick="onBuyNowClick()">See Buying Options</button>
+
+        </div>
+     
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div style="display:inline-block;width:100%;scroll-x:auto">
@@ -66,16 +101,13 @@ else
 
 
                         <tr>
-                            <th>GPU</th>
-                            <th>Chipset</th>
-                            <th>Best Coin To Mine (Algorithm)</th>
+                            <th>Coin To Mine (Algorithm)</th>
                             <th>GPU Hashrate for Algorithm</th>
                             <th>Coins /Day</th>
                             <th>coin exchange Rate </th>
                             <th>Coin Block Reward</th>
                             <th>Revenue ($/Day)</th>
                             <th>Profit ($/Day)</th>
-                            <th>Lowest GPU Price</th>
                             <th>Annual Revenue</th>
                             <th>Annual ROI</th>
                             <th></th>
@@ -84,9 +116,11 @@ else
                     <tbody>
                         @{
                             int index = 0;
+                            var lowestPriceSourceItem = gpuInsightsReport.LowestPriceSourceItem;
                         }
-                        @foreach (var gpuInsightReport in Model.GpuInsightReports)
+                        @foreach (var coinProfitabilityResult in gpuInsightsReport.CoinsProfitabilityResults.OrderByDescending(s=> ((s.AnualRevenue - lowestPriceSourceItem.PriceUSD) / lowestPriceSourceItem.PriceUSD)))
                         {
+                            double roi =Math.Round(((coinProfitabilityResult.AnualRevenue - lowestPriceSourceItem.PriceUSD) / lowestPriceSourceItem.PriceUSD) * 100,4) ;
 
 
 
@@ -94,42 +128,21 @@ else
 
 
                             <tr>
+                              
                                 <td>
-                                    @gpuInsightReport.Gpu.Name
-                                    @if (!string.IsNullOrWhiteSpace(gpuInsightReport.Gpu.ImageUrl))
-                                    {
-                                        <img src="@gpuInsightReport.Gpu.ImageUrl" style="max-width: 300px;" />
-                                    }
+                                    <i style="font-size: 4em;" class="cc @coinProfitabilityResult.Coin.Tag.ToUpper()"></i>
+                                    @coinProfitabilityResult.Coin.Name (@(coinProfitabilityResult.Hashrate.Algorithm?.Name?.ToString()))
                                 </td>
-                                <td>@gpuInsightReport.Gpu.Model.Name</td>
+                                <td>@coinProfitabilityResult.Hashrate.HashrateNumber MH/s</td>
+                                <td>@Math.Round(coinProfitabilityResult.CoinsPerDay, 5)</td>
+                                <td>@coinProfitabilityResult.Coin.ExchangeRateUsd $</td>
+                                <td>@coinProfitabilityResult.Coin.BlockReward</td>
+                                <td>@Math.Round(coinProfitabilityResult.RevenuePerDay, 5)</td>
+                                <td>@Math.Round(coinProfitabilityResult.CalcProfitPerDay(lowestPriceSourceItem.PriceUSD), 5)</td>
 
-                                <td>
-                                    <i style="font-size: 4em;" class="cc @gpuInsightReport.HighestRevenueCoin.Coin.Tag.ToUpper()"></i>
-
-                                    @gpuInsightReport.HighestRevenueCoin.Coin.Name (@(gpuInsightReport.HighestRevenueCoin.Hashrate.Algorithm?.Name?.ToString()))
-                                </td>
-                                <td>@gpuInsightReport.HighestRevenueCoin.Hashrate.HashrateNumber MH/s</td>
-                                <td>@Math.Round(gpuInsightReport.HighestRevenueCoin.CoinsPerDay, 5)</td>
-                                <td>@gpuInsightReport.HighestRevenueCoin.Coin.ExchangeRateUsd $</td>
-                                <td>@gpuInsightReport.HighestRevenueCoin.Coin.BlockReward</td>
-                                <td>@Math.Round(gpuInsightReport.HighestRevenueCoin.RevenuePerDay, 5)</td>
-                                <td>@Math.Round(gpuInsightReport.ProfitPerDay, 5)</td>
-
-                                <td>@(gpuInsightReport.LowestPriceSourceItem?.PriceUSD) $</td>
-                                <td>@(Math.Round(gpuInsightReport.HighestRevenueCoin.AnualRevenue, 2)) </td>
-                                <td @Html.Raw(gpuInsightReport.CssStyle)>@(gpuInsightReport.ROI) %</td>
-                                <td>
-                                    @{
-                                        var cheapestOption = gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
-                                    }
-                                    @if (cheapestOption != null)
-                                    {
-                                        <a href="@cheapestOption.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!</a>
-                                    }
-                                    <br />
-                                    <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options</button>
-
-                                </td>
+                                <td>@(Math.Round(coinProfitabilityResult.AnualRevenue, 2)) </td>
+                                <td @Html.Raw(GpuInsightReport.GetRoiCssStyle(roi))>@(roi) %</td>
+                                <td></td>
                             </tr>
                             index++;
                         }
@@ -197,8 +210,17 @@ else
 
     </div>
 
-   
+
 }
+<h2> included Coins In the comparison</h2>
+<div class="row">
+    <div class="col-md-12">
+        @foreach (var coin in coinsIncluded)
+        {
+            @coin.Name
+        }
+    </div>
+</div>
 <div class="jumbotron">
     <h1>Top GPU Mining</h1>
     <br />

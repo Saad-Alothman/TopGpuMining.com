@@ -36,6 +36,12 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
       <HintPath>..\CreaDev.Framework.Web.Mvc\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Nager.AmazonProductAdvertising, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nager.AmazonProductAdvertising.1.1.0\lib\net461\Nager.AmazonProductAdvertising.dll</HintPath>
+    </Reference>
+    <Reference Include="Nager.ArticleNumber, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nager.ArticleNumber.1.0.3\lib\net461\Nager.ArticleNumber.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>

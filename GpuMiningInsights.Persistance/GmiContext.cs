@@ -28,6 +28,7 @@ namespace GpuMiningInsights.Persistance
         {
             this.Configuration.ProxyCreationEnabled = false;
             
+            
 
         }
 
