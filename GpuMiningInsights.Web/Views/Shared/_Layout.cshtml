@@ -70,6 +70,10 @@
         .admin-link {
             font-weight: bold;
         }
+
+        .fewer-details .more-details {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -91,21 +95,23 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <li role="presentation" class="dropdown ">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Admin<span class="caret"></span> </a> 
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Admin<span class="caret"></span> </a>
                             <ul class="dropdown-menu">
                                 <li class="admin-link">@Html.ActionLink("Brands", "Index", "Brand")</li>
                                 <li class="admin-link">@Html.ActionLink("Gpus", "Index", "Gpu")</li>
-                                <li class="admin-link">@Html.ActionLink("Models", "Index", "Model")</li>
+                                <li class="admin-link">@Html.ActionLink("Models(Chipsets)", "Index", "Model")</li>
                                 <li class="admin-link">@Html.ActionLink("Algorithms", "Index", "Algorithm")</li>
                                 <li class="admin-link">@Html.ActionLink("Hashrates", "Index", "Hashrate")</li>
                                 <li class="admin-link">@Html.ActionLink("Price Sources", "Index", "PriceSource")</li>
                                 <li class="admin-link">@Html.ActionLink("GPU Price Sources", "Index", "GPUPriceSource")</li>
-
+                                <li role="separator" class="divider"></li>
+                                <li class="admin-link"><a href="@Url.Content("~/Files/admin-guide.pdf")" target="_blank">Admin Guide</a></li>
+                                <li class="admin-link"><a href="@Url.Content("~/Files/gpus-info.xlsx")" target="_blank">GPU Input sheet</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li class="admin-link">@Html.ActionLink("Log out", "LogOff", "Account")</li>
                             </ul>
                         </li>
-                        
+
                     }
 
                     @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
@@ -157,6 +163,21 @@
                 eventAction: '',
                 eventLabel: ''
             });
+        }
+
+
+        function toggleViewMode(button, selector) {
+            var fewerDetailsCssClassSelector = 'fewer-details';
+            var isCompactMode =! $(selector).hasClass(fewerDetailsCssClassSelector);
+            var buttonText = 'Show Fewer Columns';
+            if (isCompactMode) {
+                buttonText = 'Show More Columns';
+                $(selector).addClass(fewerDetailsCssClassSelector);
+            } else {
+                buttonText = 'Show Fewer Columns';
+                $(selector).removeClass(fewerDetailsCssClassSelector);
+            }
+            $(button).html(buttonText);
         }
     </script>
 </body>

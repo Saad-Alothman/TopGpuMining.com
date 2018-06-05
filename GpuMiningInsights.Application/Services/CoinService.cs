@@ -34,7 +34,7 @@ namespace GpuMiningInsights.Application.Services
 
                 int pageNumber = 1;
                 int pageSize = 30;
-                int lastPage = allCoinsInDBCount / pageSize;
+                int lastPage = (int) Math.Ceiling((double)allCoinsInDBCount / pageSize) ;
 
                 string usdCode = "USD";
                 

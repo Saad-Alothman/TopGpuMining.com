@@ -268,6 +268,13 @@
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="webfont\cryptocoins-colors.css" />
     <Content Include="webfont\cryptocoins.css" />
+    <Content Include="Files\admin-guide.docx" />
+    <Content Include="Files\admin-guide.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\gpus-info.xlsx" />
+    <None Include="Properties\PublishProfiles\saad77 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\saad77 - Web Deploy.pubxml" />
     <None Include="Scripts\validations\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\validations\jquery.validate.js" />
     <Content Include="Scripts\validations\jquery.validate.min.js" />
@@ -282,7 +289,6 @@
     <Content Include="Views\Brand\_DeleteForm.cshtml" />
     <Content Include="Views\Brand\_SearchForm.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\saad77 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

@@ -5,7 +5,12 @@
 @using CreaDev.Framework.Core.Extensions
 @using GpuMiningInsights.Application.Services
 @model GpusInsightsReport
+@*
 
+    chekc out the website, not the article also how it displays GPUS:
+        https://1stminingrig.com/are-the-rx570-and-rx580-profitable-mining-performance-review/
+
+*@
 @{
     ViewBag.Title = "Best GPUs for mining";
     string lastUpdate = Model?.Date.ToString("dd-MM-yyyy");
@@ -29,8 +34,11 @@ else
 {
     <div class="row">
         <div class="col-md-12">
-            <div style="display:inline-block;width:100%;scroll-x:auto">
-                <table class="table table-bordered table-striped">
+            <div style="display: inline-block; width: 100%; scroll-x: auto">
+                <button type="button" onclick="toggleViewMode(this,'#table-gpu-comparison')">
+                    Show More Columns
+                </button>
+                <table class="table table-bordered table-striped fewer-details" id="table-gpu-comparison">
                     <thead>
                         @*
 
@@ -47,16 +55,16 @@ else
 
                         <tr>
                             <th>GPU</th>
-                            <th>Chipset</th>
+                            <th class="more-details">Chipset</th>
                             <th>Best Coin To Mine (Algorithm)</th>
                             <th>GPU Hashrate for Algorithm</th>
-                            <th>Coins /Day</th>
-                            <th>coin exchange Rate </th>
-                            <th>Coin Block Reward</th>
-                            <th>Revenue ($/Day)</th>
+                            <th class="more-details">Coins /Day</th>
+                            <th class="more-details">coin exchange Rate </th>
+                            <th class="more-details">Coin Block Reward</th>
+                            <th class="more-details">Revenue ($/Day)</th>
                             <th>Profit ($/Day)</th>
                             <th>Lowest GPU Price</th>
-                            <th>Annual Revenue</th>
+                            <th class="more-details">Annual Revenue</th>
                             <th>Annual ROI</th>
                             <th></th>
                         </tr>
@@ -65,7 +73,7 @@ else
                         @{
                             int index = 0;
                         }
-                        @foreach (var gpuInsightReport in Model.GpuInsightReports.OrderByDescending(g=>g.ROI))
+                        @foreach (var gpuInsightReport in Model.GpuInsightReports.OrderByDescending(g => g.ROI))
                         {
 
 
@@ -75,13 +83,13 @@ else
 
                             <tr>
                                 <td>
-                                    @gpuInsightReport.Gpu.Name
+                                    @Html.ActionLink(gpuInsightReport.Gpu.Name, "GpuInsightDetails", new { id = gpuInsightReport.Gpu.Id })
                                     @if (!string.IsNullOrWhiteSpace(gpuInsightReport.Gpu.ImageUrl))
                                     {
                                         <img src="@gpuInsightReport.Gpu.ImageUrl" style="max-width: 300px;" />
                                     }
                                 </td>
-                                <td>@gpuInsightReport.Gpu.Model.Name</td>
+                                <td class="more-details">@gpuInsightReport.Gpu.Model.Name</td>
 
                                 <td>
                                     <i style="font-size: 4em;" class="cc @gpuInsightReport.HighestRevenueCoin.Coin.Tag.ToUpper()"></i>
@@ -89,23 +97,23 @@ else
                                     @gpuInsightReport.HighestRevenueCoin.Coin.Name (@(gpuInsightReport.HighestRevenueCoin.Hashrate.Algorithm?.Name?.ToString()))
                                 </td>
                                 <td>@gpuInsightReport.HighestRevenueCoin.Hashrate.HashrateNumber MH/s</td>
-                                <td>@Math.Round(gpuInsightReport.HighestRevenueCoin.CoinsPerDay, 5)</td>
-                                <td>@gpuInsightReport.HighestRevenueCoin.Coin.ExchangeRateUsd $</td>
-                                <td>@gpuInsightReport.HighestRevenueCoin.Coin.BlockReward</td>
-                                <td>@Math.Round(gpuInsightReport.HighestRevenueCoin.RevenuePerDay, 5)</td>
+                                <td class="more-details">@Math.Round(gpuInsightReport.HighestRevenueCoin.CoinsPerDay, 5)</td>
+                                <td class="more-details">@gpuInsightReport.HighestRevenueCoin.Coin.ExchangeRateUsd $</td>
+                                <td class="more-details">@gpuInsightReport.HighestRevenueCoin.Coin.BlockReward</td>
+                                <td class="more-details">@Math.Round(gpuInsightReport.HighestRevenueCoin.RevenuePerDay, 5)</td>
                                 <td>@Math.Round(gpuInsightReport.ProfitPerDay, 5)</td>
 
                                 <td>@(gpuInsightReport.LowestPriceSourceItem?.PriceUSD) $</td>
-                                <td>@(Math.Round(gpuInsightReport.HighestRevenueCoin.AnualRevenue, 2)) </td>
+                                <td class="more-details">@(Math.Round(gpuInsightReport.HighestRevenueCoin.AnualRevenue, 2)) </td>
                                 <td @Html.Raw(gpuInsightReport.CssStyle)>@(gpuInsightReport.ROI) %</td>
                                 <td style="min-width: 200px;">
                                     @{
-        var cheapestOption = gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
+                                        var cheapestOption = gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
                                     }
                                     @if (cheapestOption != null)
-    {
-                                <a href="@cheapestOption.ItemURL" onclick="SendBuyNowClickAnalytics()">Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!</a>
-}
+                                    {
+                                        <a href="@cheapestOption.ItemURL" onclick="SendBuyNowClickAnalytics()">Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!</a>
+                                    }
                                     <br />
                                     or
                                     <br />
