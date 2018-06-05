@@ -1,0 +1,21 @@
+﻿@model List<Coin>
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-toolbar" role="toolbar" aria-label="...">
+            @foreach (var coin in Model)
+            {
+                <div class="btn-group" role="group" aria-label="...">
+                    <div style="padding-right: 5px;">
+                        <span>
+                            <i style="font-size: 1em;" class="cc @coin.Tag.ToUpper()"></i>
+                        </span>
+                        <span>@coin.ExchangeRateUsd $</span>
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
