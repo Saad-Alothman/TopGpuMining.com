@@ -43,13 +43,10 @@
 
             <tr>
                 @* Begin Model specific Headers *@
-                <th>
-                    @Html.DisplayNameFor(a => a.Result.First().HashrateNumber)
-                </th>
+                <th>Model/Chipset</th>
+                <th>Algorithm</th>
+                <th>@Html.DisplayNameFor(a => a.Result.First().HashrateNumber)</th>
 
-                <th>
-                    @Html.DisplayNameFor(a => a.Result.First().Description)
-                </th>
                 @* END Model specific Headers *@
 
 
@@ -60,46 +57,49 @@
 
             @foreach (var item in Model.Result)
             {
-            <tr>
-                @* Begin Model specific columns *@
+                <tr>
+                    @* Begin Model specific columns *@
+                    <td>
+                        @(item.Model?.Name?.ToString())
+                    </td>
+                    <td>
+                        @(item.Algorithm?.Name?.ToString())
+                    </td>
+                    <td>
+                        @(item.HashrateNumber?.ToString())
+                    </td>
 
-                <td>
-                    @(item.HashrateNumber?.ToString())
-                </td>
-                <td>
-                    @(item.Description?.ToString())
-                </td>
-                @* END Model specific columns *@
+                    @* END Model specific columns *@
 
-                <td>
+                    <td>
 
 
-                    <a href="@Url.Action("Edit", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(editFormSelector, listSelector, onCompleteMethod: $"{editHashrateJavascriptMethod};"))
-                       class="btn btn-primary green">
-                        <i class="fa fa-edit"></i>
-                        @Common.Edit
-                    </a>
+                        <a href="@Url.Action("Edit", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(editFormSelector, listSelector, onCompleteMethod: $"{editHashrateJavascriptMethod};"))
+                           class="btn btn-primary green">
+                            <i class="fa fa-edit"></i>
+                            @Common.Edit
+                        </a>
 
-                    <a href="@Url.Action("Delete", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(deleteFormSelector, listSelector, httpMethod: FormMethod.Get, onCompleteMethod: $"{deleteHashrateJavascriptMethod};"))
-                       class="btn btn-danger">
-                        <i class="fa fa-remove"></i>
-                        @Common.Delete
-                    </a>
-                </td>
-            </tr>
+                        <a href="@Url.Action("Delete", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(deleteFormSelector, listSelector, httpMethod: FormMethod.Get, onCompleteMethod: $"{deleteHashrateJavascriptMethod};"))
+                           class="btn btn-danger">
+                            <i class="fa fa-remove"></i>
+                            @Common.Delete
+                        </a>
+                    </td>
+                </tr>
             }
 
         </table>
 
     </div>
     @Html.PagedListPager(Model.ToPagedList(), page => Url.Action("Search", controllerName, searchCrietriaViewModel.ToRouteValueDictionary(page))
-        , PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
-        {
-            HttpMethod = "POST",
-            OnBegin = $"block('{listSelector}')",
-            OnComplete = $"unblock('{listSelector}')",
-            UpdateTargetId = listId
-        }))
+            , PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                OnBegin = $"block('{listSelector}')",
+                OnComplete = $"unblock('{listSelector}')",
+                UpdateTargetId = listId
+            }))
 }
 else
 {

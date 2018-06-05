@@ -43,13 +43,11 @@
 
             <tr>
                 @* Begin Model specific Headers *@
-                <th>
-                    @Html.DisplayNameFor(a => a.Result.First().Name)
-                </th>
 
-                <th>
-                    @Html.DisplayNameFor(a => a.Result.First().Desc)
-                </th>
+                <th>Price Source</th>
+                <th>Price Source Type</th>
+                <th>GPU</th>
+
                 @* END Model specific Headers *@
 
 
@@ -63,12 +61,12 @@
             <tr>
                 @* Begin Model specific columns *@
 
-                <td>
-                    @(item.Name?.ToString())
-                </td>
-                <td>
-                    @(item.Desc?.ToString())
-                </td>
+
+                <td>@(item.PriceSource.Name?.ToString())</td>
+                <td>@(item.PriceSource.PriceSourceType.GetDisplayName())</td>
+                <td>@(item.Gpu.Name?.ToString())</td>
+
+
                 @* END Model specific columns *@
 
                 <td>

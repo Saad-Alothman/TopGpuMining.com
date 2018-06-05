@@ -13,7 +13,7 @@
 @{
     ViewBag.Name = "Index";
     string itemName = "brand";
-    string itemDisplayName= "Brand";
+    string itemDisplayName = "Brand";
     string itemNameUpperFirstLetter = itemName.ToProperCase();
     string controllerName = itemNameUpperFirstLetter;
     string panelSelector = $"#{itemName}-list-panel";
@@ -26,14 +26,14 @@
     string addItemAlert = $"add-{itemName}-alert";
     string addItemFormId = $"add-{itemName}-form";
 
-    //Edit Modal 
+    //Edit Modal
     string editItemModalId = $"edit-{itemName}-modal";
     string editItemDivId = $"edit-{itemName}-div";
     string editItemAlertId = $"edit-{itemName}-alert";
     string editItemFormId = $"edit-{itemName}-form";
     string editItemFormDivId = $"edit-{itemName}-form-div";
 
-    //delete Modal 
+    //delete Modal
     string deleteItemModalId = $"delete-{itemName}-modal";
     string deleteItemDivId = $"delete-{itemName}-div";
     string deleteItemAlertId = $"delete-{itemName}-alert";
@@ -42,7 +42,9 @@
 
 
 }
-
+@Html.Partial("_BootstrapCallOut", new BootstrapCallOut($@"This page is for Managing
+{itemDisplayName}s That will be Part of the GPU when adding GPUs
+"))
 <br />
 <br />
 <br />
@@ -216,7 +218,7 @@
 
 @section scripts{
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         @{
             string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
@@ -237,5 +239,5 @@
             $("#@deleteItemAlertId").html('');
             $("#@deleteItemModalId").modal('show');
         }
-</script>
+    </script>
 }

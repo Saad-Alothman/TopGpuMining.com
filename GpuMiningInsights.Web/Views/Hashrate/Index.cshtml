@@ -13,7 +13,7 @@
 @{
     ViewBag.Name = "Index";
     string itemName = "hashrate";
-    string itemDisplayName= "Hashrate";
+    string itemDisplayName = "Hashrate";
     string itemNameUpperFirstLetter = itemName.ToProperCase();
     string controllerName = itemNameUpperFirstLetter;
     string panelSelector = $"#{itemName}-list-panel";
@@ -26,14 +26,14 @@
     string addItemAlert = $"add-{itemName}-alert";
     string addItemFormId = $"add-{itemName}-form";
 
-    //Edit Modal 
+    //Edit Modal
     string editItemModalId = $"edit-{itemName}-modal";
     string editItemDivId = $"edit-{itemName}-div";
     string editItemAlertId = $"edit-{itemName}-alert";
     string editItemFormId = $"edit-{itemName}-form";
     string editItemFormDivId = $"edit-{itemName}-form-div";
 
-    //delete Modal 
+    //delete Modal
     string deleteItemModalId = $"delete-{itemName}-modal";
     string deleteItemDivId = $"delete-{itemName}-div";
     string deleteItemAlertId = $"delete-{itemName}-alert";
@@ -42,7 +42,9 @@
 
 
 }
-
+@Html.Partial("_BootstrapCallOut", new BootstrapCallOut($@"This page is for Putting the Right hashrate for a GPU with the selected Algorithm, 
+any GPU hashrate against a coin that uses this algorithm will get this hashrate in the calculation, you can add as many as you like
+<br /> <span style=""font-weight:bold"" > Please NOTE that when calculating the profitability, only models with a record given here will be considered, otherwise it will be skipped </span>"))
 <br />
 <br />
 <br />
@@ -216,7 +218,7 @@
 
 @section scripts{
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         @{
             string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
@@ -239,10 +241,10 @@
         }
 
 
-       
 
-     
 
-      
-</script>
+
+
+
+    </script>
 }

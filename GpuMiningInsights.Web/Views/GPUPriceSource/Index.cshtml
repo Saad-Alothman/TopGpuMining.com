@@ -9,7 +9,7 @@
 @{
     ViewBag.Name = "Index";
     string itemName = "gPUPriceSource";
-    string itemDisplayName= "GPU Price Source";
+    string itemDisplayName = "GPU Price Source";
     string itemNameUpperFirstLetter = itemName.ToProperCaseTowWords();
     string controllerName = itemNameUpperFirstLetter;
     string panelSelector = $"#{itemName}-list-panel";
@@ -22,14 +22,14 @@
     string addItemAlert = $"add-{itemName}-alert";
     string addItemFormId = $"add-{itemName}-form";
 
-    //Edit Modal 
+    //Edit Modal
     string editItemModalId = $"edit-{itemName}-modal";
     string editItemDivId = $"edit-{itemName}-div";
     string editItemAlertId = $"edit-{itemName}-alert";
     string editItemFormId = $"edit-{itemName}-form";
     string editItemFormDivId = $"edit-{itemName}-form-div";
 
-    //delete Modal 
+    //delete Modal
     string deleteItemModalId = $"delete-{itemName}-modal";
     string deleteItemDivId = $"delete-{itemName}-div";
     string deleteItemAlertId = $"delete-{itemName}-alert";
@@ -38,7 +38,8 @@
 
 
 }
-
+@Html.Partial("_BootstrapCallOut", new BootstrapCallOut($@"This page is for Defining Price sources that will be used by the GPU selected, that means no Price Sources will be checked for the given GPU if there is no record added here, this is done 
+to allow the ability to selctivley include which price sources to check for a given GPU, you can add as many as you like"))
 <br />
 <br />
 <br />
@@ -212,7 +213,7 @@
 
 @section scripts{
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
 		@{
 			string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
@@ -235,11 +236,11 @@
 		}
 
 
-       
 
-     
 
-      
-	</script>
+
+
+
+    </script>
 }
 

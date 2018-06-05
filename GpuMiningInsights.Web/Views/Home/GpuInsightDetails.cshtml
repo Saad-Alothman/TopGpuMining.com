@@ -26,7 +26,7 @@
         FilterExpression = coin => coin.AlgorithmId != null && algoIds.Contains(coin.AlgorithmId.Value)
     }).Result;
 }
-@Html.Partial("~/Views/Coin/_TopCoinsPartial.cshtml",topcoins)
+@Html.Partial("~/Views/Coin/_TopCoinsPartial.cshtml", topcoins)
 <br />
 <br />
 <br />
@@ -204,44 +204,44 @@ else
     </p>
 </div>
 <h2> Buying options</h2>
-      
-        <h3></h3>
-        <table class="table table-bordered table-striped" id="">
-          
-            <thead>
-                <tr>
-                    <th>GPU</th>
-                    <th>Price (USD)</th>
-                    <th>From</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
 
-                @foreach (var priceSourceItem in gpuInsightsReport.PriceSourceItems.OrderBy(item => item.PriceUSD))
-                {
-                    string name = priceSourceItem.ItemName;
-                    name = string.IsNullOrWhiteSpace(name) ? gpuInsightsReport.Gpu.Name : name;
-                    <tr>
-                        <td>
-                            <a href="@priceSourceItem.ItemURL">
-                                @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
-                                {
-                                    <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
-                                }
-                                @name
-                            </a>
-                        </td>
-                        <td>@priceSourceItem.PriceUSD $ </td>
-                        <td>@priceSourceItem.PriceSource.Name </td>
-                        <td>
-                            <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.PriceSourceType.GetDisplayName()!</a>
-                        </td>
-                    </tr>
-                }
+<h3></h3>
+<table class="table table-bordered table-striped" id="table-buying-options">
 
-            </tbody>
-        </table>
+    <thead>
+        <tr>
+            <th>GPU</th>
+            <th>Price (USD)</th>
+            <th>From</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var priceSourceItem in gpuInsightsReport.PriceSourceItems.OrderBy(item => item.PriceUSD))
+        {
+            string name = priceSourceItem.ItemName;
+            name = string.IsNullOrWhiteSpace(name) ? gpuInsightsReport.Gpu.Name : name;
+            <tr>
+                <td>
+                    <a href="@priceSourceItem.ItemURL">
+                        @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
+                        {
+                            <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
+                        }
+                        @name
+                    </a>
+                </td>
+                <td>@priceSourceItem.PriceUSD $ </td>
+                <td>@priceSourceItem.PriceSource.Name </td>
+                <td>
+                    <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.PriceSourceType.GetDisplayName()!</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
 
 <div class="jumbotron">
     <h1>Top GPU Mining</h1>
@@ -280,6 +280,9 @@ else
     <script>
         function onBuyNowClick(i) {
             $('#price-details-div').html($('#gpuprices-' + i).clone());
+            $('html, body').animate({
+                scrollTop: $("#table-buying-options").offset().top - 200
+            }, 1000);
         }
     </script>
 

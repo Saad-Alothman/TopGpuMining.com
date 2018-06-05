@@ -65,7 +65,7 @@ else
                         @{
                             int index = 0;
                         }
-                        @foreach (var gpuInsightReport in Model.GpuInsightReports)
+                        @foreach (var gpuInsightReport in Model.GpuInsightReports.OrderByDescending(g=>g.ROI))
                         {
 
 
@@ -98,16 +98,18 @@ else
                                 <td>@(gpuInsightReport.LowestPriceSourceItem?.PriceUSD) $</td>
                                 <td>@(Math.Round(gpuInsightReport.HighestRevenueCoin.AnualRevenue, 2)) </td>
                                 <td @Html.Raw(gpuInsightReport.CssStyle)>@(gpuInsightReport.ROI) %</td>
-                                <td>
+                                <td style="min-width: 200px;">
                                     @{
-                                        var cheapestOption = gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
+        var cheapestOption = gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
                                     }
                                     @if (cheapestOption != null)
-                                    {
-                                        <a href="@cheapestOption.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!</a>
-                                    }
+    {
+                                <a href="@cheapestOption.ItemURL" onclick="SendBuyNowClickAnalytics()">Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!</a>
+}
                                     <br />
-                                    <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options</button>
+                                    or
+                                    <br />
+                                    <a href="javascript:void(0)" onclick="onBuyNowClick(@index)">See Buying Options</a>
 
                                 </td>
                             </tr>
@@ -183,6 +185,7 @@ else
     <h1>Top GPU Mining</h1>
     <br />
     <p class="lead">
+        The main Purpose of this site is to help fellow miners to decide which GPU is best for mining. it will aid you towards deciding which GPU to buy and will assist you in finding the best deals.
         Top GPU Mining provides you with the right information for getting the best GPUs that are most profitable for mining, by considering various parameters.
     </p>
     <p>
@@ -216,7 +219,11 @@ else
     <script>
         function onBuyNowClick(i) {
             $('#price-details-div').html($('#gpuprices-' + i).clone());
+            $('html, body').animate({
+                scrollTop: $("#price-details-div").offset().top - 200
+            }, 1000);
         }
     </script>
+
 
 }

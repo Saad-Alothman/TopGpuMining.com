@@ -10,6 +10,9 @@ namespace GpuMiningInsights.Application.Services
 {
     public class AlgorithmService : GmiServiceBase<Algorithm, AlgorithmService>, IAlgorithmService
     {
+        public AlgorithmService()
+        {
+        }
         public Algorithm AddOrUpdate(Algorithm model)
         {
             var algoInDB=Search(new SearchCriteria<Algorithm>(a => a.Name.English.ToLower() == model.Name.English.Trim().ToLower())).Result.FirstOrDefault();

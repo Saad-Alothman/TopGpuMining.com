@@ -12,6 +12,7 @@ namespace GpuMiningInsights.Application.Services
         public HashrateService()
         {
             Includes.Add(nameof(Hashrate.Algorithm));
+            Includes.Add(nameof(Hashrate.Model));
         }
     }
 }

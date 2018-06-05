@@ -9,7 +9,7 @@
 @{
     ViewBag.Name = "Index";
     string itemName = "priceSource";
-    string itemDisplayName= "Price Source";
+    string itemDisplayName = "Price Source";
     string itemNameUpperFirstLetter = itemName.ToProperCaseTowWords();
     string controllerName = itemNameUpperFirstLetter;
     string panelSelector = $"#{itemName}-list-panel";
@@ -22,14 +22,14 @@
     string addItemAlert = $"add-{itemName}-alert";
     string addItemFormId = $"add-{itemName}-form";
 
-    //Edit Modal 
+    //Edit Modal
     string editItemModalId = $"edit-{itemName}-modal";
     string editItemDivId = $"edit-{itemName}-div";
     string editItemAlertId = $"edit-{itemName}-alert";
     string editItemFormId = $"edit-{itemName}-form";
     string editItemFormDivId = $"edit-{itemName}-form-div";
 
-    //delete Modal 
+    //delete Modal
     string deleteItemModalId = $"delete-{itemName}-modal";
     string deleteItemDivId = $"delete-{itemName}-div";
     string deleteItemAlertId = $"delete-{itemName}-alert";
@@ -38,7 +38,9 @@
 
 
 }
+@Html.Partial("_BootstrapCallOut", new BootstrapCallOut($@"This page is for Defining Price sources that will be used in the system by any GPU, no need to add more than one for each GPU,
 
+But <span style=""font-weight:bold;"">Make sure if you </span> want this source to be considered for a gpu, you add that binding trough {Html.ActionLink("GPU Price Sources","Index","GPUPriceSource")} Page"))
 <br />
 <br />
 <br />
@@ -212,7 +214,7 @@
 
 @section scripts{
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         @{
 			string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
@@ -236,10 +238,10 @@
         }
 
 
-       
 
-     
 
-      
-</script>
+
+
+
+    </script>
 }
