@@ -17,7 +17,7 @@
 
     //settings
     string itemName = "gPUPriceSource";
-    string itemNameUpperFirstLetter = itemName.ToProperCaseTowWords();
+    string itemNameUpperFirstLetter = "GPUPriceSource";
     string controllerName = itemNameUpperFirstLetter;
 
     string listId = $"{itemName}-list";
@@ -26,7 +26,7 @@
     string deleteFormSelector = $"#delete-{itemName}-form-div";
     //Example showEditGpu();
     string editGpuPSJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
-    string deleteGpuPSJavascriptMethod = $"showDelete{itemName.ToProperCase()}()";
+    string deleteGpuPSJavascriptMethod = $"showDelete{itemNameUpperFirstLetter}()";
 
     var searchCrietriaViewModel = new GpuPSSearchCriteriaViewModelBase();
     // usually this is null the first time entering the page
@@ -62,8 +62,8 @@
                 @* Begin Model specific columns *@
 
 
-                <td>@(item.PriceSource.Name?.ToString())</td>
-                <td>@(item.PriceSource.PriceSourceType.GetDisplayName())</td>
+                <td>@(item.PriceSource?.Name?.ToString())</td>
+                <td>@(item.PriceSource?.PriceSourceType.GetDisplayName())</td>
                 <td>@(item.Gpu.Name?.ToString())</td>
 
 

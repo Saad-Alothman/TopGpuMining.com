@@ -74,8 +74,13 @@ namespace GpuMiningInsights.Application.Services
             Guard.AgainstFalse<ArgumentNullException>(!string.IsNullOrWhiteSpace(gpu.Asin));
 
             List<PriceSourceItem> priceSourceItems = new List<PriceSourceItem>();
-            WriteLine($"Getting Price From {priceSource.Name} For GPU {gpu.Name}");
-            AmazonEndpoint? amazonEndpoint = PriceSourceTypeHelper.ToAmazonEndpoint(priceSource.PriceSourceType);
+            AmazonEndpoint? amazonEndpoint = null;
+            if (priceSource != null)
+            {
+                WriteLine($"Getting Price From {priceSource?.Name ?? "NULL"} For GPU {gpu.Name}");
+                amazonEndpoint = PriceSourceTypeHelper.ToAmazonEndpoint(priceSource.PriceSourceType);
+            }
+            
             List<PriceSourceItem> result = Amazon.AmazonService.SearchItemLookupOperation(gpu.Asin, amazonEndpoint);
             result.ForEach(p => p.PriceSourceId = priceSource.Id);
             priceSourceItems.AddRange(result);

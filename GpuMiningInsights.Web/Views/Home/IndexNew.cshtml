@@ -71,7 +71,7 @@ else
                     </thead>
                     <tbody>
                         
-                        @foreach (var gpuInsightReport in Model.GpuInsightReports.Where(g=>g.PriceSourceItems.Any()).OrderByDescending(g => g.ROI))
+                        @foreach (var gpuInsightReport in Model.GpuInsightReports.Where(g=>g.PriceSourceItems.Any() && g.HighestRevenueCoin != null).OrderByDescending(g => g.ROI))
                         {
 
 
