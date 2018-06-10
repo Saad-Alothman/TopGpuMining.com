@@ -239,6 +239,9 @@
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\toastr.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -273,6 +276,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Files\gpus-info.xlsx" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\saad77 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\saad77 - Web Deploy.pubxml" />
     <None Include="Scripts\validations\jquery.validate-vsdoc.js" />
@@ -374,7 +382,7 @@
     <Content Include="Views\Coin\Index.cshtml" />
     <Content Include="Views\Home\GpuInsightDetails.cshtml" />
     <Content Include="Views\Coin\_TopCoinsPartial.cshtml" />
-    <Content Include="Views\GpuInsightReport\_List.cshtml" />
+    <Content Include="Views\GpusInsightsReport\_List.cshtml" />
     <Content Include="Views\Shared\_BootstrapCallOut.cshtml" />
   </ItemGroup>
   <ItemGroup>

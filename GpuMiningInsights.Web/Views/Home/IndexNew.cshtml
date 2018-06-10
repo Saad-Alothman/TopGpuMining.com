@@ -32,158 +32,59 @@
 }
 else
 {
+    @Html.Partial("~/Views/GpusInsightsReport/_List.cshtml", Model)
+
     <div class="row">
-        <div class="col-md-12">
-            <div style="display: inline-block; width: 100%; scroll-x: auto">
-                <button type="button" onclick="toggleViewMode(this,'#table-gpu-comparison')">
-                    Show More Columns
-                </button>
-                <table class="table table-bordered table-striped fewer-details" id="table-gpu-comparison">
-                    <thead>
-                        @*
-
-                                    System.Console.WriteLine($"GPU {gpuName} ,
-                                    ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd},
-                                    Revenue ($/Day) = {item.RevenuePerDayUsd},
-                                    Profit ($/Day) = {item.ProfitPerDayUsd}  ,
-                                    HashRate = {item.Hashrate},
-                                    HashCost = {hashPrice},
-                                    FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
-
-                            ($"GPU {gpuName} HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");*@
-
-
-                        <tr>
-                            <th>GPU</th>
-                            <th class="more-details">Chipset</th>
-                            <th>Best Coin To Mine (Algorithm)</th>
-                            <th>GPU Hashrate for Algorithm</th>
-                            <th class="more-details">Coins /Day</th>
-                            <th class="more-details">coin exchange Rate </th>
-                            <th class="more-details">Coin Block Reward</th>
-                            <th class="more-details">Revenue ($/Day)</th>
-                            <th>Profit ($/Day)</th>
-                            <th>Lowest GPU Price</th>
-                            <th class="more-details">Annual Revenue</th>
-                            <th>Annual ROI</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        @foreach (var gpuInsightReport in Model.GpuInsightReports.Where(g=>g.PriceSourceItems.Any() && g.HighestRevenueCoin != null).OrderByDescending(g => g.ROI))
-                        {
-
-
-
-
-
-
-                            <tr>
-                                <td>
-                                    @Html.ActionLink(gpuInsightReport.Gpu.Name, "GpuInsightDetails", new { id = gpuInsightReport.Gpu.Id })
-                                    @if (!string.IsNullOrWhiteSpace(gpuInsightReport.Gpu.ImageUrl))
-                                    {
-                                        <img src="@gpuInsightReport.Gpu.ImageUrl" style="max-width: 300px;" />
-                                    }
-                                </td>
-                                <td class="more-details">@gpuInsightReport.Gpu.Model.Name</td>
-
-                                <td>
-                                    <i style="font-size: 4em;" class="cc @gpuInsightReport.HighestRevenueCoin.Coin.Tag.ToUpper()"></i>
-
-                                    @gpuInsightReport.HighestRevenueCoin.Coin.Name (@(gpuInsightReport.HighestRevenueCoin.Hashrate.Algorithm?.Name?.ToString()))
-                                </td>
-                                <td>@gpuInsightReport.HighestRevenueCoin.Hashrate.HashrateNumber MH/s</td>
-                                <td class="more-details">@Math.Round(gpuInsightReport.HighestRevenueCoin.CoinsPerDay, 5)</td>
-                                <td class="more-details">@gpuInsightReport.HighestRevenueCoin.Coin.ExchangeRateUsd $</td>
-                                <td class="more-details">@gpuInsightReport.HighestRevenueCoin.Coin.BlockReward</td>
-                                <td class="more-details">@Math.Round(gpuInsightReport.HighestRevenueCoin.RevenuePerDay, 5)</td>
-                                <td>@Math.Round(gpuInsightReport.ProfitPerDay, 5)</td>
-
-                                <td>@(gpuInsightReport.LowestPriceSourceItem?.PriceUSD) $</td>
-                                <td class="more-details">@(Math.Round(gpuInsightReport.HighestRevenueCoin.AnualRevenue, 2)) </td>
-                                <td @Html.Raw(gpuInsightReport.CssStyle)>@(gpuInsightReport.ROI) %</td>
-                                <td style="min-width: 200px;">
-                                    @{
-                                        var cheapestOption = gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
-                                    }
-                                    @if (cheapestOption != null)
-                                    {
-                                        <a href="@cheapestOption.ItemURL" onclick="SendBuyNowClickAnalytics()">Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!</a>
-                                    }
-                                    <br />
-                                    or
-                                    <br />
-                                    <a href="javascript:void(0)" onclick="onBuyNowClick(@gpuInsightReport.Id)">See Buying Options</a>
-
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-
-
-
-                </table>
-
-
-            </div>
-            <div class="row">
-                <div class="col-md-offset-6 col-md-6" id="price-details-div">
-
-                </div>
-            </div>
-            <div class="hidden">
-                @for (int i = 0; i < Model.GpuInsightReports.Count; i++)
-                {
-                    GpuInsightReport gpuInsightReport = Model.GpuInsightReports[i];
-                    Gpu gpuOld = gpuInsightReport.Gpu;
-                    <h3></h3>
-                    <table class="table table-bordered table-striped" id="gpuprices-@gpuInsightReport.Id">
-                        <caption>
-                            Buying options for @gpuOld.Name
-                        </caption>
-                        <thead>
-                            <tr>
-                                <th>GPU</th>
-                                <th>Price (USD)</th>
-                                <th>From</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD))
-                            {
-                                string name = priceSourceItem.ItemName;
-                                name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
-                                <tr>
-                                    <td>
-                                        <a href="@priceSourceItem.ItemURL">
-                                            @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
-                                            {
-                                                <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
-                                            }
-                                            @name
-                                        </a>
-                                    </td>
-                                    <td>@priceSourceItem.PriceUSD $ </td>
-                                    <td>@priceSourceItem.PriceSource.Name </td>
-                                    <td>
-                                        <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.PriceSourceType.GetDisplayName()!</a>
-                                    </td>
-                                </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                }
-            </div>
+        <div class="col-md-offset-6 col-md-6" id="price-details-div">
 
         </div>
-
     </div>
+    <div class="hidden">
+        @for (int i = 0; i < Model.GpuInsightReports.Count; i++)
+        {
+            GpuInsightReport gpuInsightReport = Model.GpuInsightReports[i];
+            Gpu gpuOld = gpuInsightReport.Gpu;
+            <h3></h3>
+            <table class="table table-bordered table-striped" id="gpuprices-@gpuInsightReport.Id">
+                <caption>
+                    Buying options for @gpuOld.Name
+                </caption>
+                <thead>
+                    <tr>
+                        <th>GPU</th>
+                        <th>Price (USD)</th>
+                        <th>From</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
 
+                    @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD))
+                    {
+                        string name = priceSourceItem.ItemName;
+                        name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
+                        <tr>
+                            <td>
+                                <a href="@priceSourceItem.ItemURL">
+                                    @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
+                                    {
+                                        <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
+                                    }
+                                    @name
+                                </a>
+                            </td>
+                            <td>@priceSourceItem.PriceUSD $ </td>
+                            <td>@priceSourceItem.PriceSource.Name </td>
+                            <td>
+                                <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.PriceSourceType.GetDisplayName()!</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+    </div>
 
 }
 <div class="jumbotron">
@@ -228,6 +129,19 @@ else
                 scrollTop: $("#price-details-div").offset().top - 200
             }, 1000);
         }
+
+        $(function() {
+
+            $('button[data-toggle="popover"]').each(function () {
+                var rptId = $(this).data('report-id');
+                var content = $('#popover-content-' + rptId );
+                var options = {
+                    content: content 
+                }
+                $(this).popover(options);
+
+            });
+        });
     </script>
 
 

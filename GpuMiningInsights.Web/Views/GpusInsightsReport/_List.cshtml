@@ -1,0 +1,78 @@
+﻿@using CreaDev.Framework.Core.Extensions
+@model GpusInsightsReport
+@foreach (var gpuInsightReport in Model.GpuInsightReports.Where(g => g.PriceSourceItems.Any() && g.HighestRevenueCoin != null).OrderByDescending(g => g.ROI))
+{
+    var gpu = gpuInsightReport.Gpu;
+    var cheapestOption = gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD).FirstOrDefault();
+
+    <hr style="    border-bottom: 0.1px solid #ddd;" />
+    <div class="row">
+        <div class="col-md-4">
+            @if (!string.IsNullOrWhiteSpace(gpuInsightReport.Gpu.ImageUrl))
+            {
+                <img src="@gpuInsightReport.Gpu.ImageUrl" style="max-width: 100%;" />
+            }
+        </div>
+        <div class="col-md-8">
+            <h4>@Html.ActionLink(gpuInsightReport.Gpu.Name, "GpuInsightDetails", "Home", new { id = gpuInsightReport.Gpu.Id }, new { })</h4>
+            <span style="display: block;    font-size: 0.7em;">Found in: @cheapestOption.PriceSource.PriceSourceType.GetDisplayName() </span>
+            <div class="row">
+                <div class="col-md-6">
+                    <span style="display: inline-block; font-weight: bold;font-size: 1.2em">@(gpuInsightReport.LowestPriceSourceItem?.PriceUSD) $</span>
+                    <div>
+
+                        <br />
+                        <span style="display: block;    font-size: 0.7em;">interested to see how CRAZY the price difference can be? </span>
+
+                        <a style="margin-top: 50px;" href="javascript:void(0)" onclick="onBuyNowClick(@gpuInsightReport.Id)">See All Buying Options (@gpuInsightReport.PriceSourceItems.Count)</a>
+                        @{
+                            string popoverList = "";
+                        }
+
+                        @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD))
+                        {
+                            
+                            popoverList+=$@"<a class=""list-group-item"" href=""{priceSourceItem.ItemURL}"">{priceSourceItem.PriceSource.Name}  ({priceSourceItem.PriceUSD} $)</a>";
+                        }
+                        @{
+                            popoverList = $@"<div class=""list-group"">{popoverList} </div>";
+                        }
+                        <div class="hidden " id="popover-content-@gpuInsightReport.Id">
+
+                            @Html.Raw(popoverList)
+                        </div>
+                        <a href="#" class="btn btn-info" data-toggle="popover" title="Popover title" data-report-id="@gpuInsightReport.Id">
+                            
+                            Click to toggle popover
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <span style="display: inline-block; font-weight: bold;font-size: 1.2em">Return on Investment <span @Html.Raw(gpuInsightReport.CssStyle)>@(gpuInsightReport.ROI) %</span> </span>
+                    <div style="font-size: 0.8em;">
+                        Best Coin To Mine (Algorithm):
+                        <i style="font-size: 2em;" class="cc @gpuInsightReport.HighestRevenueCoin.Coin.Tag.ToUpper()"></i>
+                        <span style="font-weight: bold;">
+                            @gpuInsightReport.HighestRevenueCoin.Coin.Name (@(gpuInsightReport.HighestRevenueCoin.Hashrate.Algorithm?.Name?.ToString()))
+                        </span>
+
+                    </div>
+                    <div style="font-size: 0.8em;"> GPU Hashrate for Algorithm: @gpuInsightReport.HighestRevenueCoin.Hashrate.HashrateNumber MH/s</div>
+                    <div style="font-size: 0.8em;"> Profit ($/Day):@Math.Round(gpuInsightReport.ProfitPerDay, 5)</div>
+                </div>
+            </div>
+
+            <div style="position: relative;bottom: 0;margin-top: 90px;right: 0;">
+                @if (cheapestOption != null)
+                {
+                    <a href="@cheapestOption.ItemURL" class="btn amzn-ad-primary-btn" onclick="SendBuyNowClickAnalytics()">
+                        <i class="fa fa-amazon"></i>
+                        Buy From @cheapestOption.PriceSource.PriceSourceType.GetDisplayName()!
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+
+}
