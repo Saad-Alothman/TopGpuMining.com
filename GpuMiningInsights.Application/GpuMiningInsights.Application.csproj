@@ -113,6 +113,7 @@
     <Compile Include="Services\ModelService.cs" />
     <Compile Include="Services\PriceSourceService.cs" />
     <Compile Include="ExternalServices\WhatToMineService.cs" />
+    <Compile Include="Services\UserActionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CreaDev.Framework.Core\CreaDev.Framework.Core.csproj">

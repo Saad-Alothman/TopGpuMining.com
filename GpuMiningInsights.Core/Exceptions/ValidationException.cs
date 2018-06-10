@@ -25,12 +25,12 @@ namespace GpuMiningInsights.Core.Exceptions
                     if (error.PropertyName.Contains(".Arabic"))
                     {
                         var displayName = GetDisplayName(entity.GetType(), error.PropertyName.Replace(".Arabic", ""));
-                        ValidationErrors.Add(String.Format(Validations.Required, $"{displayName} {Common.Arabic}"));
+                        ValidationErrors.Add(String.Format(Validations.Required, $"{displayName} {CreaDev.Framework.Core.Resources.Common.Arabic}"));
                     }
                     else if (error.PropertyName.Contains(".English"))
                     {
                         var displayName = GetDisplayName(entity.GetType(), error.PropertyName.Replace(".English", ""));
-                        ValidationErrors.Add(String.Format(Validations.Required, $"{displayName} {Common.English}"));
+                        ValidationErrors.Add(String.Format(Validations.Required, $"{displayName} {CreaDev.Framework.Core.Resources.Common.English}"));
                     }
                     else
                         ValidationErrors.Add($"{error.ErrorMessage}");

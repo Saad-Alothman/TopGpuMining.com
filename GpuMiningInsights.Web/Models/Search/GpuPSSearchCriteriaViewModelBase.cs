@@ -12,6 +12,7 @@ namespace GpuMiningInsights.Web.Models.Search
     public class GpuPSSearchCriteriaViewModelBase : GmiSearchCriteriaViewModelBase<GPUPriceSource>
     {
         public string Name { get; set; }
+        public int? GpuId { get; set; }
 
         public override RouteValueDictionary ToRouteValueDictionary(int page, string prefix = "")
         {
@@ -19,6 +20,7 @@ namespace GpuMiningInsights.Web.Models.Search
             RouteValueDictionary routeValueDictionary = base.ToRouteValueDictionary(page, prefix);
 
             ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => routeValueDictionary.Add(nameof(Name), Name));
+            ConditionActionHelper.DoIf(GpuId.HasValue, () => routeValueDictionary.Add(nameof(GpuId), GpuId.Value));
 
             return routeValueDictionary;
         }
@@ -29,8 +31,8 @@ namespace GpuMiningInsights.Web.Models.Search
 
             SearchCriteria<GPUPriceSource> searchCriteria = base.ToSearchCriteria();
 
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name),
-                () => searchCriteria.AndCondition(gpuPriceSource => gpuPriceSource.Name.Contains(Name)));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name),() => searchCriteria.AndCondition(gpuPriceSource => gpuPriceSource.Name.Contains(Name)));
+            ConditionActionHelper.DoIf(GpuId.HasValue, () => searchCriteria.AndCondition(gpuPriceSource => gpuPriceSource.GpuId == GpuId));
 
             return searchCriteria;
         }

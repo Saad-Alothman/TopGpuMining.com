@@ -2,157 +2,105 @@
 @using GpuMiningInsights.Core;
 @using Newtonsoft.Json
 @using System.Configuration
-@model ClientGpuListData
+@using CreaDev.Framework.Core.Extensions
+@using GpuMiningInsights.Application.Services
+@model GpusInsightsReport
+@*
+
+    chekc out the website, not the article also how it displays GPUS:
+        https://1stminingrig.com/are-the-rx570-and-rx580-profitable-mining-performance-review/
+
+*@
 @{
     ViewBag.Title = "Best GPUs for mining";
-    string lastUpdate = Model.Date;
+    
+    string lastUpdate = Model?.Date.ToLocalTime().ToString("yyyy-MM-dd 'T'HH:mm 'Z'");
 
+    var topcoins = CoinService.Instance.Search(new SearchCriteria<Coin>(8, 1, coins => coins.OrderByDescending(c => c.ExchangeRateUsd), c => c.ExchangeRateUsd != null)
+    {
+    }).Result;
 }
+@Html.Partial("~/Views/Coin/_TopCoinsPartial.cshtml", topcoins)
+<br />
+<br />
+<br />
+@if (Model?.GpuInsightReports == null)
+{
+    <div class="bs-callout bs-callout-info">
+        <h4>Report is being generated!</h4>
+        <p> Report is being generated,Please check back later</p>
+    </div>
+}
+else
+{
+    <h3>Recommended GPUs <small style="    font-size: 0.5em;">Based on ROI! (Last update @lastUpdate)</small></h3>
 
-<br />
-<br />
-<br />
 
-<div class="row">
-    <div class="col-md-12">
-        <div style="display:inline-block;width:100%;scroll-x:auto">
-            <table class="table table-bordered table-striped">
+    @Html.Partial("~/Views/GpusInsightsReport/_List.cshtml", Model)
+
+    <div class="row">
+        <div class="col-md-offset-6 col-md-6" id="price-details-div">
+
+        </div>
+    </div>
+    <div class="hidden">
+        @for (int i = 0; i < Model.GpuInsightReports.Count; i++)
+        {
+            GpuInsightReport gpuInsightReport = Model.GpuInsightReports[i];
+            Gpu gpuOld = gpuInsightReport.Gpu;
+            <h3></h3>
+            <table class="table table-bordered table-striped" id="gpuprices-@gpuInsightReport.Id">
+                <caption>
+                    Buying options for @gpuOld.Name
+                </caption>
                 <thead>
-                @*
-                                System.Console.WriteLine($"GPU {gpuName} ,
-                                ProfitPerYearMinusCostUsd = {item.ProfitPerYearMinusCostUsd},
-                                Revenue ($/Day) = {item.RevenuePerDayUsd},
-                                Profit ($/Day) = {item.ProfitPerDayUsd}  ,
-                                HashRate = {item.Hashrate},
-                                HashCost = {hashPrice},
-                                FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
-                                ($"GPU {gpuName} HashRate = {item.Hashrate}, HashCost = {hashPrice}, FROM = {hashPriceSource } @ Price : {gpuPriceFromSource }");
-                    *@
-
-
                     <tr>
                         <th>GPU</th>
-                        <th>Revenue ($/Day)</th>
-                        <th>Profit ($/Day)</th>
-                        <th>Profit(Minus GPU Cost Usd)/Year </th>
-                        <th>Hashrate</th>
-                        <th>HashCost (Price Source)</th>
-                        <th>Price</th>
-                        <th>Price USD</th>
-                        <th>Revenue</th>
-                        <th>ROI</th>
+                        <th>Price (USD)</th>
+                        <th>From</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < Model.Gpus.Count; i++)
-                    {
-                        GPUOld gpuOld = Model.Gpus[i];
-                        int index = i;
-                        string hashPrice = gpuOld.LowestHashPrice.HashPrice.ToString();
-                        string hashPriceSource = gpuOld.LowestHashPrice.Source;
-                        double? gpuPriceFromSource = gpuOld.LowestPriceSource?.LowestPriceSourceItem?.Price;
-                        string currency = gpuOld.LowestPriceSource.LowestPriceSourceItem.PriceCurrency;
-                        double lowestGpuPriceUsd = gpuOld.LowestPriceSource.LowestPriceSourceItem.PriceUSD;
-                        double annualRevenue = gpuOld.AnnualRevenue;
 
-                        string roistyle = gpuOld.ROI >= 0 ? "" : "style=\"color:#de6c6c\"";
-                        if (gpuOld.ROI > 30)
-                        {
-                            roistyle = "style=\"color:#0fc304\"";
-                        }
+                    @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD))
+                    {
+                        string name = priceSourceItem.ItemName;
+                        name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
                         <tr>
-                            <td>@gpuOld.Name</td>
-                            <td>@gpuOld.RevenuePerDayUsd</td>
-                            <td>@gpuOld.ProfitPerDayUsd</td>
-                            <td>@gpuOld.ProfitPerYearMinusCostUsd</td>
-                            <td>@gpuOld.Hashrate</td>
-                            <td>@hashPrice (@hashPriceSource)</td>
-                            <td>@gpuPriceFromSource @currency </td>
-                            <td>@lowestGpuPriceUsd $</td>
-                            <td>@annualRevenue </td>
-                            <td @Html.Raw(roistyle)>@(gpuOld.ROI) %</td>
                             <td>
-                                <button type="button" class="btn btn-primary" onclick="onBuyNowClick(@index)">See Buying Options!</button>
+                                <a href="@priceSourceItem.ItemURL">
+                                    @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
+                                    {
+                                        <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
+                                    }
+                                    @name
+                                </a>
+                            </td>
+                            <td>@priceSourceItem.PriceUSD $ </td>
+                            <td>@priceSourceItem.PriceSource.Name </td>
+                            <td>
+                                <a href="@priceSourceItem.ItemURL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSourceItem.PriceSource.PriceSourceType.GetDisplayName()!</a>
                             </td>
                         </tr>
                     }
+
                 </tbody>
-
-
-
             </table>
-
-
-        </div>
-        <div class="row">
-            <div class="col-md-offset-6 col-md-6" id="price-details-div">
-
-            </div>
-        </div>
-        <div class="hidden">
-            @for (int i = 0; i < Model.Gpus.Count; i++)
-            {
-                GPUOld gpuOld = Model.Gpus[i];
-                <h3></h3>
-                <table class="table table-bordered table-striped" id="gpuprices-@i">
-                    <caption>
-                        Buying options for @gpuOld.Name
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th>GPU</th>
-                            <th>Price</th>
-                            <th>Price (USD)</th>
-                            <th>From</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var priceSource in gpuOld.PriceSources)
-                        {
-                            foreach (var priceSourceItem in priceSource.PriceSourceItems)
-                            {
-                                string name = priceSourceItem.Name;
-                                name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
-                                <tr>
-                                    <td>
-                                        <a href="@priceSourceItem.URL">
-                                            @if (!string.IsNullOrWhiteSpace(priceSourceItem.ImageUrl))
-                                            {
-                                                <img src="@priceSourceItem.ImageUrl" class="img-responsive" />
-                                            }
-                                            @name
-                                        </a>
-                                    </td>
-                                    <td>@priceSourceItem.Price @priceSourceItem.PriceCurrency</td>
-                                    <td>@priceSourceItem.PriceUSD $ </td>
-                                    <td>@priceSource.Name </td>
-                                    <td>
-                                        <a href="@priceSourceItem.URL" onclick="SendBuyNowClickAnalytics()" class="btn btn-primary">Buy From @priceSource.Name!</a>
-                                    </td>
-                                </tr>
-                            }
-                        }
-
-                    </tbody>
-                </table>
-            }
-        </div>
-
+        }
     </div>
 
-</div>
-
+}
 <div class="jumbotron">
     <h1>Top GPU Mining</h1>
     <br />
     <p class="lead">
+        The main Purpose of this site is to help fellow miners to decide which GPU is best for mining. it will aid you towards deciding which GPU to buy and will assist you in finding the best deals.
         Top GPU Mining provides you with the right information for getting the best GPUs that are most profitable for mining, by considering various parameters.
     </p>
     <p>
         Last Update : @lastUpdate &nbsp;
-        
+
     </p>
 </div>
 <p>
@@ -163,6 +111,15 @@
     <br />
 
     Hash rates info from : http://www.whattomine.com
+    <br />
+    Other stuff used:
+    <br />
+    https://www.cryptocompare.com/
+    <br />
+    https://github.com/AllienWorks/cryptocoins
+    <br />
+    http://www.apilayer.net/
+    <br />
 
     Version Number: @ConfigurationManager.AppSettings["VersionNumber"]
 </p>
@@ -172,7 +129,60 @@
     <script>
         function onBuyNowClick(i) {
             $('#price-details-div').html($('#gpuprices-' + i).clone());
+            $('html, body').animate({
+                scrollTop: $("#price-details-div").offset().top - 200
+            },
+                1000);
+
         }
+
+        function onBuyNowClickAnalytics(gpuId, gpuInsightReportId, priceSourceName) {
+            var value = { gpuId, gpuInsightReportId, priceSourceName };
+            var valueStr = JSON.stringify(value);
+            ga('send',
+                {
+                    hitType: 'event',
+                    eventCategory: 'ClickBuyNow',
+                    eventAction: 'click',
+                    eventLabel: valueStr,
+                    value
+                });
+        }
+
+        $(function () {
+
+            $('.buying-options-popover[data-toggle="popover"]').each(function () {
+                var rptId = $(this).data('report-id');
+                var rowIdSelector = '#item-row-' + rptId;
+                var content = $('#popover-content-' + rptId).html();
+                var options = {
+                    content: content,
+                    trigger: 'manual',
+                    html: true,
+                    viewport: rowIdSelector
+                }
+                $(this).popover(options).on("mouseenter",
+                    function () {
+                        var _this = this;
+                        $(this).popover("show");
+                        $(".popover").on("mouseleave",
+                            function () {
+                                $(_this).popover('hide');
+                            });
+                    }).on("mouseleave",
+                    function () {
+                        var _this = this;
+                        setTimeout(function () {
+                            if (!$(".popover:hover").length) {
+                                $(_this).popover("hide");
+                            }
+                        },
+                            300);
+                    });;
+
+            });
+        });
     </script>
+
 
 }

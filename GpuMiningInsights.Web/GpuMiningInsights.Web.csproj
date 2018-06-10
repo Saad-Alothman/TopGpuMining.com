@@ -208,6 +208,7 @@
     <Compile Include="Controllers\HashrateController.cs" />
     <Compile Include="Controllers\ModelController.cs" />
     <Compile Include="Controllers\PriceSourceController.cs" />
+    <Compile Include="Helpers\ListItemHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
@@ -281,6 +282,7 @@
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Files\GPUPriceSourceHelper.xlsx" />
     <None Include="Properties\PublishProfiles\saad77 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\saad77 - Web Deploy.pubxml" />
     <None Include="Scripts\validations\jquery.validate-vsdoc.js" />
@@ -321,7 +323,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\validations\jquery.validate.unobtrusive.bootstrap.min.js.map" />
     <Content Include="Views\Shared\StandardPages\Index.cshtml" />
     <Content Include="Views\Gpu\_DeleteForm.cshtml" />
@@ -371,7 +372,7 @@
     <Content Include="Views\GPUPriceSource\_List.cshtml" />
     <Content Include="Views\GPUPriceSource\_SearchForm.cshtml" />
     <Content Include="Views\GPUPriceSource\Index.cshtml" />
-    <Content Include="Views\Home\IndexNew.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="webfont\cryptocoins.ttf" />
     <Content Include="webfont\cryptocoins.woff" />
     <Content Include="webfont\cryptocoins.woff2" />

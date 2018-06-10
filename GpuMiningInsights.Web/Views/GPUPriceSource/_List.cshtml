@@ -43,41 +43,28 @@
 
             <tr>
                 @* Begin Model specific Headers *@
-
                 <th>Price Source</th>
                 <th>Price Source Type</th>
                 <th>GPU</th>
-
                 @* END Model specific Headers *@
-
-
                 <th>
                     @Common.Actions
                 </th>
             </tr>
-
             @foreach (var item in Model.Result)
             {
             <tr>
                 @* Begin Model specific columns *@
-
-
                 <td>@(item.PriceSource?.Name?.ToString())</td>
                 <td>@(item.PriceSource?.PriceSourceType.GetDisplayName())</td>
                 <td>@(item.Gpu.Name?.ToString())</td>
-
-
                 @* END Model specific columns *@
-
                 <td>
-
-
                     <a href="@Url.Action("Edit", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(editFormSelector, listSelector, onCompleteMethod: $"{editGpuPSJavascriptMethod};"))
                        class="btn btn-primary green">
                         <i class="fa fa-edit"></i>
                         @Common.Edit
                     </a>
-
                     <a href="@Url.Action("Delete", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(deleteFormSelector, listSelector, httpMethod: FormMethod.Get, onCompleteMethod: $"{deleteGpuPSJavascriptMethod};"))
                        class="btn btn-danger">
                         <i class="fa fa-remove"></i>

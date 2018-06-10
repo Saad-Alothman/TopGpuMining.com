@@ -22,7 +22,7 @@ namespace GpuMiningInsights.Core.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Validations {
+    public class Validations {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace GpuMiningInsights.Core.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GpuMiningInsights.Core.Resources.Validations", typeof(Validations).Assembly);
@@ -51,7 +51,7 @@ namespace GpuMiningInsights.Core.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace GpuMiningInsights.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to حقل ({0}) لا يتطابق مع حقل ({1}).
         /// </summary>
-        internal static string Compare {
+        public static string Compare {
             get {
                 return ResourceManager.GetString("Compare", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace GpuMiningInsights.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to الرجاء ادخال البريد الالكتروني بيصغة صحيحة.
         /// </summary>
-        internal static string Email {
+        public static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace GpuMiningInsights.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to الرجاء ادخال {0} بطريقة صحيحة.
         /// </summary>
-        internal static string GeneralValidation {
+        public static string GeneralValidation {
             get {
                 return ResourceManager.GetString("GeneralValidation", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace GpuMiningInsights.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to حقل ({0}) يجب أن يكون اكثر من ({2}) رموز.
         /// </summary>
-        internal static string MinLength {
+        public static string MinLength {
             get {
                 return ResourceManager.GetString("MinLength", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace GpuMiningInsights.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to حقل ({0}) مطلوب..
         /// </summary>
-        internal static string Required {
+        public static string Required {
             get {
                 return ResourceManager.GetString("Required", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace GpuMiningInsights.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to الرجاء اختيار نوع القيمة.
         /// </summary>
-        internal static string SelectSalaryComponentValueType {
+        public static string SelectSalaryComponentValueType {
             get {
                 return ResourceManager.GetString("SelectSalaryComponentValueType", resourceCulture);
             }
