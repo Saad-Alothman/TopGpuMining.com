@@ -23,10 +23,7 @@ namespace GpuMiningInsights.Application.Amazon
 
         private static void LoadEndpoints()
         {
-            //   string endpointsJson = File.ReadAllText("accounts.json");
-            var path = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "bin");
             string endpointsJson = "[\r\n  {\r\n    \"accessKey\": \"AKIAI6YFV4IQDUUAN6MQ\",\r\n    \"secreteKey\": \"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\",\r\n    \"endpointCountryName\": \"US\",\r\n    \"endpointCode\": \"US\",\r\n    \"merchantId\": \"saadtech0d-20\"\r\n\r\n  },\r\n  {\r\n    \"accessKey\": \"AKIAI6YFV4IQDUUAN6MQ\",\r\n    \"secreteKey\": \"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\",\r\n    \"endpointCountryName\": \"UK\",\r\n    \"endpointCode\": \"UK\",\r\n    \"merchantId\": \"saadtech-21\"\r\n  },\r\n  {\r\n    \"accessKey\": \"AKIAI6YFV4IQDUUAN6MQ\",\r\n    \"secreteKey\": \"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\",\r\n    \"endpointCountryName\": \"India\",\r\n    \"endpointCode\": \"IN\",\r\n    \"merchantId\": \"saadtech05-21\"\r\n\r\n  },\r\n  {\r\n    \"accessKey\": \"AKIAI6YFV4IQDUUAN6MQ\",\r\n    \"secreteKey\": \"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\",\r\n    \"endpointCountryName\": \"CA\",\r\n    \"endpointCode\": \"CA\",\r\n    \"merchantId\": \"saadtech-20\"\r\n  }\r\n]";
-
             _endpoints = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Endpoint>>(endpointsJson);
         }
 

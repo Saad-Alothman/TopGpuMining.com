@@ -27,11 +27,13 @@ namespace GpuMiningInsights.Application.Services
             {
                     
                 List<PriceSourceItem> gpuPriceSourceItems = GetPrices(gpu);
+                if (!gpuPriceSourceItems.Any())
+                    continue;
 
                 GpuInsightReport gpuInsightReport = new GpuInsightReport();
                 gpuInsightReport.GpuId = gpu.Id;
                 gpuInsightReport.PriceSourceItems = gpuPriceSourceItems;
-
+                
                 gpusInsightsReport.GpuInsightReports.Add(gpuInsightReport);
             }
 

@@ -1,13 +1,22 @@
-﻿@using CreaDev.Framework.Web.Mvc.Html.Helpers.Bootstrap
+﻿@using CreaDev.Framework.Core.Resources
+@using CreaDev.Framework.Web.Mvc.Helpers
+@using CreaDev.Framework.Web.Mvc.Html.Helpers.Bootstrap
+@using GpuMiningInsights.Application.Services
 @model GpuMiningInsights.Web.Models.Search.GpuSearchCrietriaViewModel
-
+@{
+    var modelSelectListItems = ModelService.Instance.GetAll().Select(m => new SelectListItem() {Text = m.Name.ToString(), Value = m.Id.ToString()}).ToList();
+    modelSelectListItems.Insert(0, new SelectListItem() {Text = Common.Select, Value = ""});
+}
 
 <div class="row">
     <div class="col-md-4">
         @Html.BootstrapTextBoxFor(a => a.Name)
     </div>
     <div class="col-md-4">
-        
+        @Html.BootstrapDropDownListFor(a => a.ModelId, modelSelectListItems)
+    </div>
+    <div class="col-md-4">
+
     </div>
 </div>
 

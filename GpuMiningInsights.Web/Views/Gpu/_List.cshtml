@@ -50,6 +50,9 @@
                 <th>
                     @Html.DisplayNameFor(a => a.Result.First().Description)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(a => a.Result.First().Asin)
+                </th>
                 @* END Model specific Headers *@
 
 
@@ -68,6 +71,9 @@
                 </td>
                 <td>
                     @(item.Description?.ToString())
+                </td>
+                <td>
+                    @(item.Asin)
                 </td>
                 @* END Model specific columns *@
 

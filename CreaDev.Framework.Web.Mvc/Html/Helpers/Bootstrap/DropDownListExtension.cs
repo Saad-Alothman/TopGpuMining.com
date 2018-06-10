@@ -10,8 +10,7 @@ namespace CreaDev.Framework.Web.Mvc.Html.Helpers.Bootstrap
 {
     public static class DropDownListExtension
     {
-        public static MvcHtmlString BootstrapDropDownListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TProperty>> expression,IEnumerable<SelectListItem> items, IDictionary<string, object> htmlAttributes)
+        public static MvcHtmlString BootstrapDropDownListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,Expression<Func<TModel, TProperty>> expression,IEnumerable<SelectListItem> items, IDictionary<string, object> htmlAttributes)
         {
             if (htmlAttributes.Keys.FirstOrDefault(k => k == "class") == null)
             {

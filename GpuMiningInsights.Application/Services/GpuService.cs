@@ -9,7 +9,8 @@ namespace GpuMiningInsights.Application.Services
             Includes = new System.Collections.Generic.List<string>()
             {
                 nameof(Gpu.GPUPriceSources),
-                $"{nameof(Gpu.GPUPriceSources)}.{nameof(GPUPriceSource.PriceSource)}"
+                $"{nameof(Gpu.GPUPriceSources)}.{nameof(GPUPriceSource.PriceSource)}",
+                nameof(Gpu.Model),
             };
         }
     }

@@ -70,10 +70,8 @@ else
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            int index = 0;
-                        }
-                        @foreach (var gpuInsightReport in Model.GpuInsightReports.OrderByDescending(g => g.ROI))
+                        
+                        @foreach (var gpuInsightReport in Model.GpuInsightReports.Where(g=>g.PriceSourceItems.Any()).OrderByDescending(g => g.ROI))
                         {
 
 
@@ -117,11 +115,10 @@ else
                                     <br />
                                     or
                                     <br />
-                                    <a href="javascript:void(0)" onclick="onBuyNowClick(@index)">See Buying Options</a>
+                                    <a href="javascript:void(0)" onclick="onBuyNowClick(@gpuInsightReport.Id)">See Buying Options</a>
 
                                 </td>
                             </tr>
-                            index++;
                         }
                     </tbody>
 
@@ -142,7 +139,7 @@ else
                     GpuInsightReport gpuInsightReport = Model.GpuInsightReports[i];
                     Gpu gpuOld = gpuInsightReport.Gpu;
                     <h3></h3>
-                    <table class="table table-bordered table-striped" id="gpuprices-@i">
+                    <table class="table table-bordered table-striped" id="gpuprices-@gpuInsightReport.Id">
                         <caption>
                             Buying options for @gpuOld.Name
                         </caption>

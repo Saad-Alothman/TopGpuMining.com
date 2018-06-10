@@ -39,6 +39,7 @@ namespace GpuMiningInsights.Domain.Models
     }
     public enum PriceSourceType
     {
+        NotSet=0,
         [Display(Name = "Amazon USA")]
         AmazonUs = 1,
         [Display(Name = "Amazon UK")]

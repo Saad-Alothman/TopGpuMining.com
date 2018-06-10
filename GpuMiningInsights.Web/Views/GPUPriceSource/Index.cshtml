@@ -1,5 +1,6 @@
 ﻿@using CreaDev.Framework.Core.Extensions
 @using CreaDev.Framework.Core.Resources
+@using GpuMiningInsights.Application.Services
 @using GpuMiningInsights.Domain.Models
 @using GpuMiningInsights.Web.Models.Search
 @model CreaDev.Framework.Core.Models.SearchResult<GpuMiningInsights.Domain.Models.GPUPriceSource>
@@ -36,10 +37,19 @@
     string deleteItemFormId = $"delete-{itemName}-form";
     string deleteItemFormDivId = $"delete-{itemName}-form-div";
 
-
+    var gpusWithNoPriceSource = GpuService.Instance.Search(new SearchCriteria<Gpu>(int.MaxValue, 1) { FilterExpression = gpu => gpu.GPUPriceSources.Count < 1 }).Result;
+    string gpusWithNoPriceSourceListItems = "";
+    foreach (var gpu in gpusWithNoPriceSource)
+    {
+        gpusWithNoPriceSourceListItems += $"<li>{gpu.Name} ({gpu.Model?.Name.ToString()})</li>";
+    }
 }
-@Html.Partial("_BootstrapCallOut", new BootstrapCallOut($@"This page is for Defining Price sources that will be used by the GPU selected, that means no Price Sources will be checked for the given GPU if there is no record added here, this is done 
+@Html.Partial("_BootstrapCallOut", new BootstrapCallOut($@"This page is for Defining Price sources that will be used by the GPU selected, that means no Price Sources will be checked for the given GPU if there is no record added here, this is done
 to allow the ability to selctivley include which price sources to check for a given GPU, you can add as many as you like"))
+@if (gpusWithNoPriceSource.Any())
+{
+    @Html.Partial("_BootstrapCallOut", new BootstrapCallOut($@"The Following GPUs has no price source:<ul> {gpusWithNoPriceSourceListItems}</ul>"))
+}
 <br />
 <br />
 <br />
