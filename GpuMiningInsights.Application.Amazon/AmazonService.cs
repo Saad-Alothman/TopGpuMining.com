@@ -226,7 +226,9 @@ namespace GpuMiningInsights.Application.Amazon
             {
                 string asin = item.ASIN;
                 string url = item.DetailPageURL;
-                string imageUrl = item.LargeImage.URL;
+                string imageUrl = item.LargeImage?.URL;
+                if (string.IsNullOrWhiteSpace(imageUrl) && item.ImageSets?.Length > 0)
+                    imageUrl = item.ImageSets.FirstOrDefault()?.LargeImage?.URL;
                 string itemName = item.ItemAttributes.Title;
 
                 string model = item.ItemAttributes.Model;

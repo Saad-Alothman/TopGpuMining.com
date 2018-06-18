@@ -47,11 +47,11 @@ else
         @for (int i = 0; i < Model.GpuInsightReports.Count; i++)
         {
             GpuInsightReport gpuInsightReport = Model.GpuInsightReports[i];
-            Gpu gpuOld = gpuInsightReport.Gpu;
+            Gpu gpu = gpuInsightReport.Gpu;
             <h3></h3>
             <table class="table table-bordered table-striped" id="gpuprices-@gpuInsightReport.Id">
                 <caption>
-                    Buying options for @gpuOld.Name
+                    Buying options for @gpu.Name
                 </caption>
                 <thead>
                     <tr>
@@ -66,7 +66,7 @@ else
                     @foreach (var priceSourceItem in gpuInsightReport.PriceSourceItems.OrderBy(item => item.PriceUSD))
                     {
                         string name = priceSourceItem.ItemName;
-                        name = string.IsNullOrWhiteSpace(name) ? gpuOld.Name : name;
+                        name = string.IsNullOrWhiteSpace(name) ? gpu.Name : name;
                         <tr>
                             <td>
                                 <a href="@priceSourceItem.ItemURL">
