@@ -12,6 +12,7 @@ namespace GpuMiningInsights.Domain.Models
         [Display(Name = nameof(Common.Description), ResourceType = typeof(Common))]
 
         public string Description { get; set; }
+        public bool IsDisabled { get; set; }
 
         public override void Update(object objectWithNewData)
         {

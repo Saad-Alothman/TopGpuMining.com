@@ -22,9 +22,10 @@
     string addItemDivId = $"add-{itemName}-div";
     string addItemAlert = $"add-{itemName}-alert";
     string addItemFormId = $"add-{itemName}-form";
+    string addforAllFormId = $"add-for-all-{itemName}-form";
 
     //add all amazon for Gpu
-    
+
     //Edit Modal
     string editItemModalId = $"edit-{itemName}-modal";
     string editItemDivId = $"edit-{itemName}-div";
@@ -63,6 +64,18 @@ to allow the ability to selctivley include which price sources to check for a gi
             <button type="button" class="btn btn-primary" onclick="showAddGPUPriceSource()">
                 + @Common.Add
             </button>
+            @using (Ajax.BeginForm("AddForAll", controllerName, new {}, new AjaxOptions()
+            {
+                OnBegin = $"block('#{addItemDivId}')",
+                OnComplete = $"onAjaxComplete(xhr, status, '#{addItemDivId}', '#{addItemAlert}', '#{listId}')",
+                OnFailure = $"onAjaxFailed(xhr, status, error, '#{addItemAlert}')",
+                OnSuccess = $"onAjaxSuccess(xhr, status, '#{addItemModalId}')"
+            }, new {id = addforAllFormId, @role = "form"}))
+            {
+                <button type="button" class="btn btn-primary" onclick="showAddGPUPriceSource()">
+                    + @Common.Add All
+                </button>
+            }
         </div>
     </div>
     <div class="panel-body">

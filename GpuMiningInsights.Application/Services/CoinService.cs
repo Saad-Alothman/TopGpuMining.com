@@ -108,8 +108,9 @@ namespace GpuMiningInsights.Application.Services
         public SearchResult<Coin> Search(SearchCriteria<Coin> searchCriteria, bool validCoinsOnly)
         {
             if (validCoinsOnly)
-                searchCriteria.FilterExpression =
-                    searchCriteria.FilterExpression.And(c => c.Difficulty > 0 && c.BlockReward > 0 && c.LastBlock > 0);
+                searchCriteria.FilterExpression =searchCriteria.FilterExpression.And(c => c.Difficulty > 0 && c.BlockReward > 0 && c.LastBlock > 0);
+            
+            searchCriteria.FilterExpression =searchCriteria.FilterExpression.And(c => c.IsDisabled == false);
             return Search(searchCriteria);
         }
 
