@@ -72,7 +72,7 @@ to allow the ability to selctivley include which price sources to check for a gi
                 OnSuccess = $"onAjaxSuccess(xhr, status, '#{addItemModalId}')"
             }, new {id = addforAllFormId, @role = "form"}))
             {
-                <button type="button" class="btn btn-primary" onclick="showAddGPUPriceSource()">
+                <button type="submit" class="btn btn-primary" >
                     + @Common.Add All
                 </button>
             }

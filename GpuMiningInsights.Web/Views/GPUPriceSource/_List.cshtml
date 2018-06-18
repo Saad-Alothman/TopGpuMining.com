@@ -57,7 +57,7 @@
                 @* Begin Model specific columns *@
                 <td>@(item.PriceSource?.Name?.ToString())</td>
                 <td>@(item.PriceSource?.PriceSourceType.GetDisplayName())</td>
-                <td>@(item.Gpu.Name?.ToString())</td>
+                <td>@(item.Gpu?.Name?.ToString())</td>
                 @* END Model specific columns *@
                 <td>
                     <a href="@Url.Action("Edit", controllerName, new {id = item.Id})" @CreaDevAjaxOptions.GenerateAjaxUnobtrusiveHtmlAttributes(new CreaDevAjaxOptions(editFormSelector, listSelector, onCompleteMethod: $"{editGpuPSJavascriptMethod};"))
