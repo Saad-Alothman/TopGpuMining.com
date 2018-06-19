@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CreaDev.Framework.Core;
 using CreaDev.Framework.Core.Models;
 using CreaDev.Framework.Core.Resources;
 
@@ -37,6 +38,11 @@ namespace GpuMiningInsights.Domain.Models
             this.Ean = updateData.Ean;
             this.ImageUrl = updateData.ImageUrl;
 
+        }
+
+        public override void ValidateAdd()
+        {
+            
         }
     }
 }

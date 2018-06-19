@@ -4,6 +4,8 @@
 
 @using CreaDev.Framework.Core.Extensions
 @using CreaDev.Framework.Core.Resources
+@using CreaDev.Framework.Web.Mvc.Helpers
+@using GpuMiningInsights.Application.Services
 @using GpuMiningInsights.Domain.Models
 @using GpuMiningInsights.Web.Models.Search
 @model CreaDev.Framework.Core.Models.SearchResult<GpuMiningInsights.Domain.Models.Gpu>
@@ -25,6 +27,11 @@
     string addItemDivId = $"add-{itemName}-div";
     string addItemAlert = $"add-{itemName}-alert";
     string addItemFormId = $"add-{itemName}-form";
+//Add Bulk
+    string addItemBulkModalId = $"add-{itemName}-bulk-modal";
+    string addItemBulkDivId = $"add-{itemName}-bulk-div";
+    string addItemBulkAlert = $"add-{itemName}-bulk-alert";
+    string addItemBulkFormId = $"add-{itemName}-bulk-form";
 
     //Edit Modal
     string editItemModalId = $"edit-{itemName}-modal";
@@ -40,6 +47,7 @@
     string deleteItemFormId = $"delete-{itemName}-form";
     string deleteItemFormDivId = $"delete-{itemName}-form-div";
 
+    var models = ModelService.Instance.GetAll().ToSelectListItems(model => model.Name, model => model.Id,  "", true);
 
 }
 @Html.Partial("_BootstrapCallOut", new BootstrapCallOut($@"This page is for Managing
@@ -55,6 +63,10 @@
         <div style="float: right">
             <button type="button" class="btn btn-primary" onclick="showAddGpu()">
                 + @Common.Add
+            </button>
+            
+            <button type="button" class="btn btn-primary" onclick="showAddBulkGpu()">
+                + @Common.Add Bulk
             </button>
         </div>
     </div>
@@ -83,6 +95,66 @@
     </div>
 </div>
 
+<div class="modal fade"
+     id="@addItemBulkModalId"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="@addItemBulkDivId">
+
+            @using (Ajax.BeginForm("AddBulk", controllerName, new { }, new AjaxOptions()
+            {
+                OnBegin = $"block('#{addItemBulkDivId}')",
+                OnComplete = $"onAjaxComplete(xhr, status, '#{addItemBulkDivId}', '#{addItemBulkAlert}', '#{listId}')",
+                OnFailure = $"onAjaxFailed(xhr, status, error, '#{addItemBulkAlert}')",
+                OnSuccess = $"onAjaxSuccess(xhr, status, '#{addItemBulkModalId}')"
+            }, new { id = addItemFormId, @role = "form" }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Add @itemDisplayName Bulk</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div id="@addItemBulkAlert"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Asins CSV
+                                </label>
+                                @Html.TextBox("asinsCsv","", new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Model
+                                </label>
+                                @Html.DropDownList("modelId", models,new {@class="form-control"})
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @Common.Add
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @Common.Cancel
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
 
 <div class="modal fade"
@@ -224,6 +296,10 @@
             string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
             string editFunctionName = $"showEdit{itemNameUpperFirstLetter}";
             string deleteFunctionName = $"showDelete{itemNameUpperFirstLetter}";
+        }
+        function showAddBulkGpu() {
+            $("#@addItemBulkModalId").modal('show');
+            
         }
         function @(addFunctionName)() {
 

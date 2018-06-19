@@ -65,7 +65,26 @@ namespace GpuMiningInsights.Domain.Models
                 return _coinsProfitabilityResults;
             }
         }
+        private Dictionary<int, List<Coin>> _coincsByAlgorithmCache = new Dictionary<int, List<Coin>>();
+        private List<Coin> GetCoiubsByAlgorithmId(int? algorithmId)
+        {
+            if (algorithmId == null)
+            {
+                throw new ArgumentNullException();
+            }
 
+            List<Coin> result = null;
+            if (_coincsByAlgorithmCache.ContainsKey(algorithmId.Value))
+
+                result = _coincsByAlgorithmCache[algorithmId.Value];
+            else
+            {
+                result = ServiceLocator.Get<ICoinService>()
+                    .Search(new SearchCriteria<Coin>(c => c.AlgorithmId == algorithmId), validCoinsOnly: true).Result;
+                _coincsByAlgorithmCache.Add(algorithmId.Value,result);
+            }
+            return result;
+        }
         private void CalculateCoinsProfitability()
         {
             List<CoinProfitabilityResult> coinsProfitabilityResults = new List<CoinProfitabilityResult>();
@@ -82,7 +101,7 @@ namespace GpuMiningInsights.Domain.Models
             var coinService = ServiceLocator.Get<ICoinService>();
             foreach (var hashrate in Gpu.Model.HashRates)
             {
-                var coinsWithThisAlgorithm = coinService.Search(new SearchCriteria<Coin>(c => c.AlgorithmId == hashrate.AlogrthimId), validCoinsOnly: true).Result;
+                var coinsWithThisAlgorithm = GetCoiubsByAlgorithmId(hashrate.AlogrthimId);
                 foreach (var coin in coinsWithThisAlgorithm)
                 {
                     double revenuePerDayUsd = 0;

@@ -111,6 +111,7 @@ namespace GpuMiningInsights.Application.Amazon
         }
         public static List<PriceSourceItemOld> SearchItemLookupOperationOld(string term, AmazonEndpoint? endpoint)
         {
+            term = term.Trim();
             List<PriceSourceItemOld> results = new List<PriceSourceItemOld>();
             List<Endpoint> endpointsToSearch = new List<Endpoint>();
             if (endpoint != null)

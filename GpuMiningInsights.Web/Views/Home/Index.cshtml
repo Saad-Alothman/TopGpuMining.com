@@ -13,7 +13,7 @@
 *@
 @{
     ViewBag.Title = "Best GPUs for mining";
-    
+
     string lastUpdate = Model?.Date.ToLocalTime().ToString("yyyy-MM-dd 'T'HH:mm 'Z'");
 
     var topcoins = CoinService.Instance.Search(new SearchCriteria<Coin>(8, 1, coins => coins.OrderByDescending(c => c.ExchangeRateUsd), c => c.ExchangeRateUsd != null)
@@ -91,6 +91,7 @@ else
     </div>
 
 }
+<p><small>* Note: these links gives us comission , so please if you like or going to buy the GPU, please click the link provided</small></p>
 <div class="jumbotron">
     <h1>Top GPU Mining</h1>
     <br />

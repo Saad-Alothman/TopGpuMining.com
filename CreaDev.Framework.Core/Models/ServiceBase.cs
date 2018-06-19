@@ -51,7 +51,12 @@ namespace CreaDev.Framework.Core.Models
             Repository.Create(model);
         }
 
-        
+        public virtual void Add(List<TModel> models)
+        {
+            models.ForEach(m=>m.ValidateAdd());
+            Repository.Create(models);
+        }
+
         public virtual TModel GetById(int id)
         {
             Guard.AgainstFalse<ArgumentException>(id > 0, ModelNameSingular?.ToString());
