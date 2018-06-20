@@ -105,6 +105,21 @@ else
     </p>
 </div>
 <p>
+    @{
+        string modelsCsv="";
+        foreach (var model in Model?.GpuInsightReports?.Select(s => s.Gpu.Model).Distinct())
+        {
+            modelsCsv += $"{model.Name.English},";
+        }
+        if (modelsCsv.LastIndexOf(",") > -1)
+        {
+            modelsCsv= modelsCsv.Remove(modelsCsv.LastIndexOf(","));
+        }
+    }
+    Over @((Model?.GpuInsightReports?.Select(s => s.Gpu)?.Count()-1)?.ToString()  ??"") GPUs
+    All GPU Models included are (@modelsCsv)
+</p>
+<p>
     by <a href="https://stackoverflow.com/users/690785/saad-alothman">Saad Alothman</a> - <a href="https://twitter.com/saad_o77">@@saad_o77</a>
     <br />
     Email: me@saadalothman.com

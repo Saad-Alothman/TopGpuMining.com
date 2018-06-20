@@ -1,5 +1,10 @@
 ﻿@using CreaDev.Framework.Core.Extensions
 @model GpusInsightsReport
+@{
+    int counter = 1;
+    ;
+    int showMoreThreshold = 30;
+}
 @foreach (var gpuInsightReport in Model.GpuInsightReports.Where(g => g.PriceSourceItems.Any() && g.HighestRevenueCoin != null).OrderByDescending(g => g.ROI))
 {
     var gpu = gpuInsightReport.Gpu;
