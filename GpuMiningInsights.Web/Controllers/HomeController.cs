@@ -19,7 +19,13 @@ namespace GpuMiningInsights.Web.Controllers
     {
         public ActionResult Index(bool? ignoreCache=null)
         {
+
+            
             var report = LoadReport(ignoreCache);
+            
+            {
+                
+            }
             return View(report);
         }
         public ActionResult GpuInsightDetails(int id, int? reportId = null)
@@ -29,10 +35,13 @@ namespace GpuMiningInsights.Web.Controllers
             return View(report);
         }
 
-        private static GpusInsightsReport LoadReport(bool? ignoreCache=null)
+        private  GpusInsightsReport LoadReport(bool? ignoreCache=null)
         {
+            
+            bool isIgnoreCache = ignoreCache ?? false;
+            isIgnoreCache = isIgnoreCache || Request.IsLocal;
             GpusInsightsReport report = Caching.LoadChache<GpusInsightsReport>(Constants.GPU_INSIGHTS_REPORT);
-            if (report == null || ignoreCache == true)
+            if (report == null || isIgnoreCache == true)
             {
                 report = GpusInsightsReportService.Instance.GetLatestReport();
                 Caching.SetCache(Constants.GPU_INSIGHTS_REPORT, report, new TimeSpan(0,20,0));

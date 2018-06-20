@@ -19,6 +19,17 @@
     var topcoins = CoinService.Instance.Search(new SearchCriteria<Coin>(8, 1, coins => coins.OrderByDescending(c => c.ExchangeRateUsd), c => c.ExchangeRateUsd != null)
     {
     }).Result;
+
+
+    string modelsCsv="";
+    foreach (var model in Model?.GpuInsightReports?.Select(s => s.Gpu.Model).Distinct().OrderBy(s=>s.Name.English))
+    {
+        modelsCsv += $"{model.Name.English},";
+    }
+    if (modelsCsv.LastIndexOf(",") > -1)
+    {
+        modelsCsv= modelsCsv.Remove(modelsCsv.LastIndexOf(","));
+    }
 }
 @Html.Partial("~/Views/Coin/_TopCoinsPartial.cshtml", topcoins)
 <br />
@@ -34,6 +45,11 @@
 else
 {
     <h3>Recommended GPUs <small style="    font-size: 0.5em;">Based on ROI! (Last update @lastUpdate)</small></h3>
+    <p><small style="font-size: 0.7em;">
+        
+        Over @((Model?.GpuInsightReports?.Select(s => s.Gpu)?.Count()-1)?.ToString()  ??"") GPUs <br/>
+        All GPU Models included are (@modelsCsv)
+    </small></p>
 
 
     @Html.Partial("~/Views/GpusInsightsReport/_List.cshtml", Model)
@@ -106,18 +122,9 @@ else
 </div>
 <p>
     @{
-        string modelsCsv="";
-        foreach (var model in Model?.GpuInsightReports?.Select(s => s.Gpu.Model).Distinct())
-        {
-            modelsCsv += $"{model.Name.English},";
-        }
-        if (modelsCsv.LastIndexOf(",") > -1)
-        {
-            modelsCsv= modelsCsv.Remove(modelsCsv.LastIndexOf(","));
-        }
+        
     }
-    Over @((Model?.GpuInsightReports?.Select(s => s.Gpu)?.Count()-1)?.ToString()  ??"") GPUs
-    All GPU Models included are (@modelsCsv)
+    
 </p>
 <p>
     by <a href="https://stackoverflow.com/users/690785/saad-alothman">Saad Alothman</a> - <a href="https://twitter.com/saad_o77">@@saad_o77</a>
