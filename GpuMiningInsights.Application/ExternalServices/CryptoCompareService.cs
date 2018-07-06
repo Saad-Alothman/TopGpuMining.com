@@ -18,6 +18,10 @@ namespace GpuMiningInsights.Application.Services
             string coinUrl = $"https://min-api.cryptocompare.com/data/price?fsym={sourceCurrency}&tsyms={toCurrencyCsv}";
             string response = InsighterService.GetHttpResponseText(coinUrl);
             //  var values = CreaDev.Framework.Core.Utils.Serialization.DeSerialize<Dictionary<string, string>>(response);
+            if (response.Contains("\"Response\":\"Error\""))
+            {
+                return null;
+            }
             Dictionary<string, double> whatToMineCoinResponse =
                 CreaDev.Framework.Core.Utils.Serialization.DeSerialize<Dictionary<string, double>>(response);
 

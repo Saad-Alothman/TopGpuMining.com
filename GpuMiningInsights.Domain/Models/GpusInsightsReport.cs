@@ -114,8 +114,16 @@ namespace GpuMiningInsights.Domain.Models
                     else
                     {
                         double exchangeRate = coinService.GetLiveUsdExchangeRate(coin.Tag);
-                        coinService.UpdateUsdExchangeRate(coin.Id, exchangeRate);
-                        revenuePerDayUsd = coinsPerDay * exchangeRate;
+                        if (exchangeRate ==0)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            coinService.UpdateUsdExchangeRate(coin.Id, exchangeRate);
+                            revenuePerDayUsd = coinsPerDay * exchangeRate;
+
+                        }
                     }
 
                     CoinProfitabilityResult coinProfitabilityResult = new CoinProfitabilityResult()

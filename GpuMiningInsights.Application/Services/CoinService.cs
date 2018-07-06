@@ -89,7 +89,8 @@ namespace GpuMiningInsights.Application.Services
 
         public double GetLiveUsdExchangeRate(string cryptoCurrencyCode)
         {
-            return CryptoCompareService.GetCryptoComparePriceExchangeRate(cryptoCurrencyCode, "USD").ExchangeRates.Values.FirstOrDefault();
+
+            return CryptoCompareService.GetCryptoComparePriceExchangeRate(cryptoCurrencyCode, "USD")?.ExchangeRates.Values.FirstOrDefault()??0;
         }
 
         public double AddOrUpdateUsdExchangeRates()
