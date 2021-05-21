@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Tabs";
+}
+
+
+
+<div class="kt-portlet kt-portlet--responsive-mobile" id="portlet">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="flaticon-calendar-1 kt-font-brand"></i>
+            </span>
+            <h3 class="kt-portlet__head-title kt-font-brand">
+                Tabs
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <ul class="nav nav-tabs  nav-tabs-line nav-tabs-line nav-tabs-line-brand nav-fill" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#info-tab" role="tab">
+                    @CommonText.BasicInformation
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#address-tab" role="tab">
+                    @CommonText.Address
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+
+            <div class="tab-pane active show" id="info-tab" role="tabpanel">
+
+                <partial name="Tabs/_Info" />
+
+            </div>
+
+            <div class="tab-pane" id="address-tab" role="tabpanel">
+
+                <partial name="Tabs/_Address" />
+
+            </div>
+        </div>
+    </div>
+</div>

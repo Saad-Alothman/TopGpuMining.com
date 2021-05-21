@@ -1,0 +1,35 @@
+@model UserViewModel
+@inject IUserService userService
+@{
+    var roles = userService.GetRoles();
+}
+
+<input type="hidden" asp-for="UserId"/>
+
+<bootstrap-input-form-group for="Email" />
+
+<div class="row">
+    <div class="col-md-6">
+        <bootstrap-password-form-group for="Password" />
+
+    </div>
+    <div class="col-md-6">
+        <bootstrap-password-form-group for="ConfirmPassword" />
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="kt-checkbox-list">
+        @foreach (var item in roles)
+        {
+
+            var hasRole = Model.Roles.Contains(item.Id);
+
+            <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand">
+                <input type="checkbox" @(hasRole ? "checked" : "") name="Roles" value="@item.Id" />
+                @item.Description
+                <span></span>
+            </label>
+        }
+    </div>
+</div>

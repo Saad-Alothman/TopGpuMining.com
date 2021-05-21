@@ -1,0 +1,110 @@
+
+@{
+    ViewData["Title"] = CommonText.Users;
+}
+
+
+<div class="kt-portlet kt-portlet--responsive-mobile">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="flaticon-search kt-font-brand"></i>
+            </span>
+            <h3 class="kt-portlet__head-title kt-font-brand">
+                @CommonText.Search
+            </h3>
+        </div>
+
+        <div class="kt-portlet__head-toolbar">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" onclick="showModal('#add-modal')"
+                        class="btn btn-brand btn-sm">
+
+                    <i class="fa fa-plus"></i>
+                    @CommonText.Add
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="kt-portlet__body">
+        <div id="list">
+            <partial name="_List" />
+        </div>
+    </div>
+</div>
+
+<modal id="add-modal" asp-is-large="true" asp-content-id="add-content" asp-reset-validation="true">
+
+    <modal-header>
+        <h4 class="modal-title">
+            @CommonText.Add
+        </h4>
+    </modal-header>
+    <form id="add-form" method="post"
+          asp-ajax="true"
+          asp-ajax-block="#add-content"
+          asp-ajax-modal="#add-modal"
+          asp-ajax-error="#add-alert"
+          asp-ajax-success-method="updateList();"
+          asp-action="Add">
+        <modal-body>
+            <div id="add-alert" data-alert></div>
+            <partial name="Forms/_AddForm" model="new AddUserViewModel()" />
+        </modal-body>
+
+        <modal-footer asp-show-close-button="true">
+            <button class="btn btn-brand btn-sm">
+                <i class="fa fa-plus"></i>
+                @CommonText.Add
+            </button>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal id="edit-modal" asp-is-large="true" asp-content-id="edit-content" asp-reset-validation="true">
+
+    <modal-header>
+        <h4 class="modal-title">
+            @CommonText.Edit
+        </h4>
+    </modal-header>
+    <form id="edit-form" method="post"
+          asp-ajax="true"
+          asp-ajax-block="#edit-content"
+          asp-ajax-modal="#edit-modal"
+          asp-ajax-error="#edit-alert"
+          asp-ajax-replace="#edit-div"
+          asp-ajax-success-method="updateList();"
+          asp-action="Update">
+        <modal-body>
+
+            <div id="edit-alert" data-alert></div>
+            <div id="edit-div">
+
+            </div>
+
+        </modal-body>
+
+        <modal-footer asp-show-close-button="true">
+            <button class="btn btn-brand btn-sm">
+                <i class="fa fa-save"></i>
+                @CommonText.Save
+            </button>
+        </modal-footer>
+    </form>
+</modal>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        function updateList() {
+
+            var url = getRouteUrl('#list');
+
+            updateContainer(url, "#list");
+        }
+
+    </script>
+}

@@ -1,0 +1,27 @@
+@model CountrySearchViewModel
+
+
+
+<div class="row">
+
+    <div class="col-md-4">
+
+        <typeahead asp-text-for="Keyword"
+                   asp-id-for="Id"
+                   asp-placeholder="@CommonText.Keyword ..."
+                   asp-search-url="/api/v1/country/search?keyword=%QUERY"
+                   asp-template-id="#country-typeahead-template"
+                   asp-empty-template-id="#empty-typeahead-template"
+                   asp-auto-submit="true" />
+
+    </div>
+    <div class="col-md-4">
+        <bootstrap-input-form-group for="Code" asp-placeholder="@CommonText.CountryCode ..." />
+    </div>
+
+    <div class="col-md-4">
+        <bootstrap-input-form-group for="CodeTwo" />
+    </div>
+
+</div>
+

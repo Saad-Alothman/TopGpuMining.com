@@ -1,0 +1,63 @@
+
+
+<div class="kt-portlet kt-portlet--unelevate" id="portlet">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="flaticon-calendar-1 kt-font-brand"></i>
+            </span>
+            <h3 class="kt-portlet__head-title kt-font-brand">
+                @CommonText.Addresses
+            </h3>
+        </div>
+    </div>
+    <form id="address-form"
+          method="post"
+          asp-ajax="true"
+          asp-ajax-replace="#edit-div"
+          asp-ajax-block="#address-portlet"
+          asp-ajax-error="#edit-alert"
+          data-inline-edit="true"
+          data-form-status="Read">
+        <div class="kt-portlet__body">
+
+            <div id="edit-alert" data-alert="true"></div>
+
+            <div id="edit-div">
+                <partial name="~/Views/Address/_Form.cshtml" model="new AddressViewModel(Model.Address)" />
+            </div>
+
+        </div>
+        <div class="kt-portlet__foot">
+            <button type="submit"
+                    onclick="changeFormActionUrlAndStatus(this,'Edit');"
+                    class="btn btn-brand btn-sm"
+                    data-button-type="Edit"
+                    data-action-url="@Url.Action("EditAddress", new { id = Model.Address.Id })">
+                <i class="fa fa-edit"></i>
+                @CommonText.Edit
+            </button>
+
+            <button type="submit"
+                    onclick="changeFormActionUrlAndStatus(this,'Read',true);"
+                    class="btn btn-success btn-sm"
+                    data-button-type="Save"
+                    data-action-url="@Url.Action("UpdateAddress")">
+                <i class="fa fa-save"></i>
+                @CommonText.Save
+            </button>
+
+            <button type="submit"
+                    onclick="changeFormActionUrlAndStatus(this,'Read');"
+                    class="btn btn-danger btn-sm cancel"
+                    data-button-type="Cancel"
+                    data-action-url="@Url.Action("EditAddress", new { id = Model.Address.Id })">
+                <i class="fa fa-ban"></i>
+                @CommonText.Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+
+

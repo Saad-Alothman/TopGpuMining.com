@@ -1,0 +1,43 @@
+@model AddressViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="kt-portlet kt-portlet--responsive-mobile">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="flaticon-edit kt-font-brand"></i>
+            </span>
+            <h3 class="kt-portlet__head-title kt-font-brand">
+                @CommonText.Edit
+            </h3>
+        </div>
+    </div>
+
+    <form method="post"
+          asp-action="Update">
+
+
+        <div class="kt-portlet__body">
+
+            <partial name="_Form" />
+
+        </div>
+
+        <div class="kt-portlet__foot">
+
+            <button type="submit" class="btn btn-brand btn-sm">
+                <i class="fa fa-save"></i>
+                @CommonText.Save
+            </button>
+
+            <a asp-action="Index" class="btn btn-sm btn-danger">
+                <i class="fa fa-ban"></i>
+                @CommonText.Cancel
+            </a>
+
+        </div>
+    </form>
+</div>

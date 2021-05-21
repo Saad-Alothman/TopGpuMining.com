@@ -1,0 +1,82 @@
+@model LoginViewModel
+
+@{
+    Layout = "~/Views/Shared/Login/_Layout.cshtml";
+
+    ViewBag.Title = CommonText.Login;
+}
+
+
+@section top{
+
+    <div class="kt-login__head">
+        <span class="kt-login__signup-label">
+            @CommonText.DontHaveAccount
+        </span>&nbsp;&nbsp;
+        <a asp-action="register" class="kt-link kt-login__signup-link">
+            @CommonText.Signup!
+        </a>
+    </div>
+
+
+}
+
+<div class="kt-login__form">
+    <div class="kt-login__title">
+        <h3>
+            @CommonText.SignIn
+        </h3>
+    </div>
+
+    <!--begin::Form-->
+    <form asp-route-returnUrl="@ViewBag.ReturnUrl"
+          asp-action="login"
+          method="post"
+          class="kt-form" novalidate="novalidate">
+
+        <div id="alert"></div>
+
+        <partial name="Forms/_Login" model="new LoginViewModel()" />
+
+        <!--begin::Action-->
+        <div class="kt-login__actions">
+            <a href="#" class="kt-link kt-login__link-forgot">
+                @CommonText.ForgetYourPassword
+            </a>
+            <button id="kt_login_signin_submit" class="btn btn-primary btn-elevate kt-login__btn-primary">
+                @CommonText.SignIn
+            </button>
+        </div>
+
+        <!--end::Action-->
+    </form>
+
+    <!--end::Form-->
+    <!--begin::Divider-->
+    <div class="kt-login__divider">
+        <div class="kt-divider">
+            <span></span>
+            <span>@CommonText.Or</span>
+            <span></span>
+        </div>
+    </div>
+    <!--end::Divider-->
+    <!--begin::Options-->
+    <div class="kt-login__options">
+        <a href="#" class="btn btn-primary kt-btn">
+            <i class="fab fa-facebook-f"></i>
+            Facebook
+        </a>
+        <a href="#" class="btn btn-info kt-btn">
+            <i class="fab fa-twitter"></i>
+            Twitter
+        </a>
+        <a href="#" class="btn btn-danger kt-btn">
+            <i class="fab fa-google"></i>
+            Google
+        </a>
+    </div>
+    <!--end::Options-->
+
+</div>
+

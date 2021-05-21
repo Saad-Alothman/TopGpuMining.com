@@ -1,0 +1,52 @@
+
+@{
+    Layout = "~/Views/Shared/Login/_Layout.cshtml";
+
+    ViewBag.Title = CommonText.Register;
+}
+
+
+@section top{
+
+    <div class="kt-login__head">
+        <span class="kt-login__signup-label">
+            @CommonText.DoYouHaveAccount
+        </span>&nbsp;&nbsp;
+        <a asp-action="login" class="kt-link kt-login__signup-link">
+            @CommonText.Login!
+        </a>
+    </div>
+
+
+}
+
+
+<div class="kt-login__form">
+    <div class="kt-login__title">
+        <h3>
+            @CommonText.CreateAccount
+        </h3>
+    </div>
+
+    <!--begin::Form-->
+    <form asp-action="register"
+          method="post"
+          novalidate="novalidate">
+
+        <div id="alert"></div>
+
+        <partial name="Forms/_Register" model="new RegisterViewModel()" />
+
+        <!--begin::Action-->
+        <div class="kt-login__actions">
+            <button id="kt_login_signin_submit" class="btn btn-primary">
+                @CommonText.CreateAccount
+            </button>
+        </div>
+        <!--end::Action-->
+
+    </form>
+    <!--end::Form-->
+
+</div>
+

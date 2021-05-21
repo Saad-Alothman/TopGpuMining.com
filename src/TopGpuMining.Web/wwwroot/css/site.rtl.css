@@ -1,0 +1,24 @@
+.la-angle-right:before {
+    content: "\f111";
+}
+
+.fa-chevron-right:before {
+    content: "\f053";
+}
+
+.fa-chevron-left:before {
+    content: "\f054";
+}
+
+.kt-wizard-v1 .kt-wizard-v1__nav .kt-wizard-v1__nav-items .kt-wizard-v1__nav-item:after {
+    content: "\f104" !important;
+}
+
+.kt-login.kt-login--v1 .kt-login__aside .kt-login__info .kt-login__menu > a {
+    text-decoration: none;
+    color: #fff;
+    margin-left: 2rem;
+    margin-right: unset;
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.7);
+}

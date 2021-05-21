@@ -1,0 +1,73 @@
+@model AddressViewModel
+@inject ICountryService countryService;
+@{
+    var countries = await countryService.Get();
+}
+
+<input type="hidden" asp-for="Id"/>
+<div class="row">
+
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="FirstName" />
+
+    </div>
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="LastName" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="form-group">
+            <label for="Resturant.RepresentativeMobile">
+                @CommonText.Mobile
+            </label>
+
+            <div class="input-group m-input-group" dir="ltr">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        +966
+                    </span>
+                </div>
+                <input type="text" class="form-control m-input" placeholder="5xxxxxxxx" asp-for="Mobile" />
+            </div>
+
+            <span asp-validation-for="Mobile" />
+
+        </div>
+    </div>
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="Email" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="CountryId"></label>
+            <select asp-for="CountryId"
+                    class="form-control"
+                    asp-items="@(new SelectList(countries,nameof(Country.Id),nameof(Country.NameArabic)))">
+                <option value="">@CommonText.Select</option>
+            </select>
+
+        </div>
+        <span asp-validation-for="CountryId" />
+    </div>
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="City" />
+    </div>
+</div>
+
+<bootstrap-input-form-group for="Street" />
+
+<div class="row">
+
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="State" />
+    </div>
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="PostalCode" />
+    </div>
+</div>

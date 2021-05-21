@@ -1,0 +1,96 @@
+@model SearchResult<User>
+@{ 
+    var search = Model.SearchCriteria as UserSearchViewModel;
+}
+@if (Model.Result.Any())
+{
+    <div class="table-responsive-md">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @CommonText.Email
+                    </th>
+                    <th class="text-center">
+                        @CommonText.Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Result)
+                {
+                <tr>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td class="text-center">
+                        <a asp-ajax="true"
+                           asp-ajax-block="#list"
+                           asp-ajax-replace="#edit-div"
+                           asp-form-id="#edit-form"
+                           asp-action="Edit"
+                           asp-controller="User"
+                           asp-ajax-success-method="showModal('#edit-modal')"
+                           asp-route-id="@item.Id"
+                           class="btn btn-sm btn-brand m-btn m-btn--icon">
+                            <span>
+                                <i class="fa fa-edit"></i>
+                                <span>
+                                    @CommonText.Edit
+                                </span>
+                            </span>
+
+                        </a>
+                        <a class="btn btn-sm btn-danger m-btn m-btn--icon"
+                           asp-ajax="true"
+                           asp-confirm="true"
+                           asp-action="Delete"
+                           asp-controller="User"
+                           asp-ajax-success-method="updateList();"
+                           asp-route-id="@item.Id"
+                           asp-ajax-block="#list">
+                            <span>
+                                <i class="fa fa-trash"></i>
+                                <span>
+                                    @CommonText.Delete
+                                </span>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <p>
+        <strong>
+            @CommonText.Total:
+        </strong>
+        @Model.TotalResultsCount.ToString("N0")
+    </p>
+
+
+    <cs-pager cs-pager-ul-class="pagination"
+              cs-pager-li-other-class="page-item"
+              cs-pager-link-other-class="page-link"
+              cs-pager-li-current-class="page-item active"
+              cs-pager-link-current-class="page-link"
+              cs-paging-pagesize="@Model.PageSize"
+              cs-paging-pagenumber="@Model.PageNumber"
+              cs-paging-totalitems="@Model.TotalResultsCount"
+              cs-ajax-target="#list"
+              cs-ajax-begin="block('#list')"
+              cs-ajax-complete="unblock('#list')"
+              asp-all-route-data="@search.ToRouteValueDictionary()"
+              asp-controller="User"
+              asp-action="Index">
+
+    </cs-pager>
+
+    <input type="hidden" data-route value="@Url.RouteUrl(search.ToRouteValueDictionary(true))" />
+}
+else
+{
+    <metro-no-records />
+}

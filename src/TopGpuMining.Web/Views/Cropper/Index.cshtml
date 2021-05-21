@@ -1,0 +1,69 @@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section styles{
+
+    <link href="~/lib/cropper/cropperjs/dist/cropper.min.css" rel="stylesheet" />
+}
+<div class="kt-portlet">
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title kt-font-brand">
+                Title
+            </h3>
+        </div>
+
+    </div>
+
+    <div class="kt-portlet__body">
+        <div id="cropper-div">
+            <div class="form-group">
+                <div class="text-center">
+                    <img id="cropper-paint2-preview" width="600" src="https://via.placeholder.com/1920x1080" class="img-fluid" alt="company-logo" />
+                </div>
+                <br />
+                <label class="btn btn-brand btn-sm btn-block">
+                    @CommonText.Select
+
+                    <input type="file"
+                           class="file-input-hidden"
+                           name="PaintOneCropper.File"
+                           data-val="false"
+                           data-preview-img="#cropper-paint2-preview"
+                           data-aspect-ratio="16/9"
+                           data-max-size="4000"
+                           data-alert="#alert">
+                </label>
+
+            </div>
+
+            <input data-cropper-x type="hidden" name="PaintOneCropper.X" />
+            <input data-cropper-y type="hidden" name="PaintOneCropper.Y" />
+            <input data-cropper-width type="hidden" name="PaintOneCropper.Width" />
+            <input data-cropper-height type="hidden" name="PaintOneCropper.Height" />
+            <input data-cropper-rotate type="hidden" name="PaintOneCropper.Rotate" />
+
+        </div>
+    </div>
+</div>
+
+<partial name="Cropper/_CropperModal" />
+
+@section scripts{
+
+    <script src="~/lib/cropper/cropperjs/dist/cropper.min.js"></script>
+    <script src="~/lib/cropper/jquery-cropper/dist/jquery-cropper.min.js"></script>
+    <script src="~/js/cropper-config.js"></script>
+
+    <script>
+
+        $(function () {
+
+            var cropper = new CropperManager('#cropper-div');
+
+        });
+
+    </script>
+}

@@ -1,0 +1,64 @@
+@model CountryViewModel
+
+<input type="hidden" asp-for="Id" />
+
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="form-group">
+            <label asp-for="NameArabic"></label>
+            <input asp-for="NameArabic" class="form-control" />
+            <span asp-validation-for="NameArabic" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="NameEnglish" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="PhoneCode" />
+
+    </div>
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="Area" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="CapitalArabic"/>
+
+    </div>
+    <div class="col-md-6">
+        <bootstrap-input-form-group for="CapitalEnglish" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <bootstrap-input-form-group for="Population" />
+
+    </div>
+    <div class="col-md-4">
+        <bootstrap-input-form-group for="Longtitude" />
+    </div>
+    <div class="col-md-4">
+        <bootstrap-input-form-group for="Latitude" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="kt-checkbox kt-checkbox--brand">
+        
+        <input type="checkbox" asp-for="IsActive"/>
+
+            @Html.DisplayNameFor(a => a.IsActive)
+        
+        <span></span>
+
+        <span asp-validation-for="IsActive"/>
+    </label>
+</div>

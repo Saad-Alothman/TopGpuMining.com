@@ -1,0 +1,96 @@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="m-portlet" id="address-portlet">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="la la-cogs m--font-brand"></i>
+                </span>
+                <h3 class="m-portlet__head-text m--font-brand">
+                    @CommonText.EditInlineForm
+                </h3>
+            </div>
+        </div>
+
+    </div>
+    <div class="m-portlet__body">
+        <form id="address-form"
+              method="post"
+              asp-ajax="true"
+              asp-ajax-replace="#edit-div"
+              asp-ajax-block="#address-portlet"
+              asp-ajax-error="#edit-alert"
+              data-inline-edit="true"
+              data-form-status="Read">
+
+            <div id="edit-alert" data-alert="true"></div>
+
+            <div id="edit-div">
+                <partial name="~/Views/Address/_Form.cshtml" model="new AddressViewModel(Model.Address)" />
+            </div>
+
+            <hr />
+            <button type="submit"
+                    onclick="changeFormActionUrlAndStatus(this,'Edit');"
+                    class="btn btn-brand btn-sm"
+                    data-button-type="Edit"
+                    data-action-url="@Url.Action("EditAddress", new { id = Model.Address.Id })">
+                @CommonText.Edit
+            </button>
+            <button type="submit"
+                    onclick="changeFormActionUrlAndStatus(this,'Read',true);"
+                    class="btn btn-success btn-sm"
+                    data-button-type="Save"
+                    data-action-url="@Url.Action("UpdateAddress")">
+                @CommonText.Save
+            </button>
+
+            <button type="submit"
+                    onclick="changeFormActionUrlAndStatus(this,'Read');"
+                    class="btn btn-danger btn-sm cancel"
+                    data-button-type="Cancel"
+                    data-action-url="@Url.Action("EditAddress", new { id = Model.Address.Id })">
+                @CommonText.Cancel
+            </button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="m-portlet">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon">
+                            <i class="la la-cogs m--font-brand"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text m--font-brand">
+                            @CommonText.Controls
+                        </h3>
+                    </div>
+                </div>
+
+            </div>
+            <div class="m-portlet__body">
+                <form method="post" asp-action="Add">
+                    <partial name="_Form" model="new ControlsViewModel()" />
+
+                    <button type="submit" class="btn btn-brand">
+                        @CommonText.Save
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+    </div>
+</div>
+

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    
+  </PropertyGroup>
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\TopGpuMining.Core\TopGpuMining.Core.csproj" />
+    <ProjectReference Include="..\TopGpuMining.Domain\TopGpuMining.Domain.csproj" />
+    <ProjectReference Include="..\TopGpuMining.Persistance\TopGpuMining.Persistance.csproj" />
+
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <PackageReference Include="CsQuery.NETStandard" Version="1.3.6.1" />
+    <PackageReference Include="PhantomJS" Version="2.1.1" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="WebDriverManager" Version="2.11.1" />
+  </ItemGroup>
+
+</Project>

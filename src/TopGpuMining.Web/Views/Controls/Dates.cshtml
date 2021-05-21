@@ -1,0 +1,90 @@
+@model DateViewModel
+
+
+@{
+    ViewData["Title"] = "Dates";
+}
+
+
+
+<div class="kt-portlet kt-portlet--responsive-mobile" id="portlet">
+
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="flaticon-edit kt-font-brand"></i>
+            </span>
+            <h3 class="kt-portlet__head-title kt-font-brand">
+                Range
+            </h3>
+        </div>
+    </div>
+
+    <form id="dates-form"
+          method="post">
+        <div class="kt-portlet__body">
+
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>
+                           Date with No TagHelper
+                        </label>
+                        <div class="input-group">
+                            <input type='text'
+                                   data-default-hijri="false"
+                                   data-view-mode="years"
+                                   data-select-mode="day"
+                                   data-show-clear="false"
+                                   data-show-switch="true"
+                                   data-show-close="true"
+                                   data-show-today="false"
+                                   data-view-date="2015-01-01"
+                                   data-min-date="2014-01-01"
+                                   data-max-date="2028-01-01"
+                                   class="form-control hijri-date-picker" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <datetime-picker asp-for="Date"
+                                     asp-hijri-default="false"
+                                     asp-show-switch="true"
+                                     asp-view-mode="Days"
+                                     asp-min-date="DateTime.Now.AddYears(-2)"
+                                     asp-max-date="DateTime.Now.AddYears(2)"
+                                     asp-show-close="false"
+                                     asp-select-mode="Date" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <datetime-picker asp-for="StartDate"
+                                     asp-hijri-default="false"
+                                     asp-show-switch="true"
+                                     asp-view-mode="Years"
+                                     asp-view-date="DateTime.Now.AddYears(-20)"
+                                     asp-show-close="false"
+                                     asp-select-mode="Date" />
+                </div>
+                <div class="col-lg-6">
+                    <datetime-picker asp-for="EndDate"
+                                     asp-hijri-default="false"
+                                     asp-show-switch="true"
+                                     asp-view-mode="Days"
+                                     asp-show-close="false"
+                                     asp-select-mode="Date" />
+
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm">
+                @CommonText.Submit
+            </button>
+        </div>
+
+    </form>
+</div>
+

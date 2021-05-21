@@ -1,0 +1,42 @@
+
+
+<script id="default-typeahead-template" type="text/x-handlebars-template">
+    <a href="javascript:;" class="list-group-item typeahead-item">
+        <div class="typeahead-desc">
+            <h6>
+               {{name}}
+                <br/>
+                <small>
+                    {{id}}
+                </small>
+            </h6>
+        </div>
+    </a>
+</script>
+
+<script id="empty-typeahead-template" type="text/x-handlebars-template">
+    <a href="javascript:;" class="list-group-item typeahead-item text-danger">
+        @MessageText.NoRecords
+    </a>
+</script>
+
+
+<script id="country-typeahead-template" type="text/x-handlebars-template">
+
+    <a href="javascript:;" class="list-group-item typeahead-item">
+        <div class="typeahead-img">
+            <img width="40" src="/images/flags/{{id}}.png" />
+        </div>
+        <div class="typeahead-desc">
+            <h6>
+                {{name}}
+                <br />
+                <small>
+                    {{nameEn}}
+                    <br/>
+                    {{codeTwo}}
+                </small>
+            </h6>
+        </div>
+    </a>
+</script>

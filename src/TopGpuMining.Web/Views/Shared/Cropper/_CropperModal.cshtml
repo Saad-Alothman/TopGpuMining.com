@@ -1,0 +1,27 @@
+<modal id="multi-cropper-modal" asp-is-large="true">
+
+    <modal-header>
+        <h4 class="modal-title">
+            @CommonText.Add
+        </h4>
+    </modal-header>
+
+    <modal-body>
+
+        <div class="image-cropper-wrapper">
+            <img id="multi-cropper-image" />
+        </div>
+
+    </modal-body>
+
+    <modal-footer asp-show-close-button="true">
+
+        <button type="button"
+                data-save-button="true"
+                class="btn btn-success btn-sm">
+            <i class="fa fa-save"></i>
+            @CommonText.Save
+        </button>
+    </modal-footer>
+
+</modal>
