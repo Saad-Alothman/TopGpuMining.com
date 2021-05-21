@@ -1,4 +1,6 @@
-﻿namespace TopGpuMining.Domain.Models
+﻿using TopGpuMining.Core.Entities;
+
+namespace TopGpuMining.Domain.Models
 {
     public class PriceSourceItem:BaseEntity
     {
@@ -6,7 +8,7 @@
         {
         }
         public PriceSource PriceSource { get; set; }
-        public int? PriceSourceId { get; set; }
+        public string PriceSourceId { get; set; }
         public string ItemName { get; set; }
         public string ItemURL { get; set; }
 

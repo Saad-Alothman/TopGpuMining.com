@@ -8,10 +8,10 @@ namespace TopGpuMining.Domain.Models
     public class Gpu : BaseEntity
     {
         public Brand Brand { get; set; }
-        public int? BrandId { get; set; }
+        public string BrandId { get; set; }
 
         public Model Model { get; set; }
-        public int? ModelId { get; set; }
+        public string ModelId { get; set; }
 
         [Display(Name = nameof(CommonText.Name), ResourceType = typeof(CommonText))]
         public string Name { get; set; }

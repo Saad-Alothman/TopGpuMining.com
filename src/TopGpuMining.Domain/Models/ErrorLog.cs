@@ -5,9 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Web;
-
-
-
+using TopGpuMining.Core.Entities;
 
 namespace TopGpuMining.Domain.Models
 {

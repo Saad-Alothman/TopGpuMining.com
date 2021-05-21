@@ -1,14 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TopGpuMining.Core;
 using TopGpuMining.Core.Entities;
 using TopGpuMining.Core.Helpers;
-using TopGpuMining.Core.Resources;
 using TopGpuMining.Core.Search;
 using TopGpuMining.Domain.Services;
 
@@ -68,8 +64,8 @@ namespace TopGpuMining.Domain.Models
                 return _coinsProfitabilityResults;
             }
         }
-        private Dictionary<int, List<Coin>> _coincsByAlgorithmCache = new Dictionary<int, List<Coin>>();
-        private List<Coin> GetCoiubsByAlgorithmId(int? algorithmId)
+        private Dictionary<string, List<Coin>> _coincsByAlgorithmCache = new Dictionary<string, List<Coin>>();
+        private List<Coin> GetCoiubsByAlgorithmId(string algorithmId)
         {
             if (algorithmId == null)
             {
@@ -77,14 +73,14 @@ namespace TopGpuMining.Domain.Models
             }
 
             List<Coin> result = null;
-            if (_coincsByAlgorithmCache.ContainsKey(algorithmId.Value))
+            if (_coincsByAlgorithmCache.ContainsKey(algorithmId))
 
-                result = _coincsByAlgorithmCache[algorithmId.Value];
+                result = _coincsByAlgorithmCache[algorithmId];
             else
             {
                 result = ServiceLocator.Current.GetService<ICoinService>()
                     .Search(new SearchCriteria<Coin>(c => c.AlgorithmId == algorithmId), validCoinsOnly: true).Result;
-                _coincsByAlgorithmCache.Add(algorithmId.Value,result);
+                _coincsByAlgorithmCache.Add(algorithmId,result);
             }
             return result;
         }
@@ -108,7 +104,7 @@ namespace TopGpuMining.Domain.Models
                 foreach (var coin in coinsWithThisAlgorithm)
                 {
                     double revenuePerDayUsd = 0;
-                    double coinsPerDay = CryptoUtils.CalculateCoinRevenuePerDayByNethashAndBlockTime(double.Parse(coin.BlockTime), coin.BlockReward, (coin.Nethash / 1000 / 1000), double.Parse(hashrate.HashrateNumber));
+                    double coinsPerDay = CryptoUtils.CalculateCoinRevenuePerDayByNethashAndBlockTime(double.Parse(coin.BlockTime), coin.BlockReward, (coin.Nethash / 1000 / 1000), double.Parse(hashrate.HashrateValueMhz));
                     if (coin.ExchangeRateUsd.HasValue)
                     {
                         revenuePerDayUsd = coinsPerDay * coin.ExchangeRateUsd.Value;

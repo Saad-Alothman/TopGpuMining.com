@@ -15,14 +15,14 @@ namespace TopGpuMining.Domain.Models
     {
         [ForeignKey("AlogrthimId")]
         public Algorithm Algorithm { get; set; }
-        public int? AlogrthimId { get; set; }
+        public string AlogrthimId { get; set; }
       
         public Model Model { get; set; }
-        public int? ModelId { get; set; }
+        public string ModelId { get; set; }
 
-    //Todo: Rename To HashrateValueMhz
+
         [Display(Name = nameof(CommonText.HashrateValue), ResourceType = typeof(CommonText))]
-        public string HashrateNumber { get; set; }
+        public string HashrateValueMhz { get; set; }
 
         [Display(Name = nameof(CommonText.Description), ResourceType = typeof(CommonText))]
 
@@ -34,7 +34,7 @@ namespace TopGpuMining.Domain.Models
         public void Update(object objectWithNewData)
         {
             var updateData = objectWithNewData as Hashrate;
-            this.HashrateNumber = updateData.HashrateNumber;
+            this.HashrateValueMhz = updateData.HashrateValueMhz;
             this.Description = updateData.Description;
             this.AlogrthimId = updateData.AlogrthimId;
             this.ModelId = updateData.ModelId;

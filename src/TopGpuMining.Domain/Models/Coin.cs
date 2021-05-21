@@ -53,7 +53,7 @@ namespace TopGpuMining.Domain.Models
         public int WhatToMineId { get; set; }
         public string Tag { get; set; }
         public Algorithm Algorithm { get; set; }
-        public int? AlgorithmId { get; set; }
+        public string AlgorithmId { get; set; }
         public string BlockTime { get; set; }
         public double BlockReward { get; set; }
         public double BlockReward24 { get; set; }

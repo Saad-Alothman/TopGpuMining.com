@@ -1,12 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using TopGpuMining.Core.Resources;
 
 namespace TopGpuMining.Core.Extensions
 {
     public static class StringExtension
     {
+        public static string ToCsv(this IEnumerable<string> stringList, string seperator = "")
+        {
+            if (string.IsNullOrWhiteSpace(seperator))
+            {
+                seperator = ", ";
+            }
+            string result = string.Empty;
+
+            if (stringList == null)
+                return result;
+
+            for (int i = 0; i < stringList.Count(); i++)
+            {
+                var item = stringList.ElementAt(i);
+                result += item;
+                if (i < stringList.Count() - 1)
+                {
+
+                    result += seperator;
+                }
+            }
+            return result;
+        }
+        public static string ToCsv(params string[] stringList)
+        {
+            string result = string.Empty;
+
+            if (stringList == null)
+                return result;
+
+            for (int i = 0; i < stringList.Count(); i++)
+            {
+                var item = stringList.ElementAt(i);
+                result += item;
+                if (i < stringList.Count() - 1)
+                {
+
+                    result += "," + " ";
+                }
+            }
+            return result;
+        }
+
         public static string Brief(this string word, int maxSize)
         {
             if (String.IsNullOrWhiteSpace(word))

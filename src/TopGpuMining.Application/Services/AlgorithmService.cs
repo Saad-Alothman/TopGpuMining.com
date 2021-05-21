@@ -4,6 +4,8 @@ using TopGpuMining.Domain.Models;
 using TopGpuMining.Domain.Services;
 using System.Linq;
 using TopGpuMining.Persistance;
+using System;
+using System.Collections.Generic;
 
 namespace TopGpuMining.Application.Services
 {
@@ -48,7 +50,7 @@ namespace TopGpuMining.Application.Services
             {
 
                 //Get Coins from DB,
-                int allCoinsInDBCount = UnitOfWork.GenericRepository.Count(new SearchCriteria<Coin>(int.MaxValue, 1) { FilterExpression = c => c.Difficulty > 0 && c.BlockReward > 0 && c.LastBlock > 0 });
+                int allCoinsInDBCount = UnitOfWork.GenericRepository.Count<Coin>(c => c.Difficulty > 0 && c.BlockReward > 0 && c.LastBlock > 0 );
 
 
                 int pageNumber = 1;
