@@ -6,6 +6,7 @@ using System.Linq;
 using TopGpuMining.Persistance;
 using System;
 using System.Collections.Generic;
+using TopGpuMining.Core.Extensions;
 
 namespace TopGpuMining.Application.Services
 {
@@ -90,8 +91,10 @@ namespace TopGpuMining.Application.Services
             using (UnitOfWork UnitOfWork = new UnitOfWork())
             {
 
-                Coin coin = UnitOfWork.GenericRepository.GetByID<Coin>(id);
-                Guard.AgainstNull(coin);
+                Coin coin = UnitOfWork.GenericRepository.GetById<Coin>(id);
+                if (coin == null)
+                    throw new NullReferenceException();
+                
                 coin.ExchangeRateUsd = exchangeRate;
                 UnitOfWork.Commit();
             }
@@ -145,7 +148,7 @@ namespace TopGpuMining.Application.Services
             {
 
                 //Get Coins from DB,
-                List<Coin> allCoinsInDB = UnitOfWork.GenericRepository.GetAll<Coin>();
+                List<Coin> allCoinsInDB = UnitOfWork.GenericRepository.Get<Coin>().ToList();
                 //Read coin data from Coins.JSON, NOTE Not all coins are here
                 List<Coin> allCoinsInfoFromWTM = WhatToMineService.GetCoinsInfoFromCoinsJson();
                 //CoinsDB: Filter out the ones that dont have info from Coins.JSON.

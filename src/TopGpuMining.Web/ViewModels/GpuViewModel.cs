@@ -1,11 +1,11 @@
-﻿using GpuMiningInsights.Core;
+﻿using TopGpuMining.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using GpuMiningInsights.Domain.Models;
+using TopGpuMining.Domain.Models;
 
-namespace GpuMiningInsights.Web.Models
+namespace TopGpuMining.Web.ViewModels
 {
     public class BootstrapCallOut
     {

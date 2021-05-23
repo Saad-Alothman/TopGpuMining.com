@@ -1,31 +1,21 @@
-﻿using System.Web.Routing;
-using CreaDev.Framework.Core.Helpers;
-using CreaDev.Framework.Core.Models;
-using GpuMiningInsights.Domain.Models;
+﻿using TopGpuMining.Core.Helpers;
+using TopGpuMining.Core.Search;
+using TopGpuMining.Domain.Models;
+using TopGpuMining.Web.ViewModels;
 
-namespace GpuMiningInsights.Web.Models.Search
+namespace TopGpuMining.Web.ViewModels.Search
 {
-    public class BrandSearchCrietriaViewModel: GmiSearchCriteriaViewModelBase<Brand>
+    public class BrandSearchCrietriaViewModel: SearchViewModelBase<Brand>
     {
         public string Name { get; set; }
-        public override RouteValueDictionary ToRouteValueDictionary(int page, string prefix = "")
-        {
-            //Get The Base Values
-            RouteValueDictionary routeValueDictionary = base.ToRouteValueDictionary(page, prefix);
-            
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name),()=> routeValueDictionary.Add(nameof(Name), Name));
-
-            return routeValueDictionary;
-
-        }
-
-        public override SearchCriteria<Brand> ToSearchCriteria()
+        
+        public override SearchCriteria<Brand> ToSearchModel()
         {
             //Get base Values
             
-            SearchCriteria<Brand> searchCriteria = base.ToSearchCriteria();
+            SearchCriteria<Brand> searchCriteria = base.ToSearchModel();
 
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AndCondition(brand => brand.Name.Arabic.Contains(Name) || brand.Name.English.Contains(Name)));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AddAndFilter(brand => brand.Name.Arabic.Contains(Name) || brand.Name.English.Contains(Name)));
 
             return searchCriteria;
         }

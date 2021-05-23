@@ -23,6 +23,17 @@ namespace TopGpuMining.Persistance
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Coin> Coins { get; set; }
+        public virtual DbSet<Brand> Brands { get; set; }
+        public virtual DbSet<Algorithm> Algorithms { get; set; }
+        public virtual DbSet<Model> Models { get; set; }
+        public virtual DbSet<Gpu> Gpus { get; set; }
+        public virtual DbSet<Hashrate> Hashrates { get; set; }
+        public virtual DbSet<PriceSource> PriceSources { get; set; }
+        public virtual DbSet<GpuPriceSource> GpuPriceSources { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
+        public virtual DbSet<FiatCurrency> FiatCurrencies { get; set; }
+        public virtual DbSet<GpusInsightsReport> GpusInsightsReports { get; set; }
 
         public TopGpuMiningDbContext()
         {

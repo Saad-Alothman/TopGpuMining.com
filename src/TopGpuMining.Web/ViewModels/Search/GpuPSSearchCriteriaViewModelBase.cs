@@ -2,37 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Routing;
-using CreaDev.Framework.Core.Helpers;
-using CreaDev.Framework.Core.Models;
-using GpuMiningInsights.Domain.Models;
+using TopGpuMining.Core.Helpers;
+using TopGpuMining.Core.Search;
+using TopGpuMining.Domain.Models;
+using TopGpuMining.Web.ViewModels;
 
-namespace GpuMiningInsights.Web.Models.Search
+namespace TopGpuMining.Web.ViewModels.Search
 {
-    public class GpuPSSearchCriteriaViewModelBase : GmiSearchCriteriaViewModelBase<GPUPriceSource>
+    public class GpuPSSearchViewModelBase : SearchViewModelBase<GpuPriceSource>
     {
         public string Name { get; set; }
-        public int? GpuId { get; set; }
+        public string GpuId { get; set; }
 
-        public override RouteValueDictionary ToRouteValueDictionary(int page, string prefix = "")
-        {
-            //Get The Base Values
-            RouteValueDictionary routeValueDictionary = base.ToRouteValueDictionary(page, prefix);
-
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => routeValueDictionary.Add(nameof(Name), Name));
-            ConditionActionHelper.DoIf(GpuId.HasValue, () => routeValueDictionary.Add(nameof(GpuId), GpuId.Value));
-
-            return routeValueDictionary;
-        }
-
-        public override SearchCriteria<GPUPriceSource> ToSearchCriteria()
+        
+        public override SearchCriteria<GpuPriceSource> ToSearchModel()
         {
             //Get base Values
 
-            SearchCriteria<GPUPriceSource> searchCriteria = base.ToSearchCriteria();
+            SearchCriteria<GpuPriceSource> searchCriteria = base.ToSearchModel();
 
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name),() => searchCriteria.AndCondition(gpuPriceSource => gpuPriceSource.Name.Contains(Name)));
-            ConditionActionHelper.DoIf(GpuId.HasValue, () => searchCriteria.AndCondition(gpuPriceSource => gpuPriceSource.GpuId == GpuId));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name),() => searchCriteria.AddAndFilter(gpuPriceSource => gpuPriceSource.Name.Contains(Name)));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(GpuId), () => searchCriteria.AddAndFilter(gpuPriceSource => gpuPriceSource.GpuId == GpuId));
 
             return searchCriteria;
         }

@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
-using System.Web.Routing;
-using CreaDev.Framework.Core.Helpers;
-using CreaDev.Framework.Core.Linq;
-using CreaDev.Framework.Core.Models;
-using GpuMiningInsights.Domain.Models;
+using TopGpuMining.Core.Helpers;
 using TopGpuMining.Core.Search;
+using TopGpuMining.Domain.Models;
+using TopGpuMining.Web.ViewModels;
 
-namespace GpuMiningInsights.Web.Models.Search
+namespace TopGpuMining.Web.ViewModels.Search
 {
-    public class AlgorithmSearchCrietriaViewModel : GmiSearchCriteriaViewModelBase<Algorithm>
+    public class AlgorithmSearchCrietriaViewModel : SearchViewModelBase<Algorithm>
     {
         public string Name { get; set; }
         
 
-        public override SearchCriteria<Algorithm> ToSearchCriteria()
+        public override SearchCriteria<Algorithm> ToSearchModel()
         {
             //Get base Values
 
-            SearchCriteria<Algorithm> searchCriteria = base.ToSearchCriteria();
+            SearchCriteria<Algorithm> searchCriteria = base.ToSearchModel();
 
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AndCondition(algorithm   => algorithm.Name.Arabic.Contains(Name) || algorithm.Name.English.Contains(Name)));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AddAndFilter(algorithm   => algorithm.Name.Arabic.Contains(Name) || algorithm.Name.English.Contains(Name)));
 
             return searchCriteria;
         }

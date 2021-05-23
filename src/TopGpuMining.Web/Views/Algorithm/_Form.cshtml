@@ -1,0 +1,54 @@
+﻿@model Algorithm
+
+@{
+    var titleArabic = $"{Html.DisplayNameFor(a => a.Name)} {CommonText.Arabic}";
+    var titleEnglish = $"{Html.DisplayNameFor(a => a.Name)} {CommonText.English}";
+
+    var descArabic = $"{Html.DisplayNameFor(a => a.Description)} {CommonText.Arabic}";
+    var descEnglish = $"{Html.DisplayNameFor(a => a.Description)} {CommonText.English}";
+}
+@Html.HiddenFor(a => a.Id)
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @titleArabic
+            </label>
+            @Html.TextBoxFor(a => a.Name.Arabic, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.Name.Arabic, "", new { @class = "help-block" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @titleEnglish
+            </label>
+            @Html.TextBoxFor(a => a.Name.English, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.Name.English, "", new { @class = "help-block" })
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @descArabic
+            </label>
+            @Html.TextAreaFor(a => a.Description.Arabic, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @descEnglish
+            </label>
+            @Html.TextAreaFor(a => a.Description.English, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+</div>
+
+
+

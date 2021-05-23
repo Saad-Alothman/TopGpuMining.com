@@ -1,31 +1,42 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using TopGpuMining.Application.Services;
+using TopGpuMining.Core;
+using TopGpuMining.Core.Entities;
 using TopGpuMining.Core.Exceptions;
-using TopGpuMining.Domain.Models;
-using TopGpuMining.Web.Models.Search;
+using TopGpuMining.Core.Search;
+using TopGpuMining.Domain.Services;
+using TopGpuMining.Web.Models;
+using TopGpuMining.Web.ViewModels;
+using TopGpuMining.Web.ViewModels;
 
 namespace TopGpuMining.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    public class GmiAuthorizeStandardController<TModel, TService, TSearchCriteriaViewModelBase> : GmiStandardController<TModel, TService, TSearchCriteriaViewModelBase> where TModel : GmiEntityBase
-        where TService : GmiServiceBase<TModel, TService>, new()
-        where TSearchCriteriaViewModelBase : GmiSearchCriteriaViewModelBase<TModel>, new()
+    [Authorize(Roles = AppRoles.ADMIN_ROLE)]
+    public class GmiAuthorizeStandardController<TModel, TService, TSearchViewModelBase> : GmiStandardController<TModel, TService, TSearchViewModelBase> where TModel : BaseEntity
+        where TService : IGenericService<TModel>
+        where TSearchViewModelBase : SearchViewModelBase<TModel>, new()
     {
+        public GmiAuthorizeStandardController(TService service):base(service)
+        {
 
+        }
     }
 
-    public class GmiStandardController<TModel, TService, TSearchCriteriaViewModelBase> : BaseController
-        where TModel : GmiEntityBase
-        where TService : GmiServiceBase<TModel, TService>, new()
-        where TSearchCriteriaViewModelBase : GmiSearchCriteriaViewModelBase<TModel>, new()
+    public class GmiStandardController<TModel, TService, TSearchViewModelBase> : BaseController
+        where TModel : BaseEntity
+        where TService : IGenericService<TModel>
+        where TSearchViewModelBase : SearchViewModelBase<TModel>, new()
     {
         protected string ListPartialViewName = "~/Views/TModel/_List.cshtml";
         protected string FormPartialViewName = "~/Views/TModel/_Form.cshtml";
         protected string DeleteFormPartialViewName = "~/Views/TModel/_DeleteForm.cshtml";
-
-        public GmiStandardController()
+        protected TService _service;
+        public GmiStandardController(TService service)
         {
             Init();
+            _service = service;
         }
 
         protected void Init()
@@ -43,31 +54,45 @@ namespace TopGpuMining.Web.Controllers
             this.DeleteFormPartialViewName = $"{basePathToFolder}/_DeleteForm.cshtml";
         }
 
-        private TService _service;
-        private TService Service => _service ?? (_service = new TService());
-        public virtual ActionResult Index()
+        
+        public virtual IActionResult Index()
         {
-            return SimpleIndex<TModel>(Service.Search);
+            return SimpleIndex<TModel>(_service.Search);
         }
+        protected override IActionResult SimpleIndex<TModel>(Func<SearchCriteria<TModel>, SearchResult<TModel>> action)
+          where TModel : BaseEntity
+        {
+            SearchResult<TModel> viewModel = new SearchResult<TModel>();
+            try
+            {
 
-        [HttpPost]
-        public virtual ActionResult Add(TModel model)
-        {
-            return SimpleAjaxAdd(model, Service.Add, Service.Search, ListPartialViewName);
+                SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
+                viewModel = action.Invoke(searchCriteria);
+            }
+            catch (Exception ex)
+            {
+                SetError(ex);
+            }
+            return View(viewModel);
         }
-        public virtual ActionResult Edit(int id)
+        [HttpPost]
+        public virtual IActionResult Add(TModel model)
+        {
+            return SimpleAjaxAdd(model,_service.Add, _service.Search, ListPartialViewName);
+        }
+        public virtual IActionResult Edit(string id)
         {
             JsonResultObject result = new JsonResultObject();
 
-            var model = Service.GetById(id);
+            var model = _service.GetById(id);
 
-            result.PartialViewHtml = RenderPartialViewToString(FormPartialViewName, model);
+            result.PartialViewHtml =ViewRender.RenderAsync(FormPartialViewName, model).GetAwaiter().GetResult();
             return Json(result);
         }
 
 
         [HttpPost]
-        public virtual ActionResult Update(TModel model)
+        public virtual IActionResult Update(TModel model)
         {
             JsonResultObject result = new JsonResultObject();
 
@@ -75,12 +100,12 @@ namespace TopGpuMining.Web.Controllers
 
             try
             {
-                Service.Update(model);
+                _service.Save(model);
                 SetSuccess(result);
 
                 var search = new SearchCriteria<TModel>();
-                var modeltoView = Service.Search(search);
-                result.PartialViewHtml = RenderPartialViewToString(ListPartialViewName, modeltoView);
+                var modeltoView = _service.Search(search);
+                result.PartialViewHtml = ViewRender.RenderAsync(FormPartialViewName, model).GetAwaiter().GetResult();
             }
             catch (BusinessException ex)
             {
@@ -94,28 +119,29 @@ namespace TopGpuMining.Web.Controllers
 
 
 
-        public virtual ActionResult Delete(int id)
+        public virtual IActionResult Delete(string id)
         {
             JsonResultObject result = new JsonResultObject();
 
-            var model = Service.GetById(id);
+            var model = _service.GetById(id);
 
-            result.PartialViewHtml = RenderPartialViewToString(DeleteFormPartialViewName, model);
+            result.PartialViewHtml =ViewRender.RenderAsync(FormPartialViewName, model).GetAwaiter().GetResult();
+            
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         [HttpPost]
-        public virtual ActionResult Delete(TModel model)
+        public virtual IActionResult Delete(TModel model)
         {
             JsonResultObject result = new JsonResultObject();
             try
             {
-                Service.Delete(model.Id);
+                _service.Delete(model.Id);
                 SetSuccess(result);
                 var search = new SearchCriteria<TModel>();
-                var modeltoView = Service.Search(search);
-                result.PartialViewHtml = RenderPartialViewToString(ListPartialViewName, modeltoView);
+                var modeltoView = _service.Search(search);
+                result.PartialViewHtml = ViewRender.RenderAsync(FormPartialViewName, model).GetAwaiter().GetResult();
             }
             catch (BusinessException ex)
             {
@@ -126,9 +152,11 @@ namespace TopGpuMining.Web.Controllers
         }
 
         [HttpPost]
-        public virtual ActionResult Search(TSearchCriteriaViewModelBase searchCriteriaViewModel)
+        public virtual IActionResult Search(TSearchViewModelBase searchCriteriaViewModel)
         {
-            return SimpleSearchAjaxAction<TModel, TSearchCriteriaViewModelBase>(searchCriteriaViewModel, ListPartialViewName, Service.Search);
+            return SimpleSearchAjaxAction<TModel, TSearchViewModelBase>(searchCriteriaViewModel, ListPartialViewName, _service.Search);
         }
+
+
     }
 }

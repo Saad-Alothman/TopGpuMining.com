@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using CreaDev.Framework.Core.Resources;
+using TopGpuMining.Core.Resources;
 
 namespace CHRS.Web.Models
 {
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = nameof(Common.Email), ResourceType = typeof(Common))]
+        [Display(Name = nameof(CommonText.Email), ResourceType = typeof(CommonText))]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = nameof(Common.Password), ResourceType = typeof(Common))]
+        [Display(Name = nameof(CommonText.Password), ResourceType = typeof(CommonText))]
         public string Password { get; set; }
 
-        [Display(Name = nameof(Common.RememberMe), ResourceType = typeof(Common))]
+        [Display(Name = nameof(CommonText.RememberMe), ResourceType = typeof(CommonText))]
 
         public bool RememberMe { get; set; }
 
@@ -36,7 +37,7 @@ namespace CHRS.Web.Models
     public class SendCodeViewModel
     {
         public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+        public ICollection<SelectListItem> Providers { get; set; }
         public string ReturnUrl { get; set; }
         public bool RememberMe { get; set; }
     }

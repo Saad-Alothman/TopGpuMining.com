@@ -1,0 +1,135 @@
+﻿@model SearchResult<Algorithm>
+
+@{
+    //IF following convention, and standard controller, you need to change only the following:
+    //1- Model Type SearchResult<THE_MODEL_HERE>
+    //2- itemName variable
+    //3- searchCrietriaViewModel type
+    //4- Model specific columns and headers
+
+
+
+
+    //settings
+    string itemName = "algorithm";
+    string itemNameUpperFirstLetter = itemName.ToProperCase();
+    string controllerName = itemNameUpperFirstLetter;
+
+    string listId = $"{itemName}-list";
+    string listSelector = $"#{listId}";
+    string editFormSelector = $"#edit-{itemName}-form-div";
+    string deleteFormSelector = $"#delete-{itemName}-form-div";
+    //Example showEditBrand();
+    string editAlgorithmJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
+    string deletealgorithmJavascriptMethod = $"showDelete{itemName.ToProperCase()}()";
+
+    var search = Model.SearchCriteria as AlgorithmSearchCrietriaViewModel;
+}
+
+@if (Model.Result.Any())
+{
+    <div class="table-responsive-sm">
+        <table class="table table-striped table-bordered">
+
+            <caption>
+                <p>
+                    <strong>
+                        @CommonText.Total:
+                    </strong>
+                    @Model.TotalResultsCount.ToString("N0")
+                </p>
+
+
+                <cs-pager cs-pager-ul-class="pagination"
+                          cs-pager-li-other-class="page-item"
+                          cs-pager-link-other-class="page-link"
+                          cs-pager-li-current-class="page-item active"
+                          cs-pager-link-current-class="page-link"
+                          cs-paging-pagesize="@Model.PageSize"
+                          cs-paging-pagenumber="@Model.PageNumber"
+                          cs-paging-totalitems="@Model.TotalResultsCount"
+                          asp-all-route-data="@search.ToRouteValueDictionary()"
+                          cs-ajax-target="#list"
+                          cs-ajax-begin="block('#list')"
+                          cs-ajax-complete="unblock('#list')"
+                          asp-controller="Country"
+                          asp-action="Index">
+
+                </cs-pager>
+
+                <input type="hidden" data-route value="@Url.RouteUrl(search.ToRouteValueDictionary(true))" />
+
+            </caption>
+
+            <thead>
+                <tr>
+                    <th>
+                        @CommonText.NameArabic
+                    </th>
+                    <th>
+                        @CommonText.NameEnglish
+                    </th>
+                    <th class="text-center">
+                        @CommonText.Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.Result)
+                {
+                <tr>
+                    <td class="text-center">
+                        @item.Id
+                    </td>
+                    <td>
+                        @(item.Name?.ToString())
+                    </td>
+                    <td>
+                        @(item.Description?.ToString())
+                    </td>
+                    <td class="text-sm-center">
+
+                        <a asp-ajax="true"
+                           asp-ajax-block="#list"
+                           asp-ajax-replace="#edit-div"
+                           asp-form-id="#edit-form"
+                           asp-action="Edit"
+                           asp-controller="Country"
+                           asp-ajax-success-method="showModal('#edit-modal')"
+                           asp-route-id="@item.Id"
+                           class="btn btn-sm btn-brand m-btn m-btn--icon">
+
+                            <i class="fa fa-edit"></i>
+
+                            @CommonText.Edit
+                        </a>
+
+                        <a class="btn btn-sm btn-danger m-btn m-btn--icon"
+                           asp-ajax="true"
+                           asp-confirm="true"
+                           asp-action="Delete"
+                           asp-controller="Country"
+                           asp-ajax-success-method="updateListFromDiv('#list');"
+                           asp-route-id="@item.Id"
+                           asp-ajax-block="#list">
+                            <i class="fa fa-trash"></i>
+                            @CommonText.Delete
+
+                        </a>
+
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+
+
+}
+else
+{
+    <metro-no-records />
+}

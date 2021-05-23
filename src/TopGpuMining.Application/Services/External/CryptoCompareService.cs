@@ -37,7 +37,7 @@ namespace TopGpuMining.Application.Services
             
             string coinUrl = $"https://min-api.cryptocompare.com/data/pricemulti?fsyms={sourceCurrency.ToCsv(",")}&tsyms={toCurrency.ToCsv(",")}";
             string response = InsighterService.GetHttpResponseText(coinUrl);
-            Dictionary<string, double> whatToMineCoinResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, double>>(response);
+            var whatToMineCoinResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, double>>>(response);
             
             foreach (var key in whatToMineCoinResponse.Keys)
             {
@@ -61,5 +61,6 @@ namespace TopGpuMining.Application.Services
 
         public Dictionary<string,double> ExchangeRates { get; set; }
     }
+
 
 }

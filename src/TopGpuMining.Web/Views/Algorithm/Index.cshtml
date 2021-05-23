@@ -1,0 +1,216 @@
+﻿@model SearchResult<Algorithm>
+
+
+@{
+    ViewBag.Name = "Index";
+    string itemName = "algorithm";
+    string itemDisplayName = "Algorithm";
+    string itemNameUpperFirstLetter = itemName.ToProperCase();
+    string controllerName = itemNameUpperFirstLetter;
+    string panelSelector = $"#list-panel";
+    string listId = $"list";
+    string listSelector = $"#{listId}";
+
+    //Add Modal
+    string addItemModalId = $"add-modal";
+    string addItemDivId = $"add-div";
+    string addItemAlert = $"add-alert";
+    string addItemFormId = $"add-form";
+
+    //Edit Modal
+    string editItemModalId = $"edit-modal";
+    string editItemDivId = $"edit-div";
+    string editItemAlertId = $"edit-alert";
+    string editItemFormId = $"edit-form";
+    string editItemFormDivId = $"edit-form-div";
+
+    //delete Modal
+    string deleteItemModalId = $"delete-modal";
+    string deleteItemDivId = $"delete-div";
+    string deleteItemAlertId = $"delete-alert";
+    string deleteItemFormId = $"delete-form";
+    string deleteItemFormDivId = $"delete-form-div";
+
+
+}
+@Html.Partial("_BootstrapCallOut", new BootstrapCallOut(@"This page is for Managing
+        Algorithms
+        ,Although these are <span style=""font-weight: bold"">Automatically Add</span>,
+    So no need to do anything unless it is really needed"))
+
+<br />
+<br />
+<br />
+<div class="panel panel-default" id="">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h4 style="display: inline-block">@itemDisplayName </h4>
+        <div style="float: right">
+            <button type="button" class="btn btn-primary" onclick="showAddAlgorithm()">
+                + @CommonText.Add
+            </button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <form id="search-form"
+              asp-ajax="true"
+              asp-ajax-replace="#@listId"
+              asp-action="Search"
+              asp-ajax-block="#main-div">
+
+            <partial name="_SearchForm" model="new AlgorithmSearchCrietriaViewModel()" />
+            <br />
+            <button type="submit" class="btn green btn-block">
+                @CommonText.Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Table -->
+    <div id="@listId">
+        <partial name="_List" />
+    </div>
+</div>
+
+
+
+<modal id="add-modal" asp-is-large="true" asp-content-id="add-content" asp-reset-validation="true">
+    <modal-header></modal-header>
+    <form id="add-form"
+          method="post"
+          asp-ajax="true"
+          asp-action="Add"
+          asp-ajax-modal="#add-modal"
+          asp-ajax-success-method="updateListFromDiv('#list');"
+          asp-ajax-error="#add-alert"
+          asp-controller="Country"
+          asp-ajax-block="#add-content">
+        <modal-body>
+            <div id="add-alert" data-alert></div>
+            <partial name="_Form" model="new CountryViewModel()" />
+        </modal-body>
+        <modal-footer asp-show-close-button="true">
+
+            <button type="submit" class="btn btn-brand btn-sm m-btn m-btn--icon">
+                <i class="fa fa-plus"></i>
+                @CommonText.Add
+            </button>
+        </modal-footer>
+    </form>
+</modal>
+
+@*<div class="modal fade"
+     id="@addItemModalId"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="@addItemDivId">
+
+            <form id="@addItemFormId"
+                  method="post"
+                  asp-ajax="true"
+                  asp-action="Add"
+                  asp-ajax-block="#main-div">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Add @itemDisplayName</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div id="@addItemAlert"></div>
+                    @Html.Partial("_Form", new Algorithm())
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @CommonText.Add
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @CommonText.Cancel
+                    </button>
+                </div>
+                <br />
+                <button type="submit" class="btn green btn-block">
+                    @CommonText.Search
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>*@
+
+
+
+<div class="modal fade"
+     id="@editItemModalId"
+     role="basic"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="@editItemDivId">
+
+            <form id="@editItemFormId"
+                  method="post"
+                  asp-ajax="true"
+                  asp-action="Update"
+                  asp-ajax-block="#main-div">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">@CommonText.Edit</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div id="@editItemAlertId"></div>
+
+                    <div id="@editItemFormDivId">
+                        @Html.Partial("_Form", new Algorithm())
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn green">
+                        @CommonText.Save
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn red">
+                        @CommonText.Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        @{
+            string addFunctionName = $"showAdd{itemNameUpperFirstLetter}";
+            string editFunctionName = $"showEdit{itemNameUpperFirstLetter}";
+            string deleteFunctionName = $"showDelete{itemNameUpperFirstLetter}";
+        }
+        function @(addFunctionName)() {
+
+            $("#@addItemModalId").modal('show');
+        }
+
+        function @(editFunctionName)() {
+
+            $("#@editItemModalId").modal('show');
+        }
+
+        function @(deleteFunctionName)() {
+            $("#@deleteItemAlertId").html('');
+            $("#@deleteItemModalId").modal('show');
+        }
+    </script>
+}

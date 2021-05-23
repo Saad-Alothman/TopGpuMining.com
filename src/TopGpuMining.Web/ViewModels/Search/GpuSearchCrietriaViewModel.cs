@@ -1,34 +1,23 @@
-﻿using System.Web.Routing;
-using CreaDev.Framework.Core.Helpers;
-using CreaDev.Framework.Core.Models;
-using GpuMiningInsights.Domain.Models;
+﻿using TopGpuMining.Core.Helpers;
+using TopGpuMining.Core.Search;
+using TopGpuMining.Domain.Models;
+using TopGpuMining.Web.ViewModels;
 
-namespace GpuMiningInsights.Web.Models.Search
+namespace TopGpuMining.Web.ViewModels.Search
 {
-    public class GpuSearchCrietriaViewModel : GmiSearchCriteriaViewModelBase<Gpu>
+    public class GpuSearchCrietriaViewModel : SearchViewModelBase<Gpu>
     {
         public string Name { get; set; }
-        public int? ModelId { get; set; }
-        public override RouteValueDictionary ToRouteValueDictionary(int page, string prefix = "")
-        {
-            //Get The Base Values
-            RouteValueDictionary routeValueDictionary = base.ToRouteValueDictionary(page, prefix);
-
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => routeValueDictionary.Add(nameof(Name), Name));
-            ConditionActionHelper.DoIf(ModelId.HasValue,  () => routeValueDictionary.Add(nameof(ModelId), ModelId.Value));
-
-            return routeValueDictionary;
-
-        }
-
-        public override SearchCriteria<Gpu> ToSearchCriteria()
+        public string ModelId { get; set; }
+        
+        public override SearchCriteria<Gpu> ToSearchModel()
         {
             //Get base Values
 
-            SearchCriteria<Gpu> searchCriteria = base.ToSearchCriteria();
+            SearchCriteria<Gpu> searchCriteria = base.ToSearchModel();
 
-            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AndCondition(brand => brand.Name.Contains(Name) ));
-            ConditionActionHelper.DoIf(ModelId.HasValue, () => searchCriteria.AndCondition(brand => brand.ModelId == ModelId ));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(Name), () => searchCriteria.AddAndFilter(brand => brand.Name.Contains(Name) ));
+            ConditionActionHelper.DoIf(!string.IsNullOrEmpty(ModelId), () => searchCriteria.AddAndFilter(brand => brand.ModelId == ModelId ));
 
             return searchCriteria;
         }

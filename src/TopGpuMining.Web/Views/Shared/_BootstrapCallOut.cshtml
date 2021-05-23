@@ -1,0 +1,18 @@
+﻿
+@model BootstrapCallOut
+    
+<div class="bs-callout bs-callout-@Model.CssClassType">
+    @if (!string.IsNullOrWhiteSpace(Model.Title))
+    {
+        <h2>
+            @Html.Raw(Model.Title)
+        </h2>
+    }
+        <p>
+            @Html.Raw(Model.Body)
+            @*This page is for Managing
+            Algorithms
+            ,Although these are <span style="font-weight: bold">Automatically Add</span>,
+            So no need to do anything unless it is really needed*@
+        </p>
+</div>

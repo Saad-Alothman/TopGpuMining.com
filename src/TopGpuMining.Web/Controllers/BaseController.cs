@@ -8,9 +8,13 @@ using TopGpuMining.Core.Exceptions;
 using TopGpuMining.Core.Interfaces;
 using TopGpuMining.Core.Resources;
 using TopGpuMining.Web.Helpers;
-using TopGpuMining.Web.Models;
+using TopGpuMining.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using TopGpuMining.Core.Entities;
+using TopGpuMining.Core.Search;
+using TopGpuMining.Web.ViewModels;
+using TopGpuMining.Web.Models;
 
 namespace TopGpuMining.Web.Controllers
 {
@@ -177,5 +181,67 @@ namespace TopGpuMining.Web.Controllers
             return sb.ToString();
         }
 
+
+        protected virtual IActionResult SimpleIndex<TModel>(Func<SearchCriteria<TModel>, SearchResult<TModel>> action)
+          where TModel : BaseEntity
+        {
+            SearchResult<TModel> viewModel = new SearchResult<TModel>();
+            try
+            {
+                
+                SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
+                viewModel = action.Invoke(searchCriteria);
+            }
+            catch (Exception ex)
+            {
+                SetError(ex);
+            }
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        public IActionResult SimpleAjaxAdd<TModel>(TModel model, Func<TModel, TModel> addAction, Func<SearchCriteria<TModel>, SearchResult<TModel>> searchAction, string modelListPartial) where TModel :BaseEntity
+        {
+            JsonResultObject result = new JsonResultObject();
+
+            try
+            {
+                ValidateModelState();
+                
+                addAction.Invoke(model);
+                SetSuccess(result);
+
+                SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
+                SearchResult<TModel> searchResult = searchAction.Invoke(searchCriteria);
+                result.PartialViewHtml = ViewRender.RenderAsync(modelListPartial, searchResult).GetAwaiter().GetResult();
+            }
+            catch (BusinessException ex)
+            {
+                SetError(result, ex);
+                return BadRequest(result);
+            }
+
+            return Json(result);
+        }
+
+        protected IActionResult SimpleSearchAjaxAction<T, TSearchCriteriaViewModel>(TSearchCriteriaViewModel model,
+    string listPartialViewName, Func<SearchCriteria<T>, SearchResult<T>> action)
+    where TSearchCriteriaViewModel : SearchViewModelBase<T>, new()
+    where T : BaseEntity
+        {
+            if (model == null)
+            {
+                model = new TSearchCriteriaViewModel() { PageNumber = 1, PageSize = 10 };
+            }
+            ViewData[WebConstants.SEARCH_MODEL] = model;
+            var searchCriteria = model.ToSearchModel();
+            SearchResult<T> modelToView = action.Invoke(searchCriteria);
+            
+            if (IsAjaxRequest())
+                return PartialView(listPartialViewName, modelToView);
+
+            return View(modelToView);
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace TopGpuMining.Application
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAlgorithmService, AlgorithmService>();
         }
     }
 }

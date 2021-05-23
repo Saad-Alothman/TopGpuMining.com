@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TopGpuMining.Web.Models;
+using TopGpuMining.Web.ViewModels;
 
 namespace TopGpuMining.Web.Controllers
 {

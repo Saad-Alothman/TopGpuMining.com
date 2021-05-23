@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TopGpuMining.Persistance;
 
 namespace TopGpuMining.Persistance.Migrations
 {
     [DbContext(typeof(TopGpuMiningDbContext))]
-    partial class TopGpuMiningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210522104518_upatedContect")]
+    partial class upatedContect
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
