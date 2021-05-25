@@ -1,0 +1,65 @@
+﻿@model Hashrate
+@inject IAlgorithmService algorithmService
+@inject ModelService modelService
+@{
+    var titleArabic = $"{Html.DisplayNameFor(a => a.HashrateValueMhz)} {CommonText.Arabic}";
+
+    var descArabic = $"{Html.DisplayNameFor(a => a.Description)} {CommonText.Arabic}";
+    var descEnglish = $"{Html.DisplayNameFor(a => a.Description)} {CommonText.English}";
+
+    var algorithms = algorithmService.GetAll().ToSelectListItems(brand => brand.Name, brand => brand.Id, Model.AlogrthimId?.ToString() ?? "", true);
+    var models = modelService.GetAll().ToSelectListItems(model => model.Name, model => model.Id, Model.ModelId?.ToString() ?? "", true);
+}
+
+@Html.HiddenFor(a => a.Id)
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.HashrateValueMhz)
+            </label>
+            @Html.TextBoxFor(a => a.HashrateValueMhz, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.HashrateValueMhz, "", new { @class = "help-block" })
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Algorithm)
+            </label>
+            <select asp-for="AlogrthimId" asp-items="algorithms" class="form-control" />
+            @Html.ValidationMessageFor(a => a.AlogrthimId, "", new { @class = "help-block" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Model)
+            </label>
+            <select asp-for="ModelId" asp-items="models" class="form-control" />
+            @Html.ValidationMessageFor(a => a.ModelId, "", new { @class = "help-block" })
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Description)
+            </label>
+            @Html.TextAreaFor(a => a.Description, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

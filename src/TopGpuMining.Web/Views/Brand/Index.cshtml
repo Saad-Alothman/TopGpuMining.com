@@ -1,9 +1,8 @@
-﻿@model SearchResult<Algorithm>
-
+﻿
 
 @{
     ViewBag.Name = "Index";
-    string itemName = "algorithm";
+    string itemName = "brand";
     string itemNameUpperFirstLetter = itemName.ToProperCase();
     string controllerName = itemNameUpperFirstLetter;
     string panelSelector = $"#list-panel";
@@ -34,7 +33,6 @@
 }
 
 
-@Html.Partial("_BootstrapCallOut", new BootstrapCallOut(@"This page is for Managing Algorithms,Although these are <span style=""font-weight: bold"">Automatically Add</span>,So no need to do anything unless it is really needed"))
 
 <div class="kt-portlet kt-portlet--responsive-mobile">
     <div class="kt-portlet__head">
@@ -53,7 +51,7 @@
           asp-ajax-block="#main-div">
 
         <div class="kt-portlet__body">
-            <partial name="_SearchForm" model="new AlgorithmSearchCrietriaViewModel()" />
+            <partial name="_SearchForm" model="new BrandSearchCrietriaViewModel()" />
             </div>
         <div class="kt-portlet__foot">
             <button type="submit" class="btn btn-brand m-btn m-btn--custom btn-sm">
@@ -89,6 +87,19 @@
                 @CommonText.Search
             </h3>
         </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" data-toggle="modal" data-target="#add-modal"
+                        class="m-portlet__nav-link btn btn-brand btn-sm m-btn m-btn--icon">
+                    <span>
+                        <i class="fa fa-plus"></i>
+                        <span>
+                            @CommonText.Add
+                        </span>
+                    </span>
+                </button>
+            </div>
+        </div>
     </div>
     
 
@@ -111,7 +122,7 @@
           asp-ajax-block="#add-content">
         <modal-body>
             <div id="add-alert" data-alert></div>
-            <partial name="_Form" model="new Algorithm()" />
+            <partial name="_Form" model="new Brand()" />
         </modal-body>
         <modal-footer asp-show-close-button="true">
 

@@ -339,6 +339,7 @@ namespace TopGpuMining.Application.Services
             }
         }
 
+        
         public static List<PriceSourceItemOld> GetPrice(GPUOld gpuOld, PriceSourceOld priceSource)
         {
             List<PriceSourceItemOld> priceSourceItems = new List<PriceSourceItemOld>();

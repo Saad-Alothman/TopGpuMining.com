@@ -182,47 +182,34 @@ namespace TopGpuMining.Web.Controllers
         }
 
 
-        protected virtual IActionResult SimpleIndex<TModel>(Func<SearchCriteria<TModel>, SearchResult<TModel>> action)
-          where TModel : BaseEntity
-        {
-            SearchResult<TModel> viewModel = new SearchResult<TModel>();
-            try
-            {
+        //protected virtual IActionResult SimpleIndex<TModel>(Func<SearchCriteria<TModel>, SearchResult<TModel>> action)
+        //  where TModel : BaseEntity
+        //{
+        //    SearchResult<TModel> viewModel = new SearchResult<TModel>();
+        //    try
+        //    {
                 
-                SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
-                viewModel = action.Invoke(searchCriteria);
-            }
-            catch (Exception ex)
-            {
-                SetError(ex);
-            }
-            return View(viewModel);
-        }
+        //        SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
+        //        viewModel = action.Invoke(searchCriteria);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SetError(ex);
+        //    }
+        //    return View(viewModel);
+        //}
 
 
         [HttpPost]
         public IActionResult SimpleAjaxAdd<TModel>(TModel model, Func<TModel, TModel> addAction, Func<SearchCriteria<TModel>, SearchResult<TModel>> searchAction, string modelListPartial) where TModel :BaseEntity
         {
-            JsonResultObject result = new JsonResultObject();
-
-            try
+            return SimpleAjaxAction(() =>
             {
                 ValidateModelState();
-                
+
                 addAction.Invoke(model);
-                SetSuccess(result);
 
-                SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
-                SearchResult<TModel> searchResult = searchAction.Invoke(searchCriteria);
-                result.PartialViewHtml = ViewRender.RenderAsync(modelListPartial, searchResult).GetAwaiter().GetResult();
-            }
-            catch (BusinessException ex)
-            {
-                SetError(result, ex);
-                return BadRequest(result);
-            }
-
-            return Json(result);
+            });
         }
 
         protected IActionResult SimpleSearchAjaxAction<T, TSearchCriteriaViewModel>(TSearchCriteriaViewModel model,

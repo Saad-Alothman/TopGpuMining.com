@@ -1,4 +1,4 @@
-﻿@model SearchResult<Algorithm>
+﻿@model SearchResult<Model>
 
 @{
     //IF following convention, and standard controller, you need to change only the following:
@@ -11,7 +11,7 @@
 
 
     //settings
-    string itemName = "algorithm";
+    string itemName = "model";
     string itemNameUpperFirstLetter = itemName.ToProperCase();
     string controllerName = itemNameUpperFirstLetter;
 
@@ -23,7 +23,8 @@
     string editAlgorithmJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
     string deletealgorithmJavascriptMethod = $"showDelete{itemName.ToProperCase()}()";
 
-    var search = Model.SearchCriteria as AlgorithmSearchCrietriaViewModel;
+    var search = Model.SearchCriteria as ModelSearchCrietriaViewModel;
+    bool isShowAction = false;
 }
 
 @if (Model.Result.Any())
@@ -62,16 +63,25 @@
 
             <thead>
                 <tr>
-                    
+                    @* Begin Model specific Headers *@
                     <th>
-                        @CommonText.NameArabic
+                        @Html.DisplayNameFor(a => a.Result.First().Name)
                     </th>
+
                     <th>
-                        @CommonText.NameEnglish
+                        @Html.DisplayNameFor(a => a.Result.First().Description)
                     </th>
-                    <th class="text-center">
-                        @CommonText.Actions
-                    </th>
+                    @* END Model specific Headers *@
+
+
+                    @if (isShowAction && User.IsInRole("Admin"))
+                    {
+                        <th>
+                            @CommonText.Actions
+                        </th>
+
+                    }
+
                 </tr>
             </thead>
             <tbody>
@@ -80,52 +90,57 @@
                 {
                 <tr>
 
+                    @* Begin Model specific columns *@
+
                     <td>
-                        @(item.Name?.Arabic?.ToString())
+                        @(item.Name?.ToString())
                     </td>
                     <td>
-                        @(item.Name?.English?.ToString())
+                        @(item.Description?.ToString())
                     </td>
-                    <td class="text-sm-center">
+                    @* END Model specific columns *@
+                    @if (isShowAction && User.IsInRole("Admin"))
+                    {
+                        <td class="text-sm-center">
 
-                        <a asp-ajax="true"
-                           asp-ajax-block="#list"
-                           asp-ajax-replace="#edit-div"
-                           asp-form-id="#edit-form"
-                           asp-action="Edit"
-                           asp-ajax-success-method="showModal('#edit-modal')"
-                           asp-route-id="@item.Id"
-                           class="btn btn-sm btn-brand m-btn m-btn--icon">
+                            <a asp-ajax="true"
+                               asp-ajax-block="#list"
+                               asp-ajax-replace="#edit-div"
+                               asp-form-id="#edit-form"
+                               asp-action="Edit"
+                               asp-ajax-success-method="showModal('#edit-modal')"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-brand m-btn m-btn--icon">
 
-                            <i class="fa fa-edit"></i>
+                                <i class="fa fa-edit"></i>
 
-                            @CommonText.Edit
-                        </a>
+                                @CommonText.Edit
+                            </a>
 
-                        <a class="btn btn-sm btn-danger m-btn m-btn--icon"
-                           asp-ajax="true"
-                           asp-confirm="true"
-                           asp-action="Delete"
-                           asp-ajax-success-method="updateListFromDiv('#list');"
-                           asp-route-id="@item.Id"
-                           asp-ajax-block="#list">
-                            <i class="fa fa-trash"></i>
-                            @CommonText.Delete
+                            <a class="btn btn-sm btn-danger m-btn m-btn--icon"
+                               asp-ajax="true"
+                               asp-confirm="true"
+                               asp-action="Delete"
+                               asp-ajax-success-method="updateListFromDiv('#list');"
+                               asp-route-id="@item.Id"
+                               asp-ajax-block="#list">
+                                <i class="fa fa-trash"></i>
+                                @CommonText.Delete
 
-                        </a>
-
-                    </td>
+                            </a>
+                        </td>
+                    }
                 </tr>
                 }
 
             </tbody>
 
-        </table>
-    </div>
+                </table>
+            </div>
 
 
-}
-else
-{
-    <metro-no-records />
-}
+        }
+                else
+                {
+                <metro-no-records />
+                }

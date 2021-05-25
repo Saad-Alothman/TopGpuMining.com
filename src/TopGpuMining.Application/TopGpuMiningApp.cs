@@ -25,6 +25,14 @@ namespace TopGpuMining.Application
             services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAlgorithmService, AlgorithmService>();
+            services.AddTransient<BrandService>();
+            services.AddTransient<ICoinService, CoinService>();
+            services.AddTransient<GpuService>();
+            services.AddTransient<ModelService>();
+            services.AddTransient<AmazonService>();
+            services.AddTransient<GpuPriceSourceService>();
+            services.AddTransient<PriceSourceService>();
+            services.AddTransient<HashrateService>();
         }
     }
 }

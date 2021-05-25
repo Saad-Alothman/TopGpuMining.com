@@ -1,4 +1,4 @@
-﻿@model SearchResult<Algorithm>
+﻿@model SearchResult<Gpu>
 
 @{
     //IF following convention, and standard controller, you need to change only the following:
@@ -19,11 +19,11 @@
     string listSelector = $"#{listId}";
     string editFormSelector = $"#edit-{itemName}-form-div";
     string deleteFormSelector = $"#delete-{itemName}-form-div";
-    //Example showEditBrand();
+    //Example showEditGpu();
     string editAlgorithmJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
     string deletealgorithmJavascriptMethod = $"showDelete{itemName.ToProperCase()}()";
 
-    var search = Model.SearchCriteria as AlgorithmSearchCrietriaViewModel;
+    var search = Model.SearchCriteria as GpuSearchCrietriaViewModel;
 }
 
 @if (Model.Result.Any())
@@ -64,11 +64,9 @@
                 <tr>
                     
                     <th>
-                        @CommonText.NameArabic
+                        @CommonText.Name
                     </th>
-                    <th>
-                        @CommonText.NameEnglish
-                    </th>
+                    
                     <th class="text-center">
                         @CommonText.Actions
                     </th>
@@ -81,11 +79,9 @@
                 <tr>
 
                     <td>
-                        @(item.Name?.Arabic?.ToString())
+                        @(item.Name)
                     </td>
-                    <td>
-                        @(item.Name?.English?.ToString())
-                    </td>
+                    
                     <td class="text-sm-center">
 
                         <a asp-ajax="true"
@@ -95,7 +91,7 @@
                            asp-action="Edit"
                            asp-ajax-success-method="showModal('#edit-modal')"
                            asp-route-id="@item.Id"
-                           class="btn btn-sm btn-brand m-btn m-btn--icon">
+                           class="btn btn-sm btn-gpu m-btn m-btn--icon">
 
                             <i class="fa fa-edit"></i>
 

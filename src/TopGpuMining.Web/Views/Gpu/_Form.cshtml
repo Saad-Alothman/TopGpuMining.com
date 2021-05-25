@@ -1,0 +1,100 @@
+﻿@model Gpu
+@inject BrandService brandService
+@inject ModelService modelService
+@{
+    var titleArabic = $"{Html.DisplayNameFor(a => a.Name)} {CommonText.Arabic}";
+    var titleEnglish = $"{Html.DisplayNameFor(a => a.Name)} {CommonText.English}";
+
+    var descArabic = $"{Html.DisplayNameFor(a => a.Description)} {CommonText.Arabic}";
+    var descEnglish = $"{Html.DisplayNameFor(a => a.Description)} {CommonText.English}";
+
+    var brands = brandService.GetAll().ToSelectListItems(brand => brand.Name, brand => brand.Id, Model.BrandId?.ToString() ?? "", true);
+    var models = modelService.GetAll().ToSelectListItems(model => model.Name, model => model.Id, Model.ModelId?.ToString() ?? "", true);
+}
+<div class="bs-callout bs-callout-info">
+    <p> If the GPU is on amazon, you can type in the ASIN number and it click Get info to fetch the data</p>
+</div>
+@Html.HiddenFor(a => a.Id)
+<div class="row">
+    <div class="col-md-12">
+        <bootstrap-input-form-group for="Name" />
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Brand)
+            </label>
+            <select asp-for="BrandId" asp-items="brands">
+
+            </select>
+            @Html.ValidationMessageFor(a => a.BrandId, "", new { @class = "help-block" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Model)
+            </label>
+            <select asp-for="ModelId" asp-items="models">
+            </select>
+            @Html.ValidationMessageFor(a => a.ModelId, "", new { @class = "help-block" })
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+
+            <label class="control-label">
+
+                @Html.DisplayNameFor(m => m.Asin)
+            </label>
+
+            <div class="input-group">
+            <bootstrap-input-form-group for="Asin" />
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" onclick="getGpuInfo()">Get Info!</button>
+                </span>
+            </div><!-- /input-group -->
+            
+        </div>
+    </div>
+    <div class="col-md-6">
+        
+            
+            <bootstrap-input-form-group for="Ean" />
+        
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Description)
+            </label>
+            @Html.TextAreaFor(a => a.Description, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-6">
+       
+            <bootstrap-input-form-group for="ImageUrl" />
+        
+    </div>
+    <div class="col-md-6">
+        <img class="img-responsive" id="gpu-image" />
+    </div>
+</div>
+
+
+
+
+

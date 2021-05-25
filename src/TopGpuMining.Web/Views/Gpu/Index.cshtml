@@ -1,9 +1,8 @@
-﻿@model SearchResult<Algorithm>
-
+﻿@model SearchResult<Gpu>
 
 @{
     ViewBag.Name = "Index";
-    string itemName = "algorithm";
+    string itemName = "gpu";
     string itemNameUpperFirstLetter = itemName.ToProperCase();
     string controllerName = itemNameUpperFirstLetter;
     string panelSelector = $"#list-panel";
@@ -15,6 +14,8 @@
     string addItemDivId = $"add-div";
     string addItemAlert = $"add-alert";
     string addItemFormId = $"add-form";
+//Add Bulk
+    string addItemBulkModalId = $"add-bulk-modal";
 
     //Edit Modal
     string editItemModalId = $"edit-modal";
@@ -34,15 +35,14 @@
 }
 
 
-@Html.Partial("_BootstrapCallOut", new BootstrapCallOut(@"This page is for Managing Algorithms,Although these are <span style=""font-weight: bold"">Automatically Add</span>,So no need to do anything unless it is really needed"))
 
 <div class="kt-portlet kt-portlet--responsive-mobile">
     <div class="kt-portlet__head">
         <div class="kt-portlet__head-label">
             <span class="kt-portlet__head-icon">
-                <i class="flaticon-search kt-font-brand"></i>
+                <i class="flaticon-search kt-font-gpu"></i>
             </span>
-            <h3 class="kt-portlet__head-title kt-font-brand">
+            <h3 class="kt-portlet__head-title kt-font-gpu">
                 @CommonText.Search
             </h3>
         </div>
@@ -53,10 +53,10 @@
           asp-ajax-block="#main-div">
 
         <div class="kt-portlet__body">
-            <partial name="_SearchForm" model="new AlgorithmSearchCrietriaViewModel()" />
-            </div>
+            <partial name="_SearchForm" model="new GpuSearchCrietriaViewModel()" />
+        </div>
         <div class="kt-portlet__foot">
-            <button type="submit" class="btn btn-brand m-btn m-btn--custom btn-sm">
+            <button type="submit" class="btn btn-gpu m-btn m-btn--custom btn-sm">
                 <span>
                     <i class="fa fa-search"></i>
                     <span>
@@ -65,7 +65,7 @@
                 </span>
 
             </button>
-            <button type="submit" onclick="clearFromData('#search-form')" class="btn btn-outline-brand btn-sm">
+            <button type="submit" onclick="clearFromData('#search-form')" class="btn btn-outline-gpu btn-sm">
                 <span>
                     <i class="fa fa-trash"></i>
                     <span>
@@ -83,20 +83,33 @@
     <div class="kt-portlet__head">
         <div class="kt-portlet__head-label">
             <span class="kt-portlet__head-icon">
-                <i class="flaticon-search kt-font-brand"></i>
+                <i class="flaticon-search kt-font-gpu"></i>
             </span>
-            <h3 class="kt-portlet__head-title kt-font-brand">
+            <h3 class="kt-portlet__head-title kt-font-gpu">
                 @CommonText.Search
             </h3>
         </div>
-    </div>
-    
-
-        <div class="kt-portlet__body">
-            <div id="@listId">
-                <partial name="_List" />
+        <div class="kt-portlet__head-toolbar">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" data-toggle="modal" data-target="#add-modal"
+                        class="m-portlet__nav-link btn btn-gpu btn-sm m-btn m-btn--icon">
+                    <span>
+                        <i class="fa fa-plus"></i>
+                        <span>
+                            @CommonText.Add
+                        </span>
+                    </span>
+                </button>
             </div>
         </div>
+    </div>
+
+
+    <div class="kt-portlet__body">
+        <div id="@listId">
+            <partial name="_List" />
+        </div>
+    </div>
 </div>
 
 <modal id="add-modal" asp-is-large="true" asp-content-id="add-content" asp-reset-validation="true">
@@ -111,11 +124,11 @@
           asp-ajax-block="#add-content">
         <modal-body>
             <div id="add-alert" data-alert></div>
-            <partial name="_Form" model="new Algorithm()" />
+            <partial name="_Form" model="new Gpu()" />
         </modal-body>
         <modal-footer asp-show-close-button="true">
 
-            <button type="submit" class="btn btn-brand btn-sm m-btn m-btn--icon">
+            <button type="submit" class="btn btn-gpu btn-sm m-btn m-btn--icon">
                 <i class="fa fa-plus"></i>
                 @CommonText.Add
             </button>
@@ -124,6 +137,30 @@
 </modal>
 
 
+<modal id="add-bulk-modal" asp-is-large="true" asp-content-id="add-bulk-content" asp-reset-validation="true">
+    <modal-header></modal-header>
+    <form id="add-bulk-form"
+          method="post"
+          asp-ajax="true"
+          asp-action="AddBulk"
+          asp-ajax-modal="#add-bulk-modal"
+          asp-ajax-success-method="updateListFromDiv('#list');"
+          asp-ajax-error="#add-bulk-alert"
+          asp-ajax-block="#add-bulk-content">
+        <modal-body>
+            <div id="add-bulk-alert" data-alert></div>
+            @Html.TextBox("asinsCsv", "", new { @class = "form-control" })
+
+        </modal-body>
+        <modal-footer asp-show-close-button="true">
+
+            <button type="submit" class="btn btn-gpu btn-sm m-btn m-btn--icon">
+                <i class="fa fa-plus"></i>
+                @CommonText.Add
+            </button>
+        </modal-footer>
+    </form>
+</modal>
 <modal id="edit-modal" asp-is-large="true" asp-content-id="edit-content" asp-reset-validation="true">
     <modal-header></modal-header>
     <form id="edit-form"
@@ -142,7 +179,7 @@
         </modal-body>
         <modal-footer asp-show-close-button="true">
 
-            <button type="submit" class="btn btn-brand btn-sm m-btn m-btn--icon">
+            <button type="submit" class="btn btn-gpu btn-sm m-btn m-btn--icon">
                 <i class="fa fa-plus"></i>
                 @CommonText.Save
             </button>
@@ -164,6 +201,42 @@
             string editFunctionName = $"showEdit{itemNameUpperFirstLetter}";
             string deleteFunctionName = $"showDelete{itemNameUpperFirstLetter}";
         }
+             function showAddBulkGpu() {
+            $("#@addItemBulkModalId").modal('show');
+
+        }
+
+        function getGpuInfo() {
+            var selector = '#@Html.IdFor(m =>  m.Result.FirstOrDefault().Asin)';
+            var asin = $(selector).val();
+            ajaxRequest('@Url.Action("FetchGpuInfoByAsin","Gpu")', { asin }, '', 'POST').then(onGpuInfoLoaded);
+            //creaDevAjax('body', '#alert', '', , 'POST',, );
+
+        }
+        var eanSelector =  '#@addItemFormId #@Html.IdFor(m=>m.Result.FirstOrDefault().Ean)';
+        var nameSelector =  '#@addItemFormId #@Html.IdFor(m=>m.Result.FirstOrDefault().Name)';
+        var imageUrlSelector = '#@addItemFormId #@Html.IdFor(m=>m.Result.FirstOrDefault().ImageUrl)';
+        var imageUrlDisplaySelector = '#@addItemFormId #gpu-image';
+
+        function onGpuInfoLoaded(data) {
+            debugger;
+            var gpuData = data;
+            console.log(gpuData);
+
+            $(eanSelector).val(gpuData.ean);
+            $(nameSelector).val(gpuData.name);
+            $(imageUrlSelector).val(gpuData.imageUrl);
+            $(imageUrlDisplaySelector).attr('src', gpuData.imageUrl);
+
+            //FetchGpuInfoByAsin
+
+        }
+
+        $(function() {
+            $(imageUrlSelector).change(function() {
+                $(imageUrlDisplaySelector).attr('src', $(this).val());
+            });
+        });
         function @(addFunctionName)() {
 
             $("#@addItemModalId").modal('show');

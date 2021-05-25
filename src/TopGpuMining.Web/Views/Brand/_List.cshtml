@@ -1,4 +1,4 @@
-﻿@model SearchResult<Algorithm>
+﻿@model SearchResult<Brand>
 
 @{
     //IF following convention, and standard controller, you need to change only the following:
@@ -23,7 +23,7 @@
     string editAlgorithmJavascriptMethod = $"showEdit{itemNameUpperFirstLetter }()";
     string deletealgorithmJavascriptMethod = $"showDelete{itemName.ToProperCase()}()";
 
-    var search = Model.SearchCriteria as AlgorithmSearchCrietriaViewModel;
+    var search = Model.SearchCriteria as BrandSearchCrietriaViewModel;
 }
 
 @if (Model.Result.Any())

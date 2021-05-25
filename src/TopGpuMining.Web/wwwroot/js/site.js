@@ -354,6 +354,36 @@ function updateContainer(url, divToUpdate) {
     return result.promise();
 }
 
+function ajaxRequest(url, data, divToBlock, httpMethod) {
+
+    if (!httpMethod) {
+        httpMethod = 'GET';
+    }
+    if (!data) {
+        data = {};
+    }
+    var result = $.Deferred();
+
+    $.ajax(url,
+        {
+
+            data: data,
+            method: httpMethod,
+            beforeSend: function () {
+                block(divToBlock);
+            },
+            complete: function (xhr, status) {
+                unblock(divToBlock);
+            },
+            success: function (data, status, xhr) {
+                result.resolve(data);
+            },
+            error: function (xhr, status, error) {
+                result.reject;
+            }
+        });
+    return result.promise();
+}
 function setupResetForms() {
 
     var selector = '[data-reset-validation="true"]';

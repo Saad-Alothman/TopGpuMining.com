@@ -55,26 +55,37 @@ namespace TopGpuMining.Web.Controllers
         }
 
         
-        public virtual IActionResult Index()
+        public virtual IActionResult Index(TSearchViewModelBase searchModel)
         {
-            return SimpleIndex<TModel>(_service.Search);
+                
+            return SimpleIndex(searchModel);
         }
-        protected override IActionResult SimpleIndex<TModel>(Func<SearchCriteria<TModel>, SearchResult<TModel>> action)
-          where TModel : BaseEntity
+        protected  IActionResult SimpleIndex(TSearchViewModelBase model)
         {
-            SearchResult<TModel> viewModel = new SearchResult<TModel>();
-            try
-            {
+            if (model == null)
+                model = new TSearchViewModelBase() { PageNumber = 1, PageSize = 10 };
 
-                SearchCriteria<TModel> searchCriteria = new SearchCriteria<TModel>();
-                viewModel = action.Invoke(searchCriteria);
-            }
-            catch (Exception ex)
-            {
-                SetError(ex);
-            }
-            return View(viewModel);
+            //ViewData[WebConstants.SEARCH_MODEL] = model;
+            var searchCriteria = model.ToSearchModel();
+            SearchResult<TModel> modelToView = _service.Search(searchCriteria);
+
+            if (IsAjaxRequest())
+                return PartialView(ListPartialViewName, modelToView);
+
+            return View(modelToView);
+
+            //SearchResult<TModel> viewModel = new SearchResult<TModel>();
+            //try
+            //{
+            //    viewModel = _service.Search(searchModel.ToSearchModel());
+            //}
+            //catch (Exception ex)
+            //{
+            //    SetError(ex);
+            //}
+            //return View(viewModel);
         }
+
         [HttpPost]
         public virtual IActionResult Add(TModel model)
         {

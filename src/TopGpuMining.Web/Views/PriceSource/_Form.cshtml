@@ -1,0 +1,76 @@
+﻿@model PriceSource
+
+@{
+    var titleArabic = $"{Html.DisplayNameFor(a => a.Name)} {CommonText.Arabic}";
+
+    var url = $"{Html.DisplayNameFor(a => a.Url)} {CommonText.Arabic}";
+    var isScrape = $"{Html.DisplayNameFor(a => a.IsScrape)} {CommonText.Arabic}";
+    var requiresJavascript = $"{Html.DisplayNameFor(a => a.RequiresJavascript)} {CommonText.Arabic}";
+    var priceSourceType = $"{Html.DisplayNameFor(a => a.RequiresJavascript)} {CommonText.Arabic}";
+
+}
+
+@Html.HiddenFor(a => a.Id)
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Name)
+            </label>
+            @Html.TextBoxFor(a => a.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.Name, "", new { @class = "help-block" })
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Url)
+            </label>
+            @Html.TextAreaFor(a => a.Url, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.PriceSourceType)
+            </label>
+            @Html.DropDownListFor(m => m.PriceSourceType,Html.GetEnumSelectList(typeof(PriceSourceType)))
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.IsScrape)
+            </label>
+            @Html.TextBoxFor(a => a.IsScrape, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.IsScrape, "", new { @class = "help-block" })
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.RequiresJavascript)
+            </label>
+            @Html.TextBoxFor(a => a.RequiresJavascript, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.RequiresJavascript, "", new { @class = "help-block" })
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

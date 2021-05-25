@@ -6,14 +6,15 @@ using TopGpuMining.Application.Services;
 using TopGpuMining.Core.Extensions;
 using TopGpuMining.Core.Search;
 using TopGpuMining.Domain.Models;
+using TopGpuMining.Domain.Services;
 using TopGpuMining.Web.Helpers;
 using TopGpuMining.Web.ViewModels.Search;
 
 namespace TopGpuMining.Web.Controllers
 {
-    public class CoinController : GmiStandardController<Coin, CoinService, CoinSearchCrietriaViewModel>
+    public class CoinController : GmiStandardController<Coin, ICoinService, CoinSearchCrietriaViewModel>
     {
-        public CoinController(CoinService service) : base(service)
+        public CoinController(ICoinService service) : base(service)
         {
         }
 
@@ -37,23 +38,27 @@ namespace TopGpuMining.Web.Controllers
 
             return View(modelToView);
         }
-        public override IActionResult Index()
+        public override IActionResult Index(CoinSearchCrietriaViewModel searchModel)
         {
-            SearchResult<Coin> viewModel = new SearchResult<Coin>();
-            try
-            {
-                CoinSearchCrietriaViewModel model = new CoinSearchCrietriaViewModel() { PageNumber = 1, PageSize = 100 };
-                SearchCriteria<Coin> searchCriteria = model.ToSearchModel();
-                searchCriteria.FilterExpression = searchCriteria.FilterExpression.And(coin => coin.ExchangeRateUsd != null);
-                searchCriteria.SortExpression = (coin => coin.OrderByDescending(c => c.ExchangeRateUsd));
-                viewModel = _service.Search(searchCriteria);
-            }
-            catch (Exception ex)
-            {
-                SetError(ex);
-            }
-            return View(viewModel);
+            return base.Index(searchModel);
         }
+        //public override IActionResult Index()
+        //{
+        //    SearchResult<Coin> viewModel = new SearchResult<Coin>();
+        //    try
+        //    {
+        //        CoinSearchCrietriaViewModel model = new CoinSearchCrietriaViewModel() { PageNumber = 1, PageSize = 100 };
+        //        SearchCriteria<Coin> searchCriteria = model.ToSearchModel();
+        //        searchCriteria.FilterExpression = searchCriteria.FilterExpression.And(coin => coin.ExchangeRateUsd != null);
+        //        searchCriteria.SortExpression = (coin => coin.OrderByDescending(c => c.ExchangeRateUsd));
+        //        viewModel = _service.Search(searchCriteria);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SetError(ex);
+        //    }
+        //    return View(viewModel);
+        //}
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public override IActionResult Add(Coin model)

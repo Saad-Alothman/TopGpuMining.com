@@ -1,0 +1,67 @@
+﻿@model GpuPriceSource
+@inject GpuService gpuService;
+@inject PriceSourceService priceSourceService;
+@{
+    var titleArabic = $"{Html.DisplayNameFor(a => a.Name)} {CommonText.Arabic}";
+    var titleEnglish = $"{Html.DisplayNameFor(a => a.Name)} {CommonText.English}";
+
+    var descArabic = $"{Html.DisplayNameFor(a => a.Desc)} {CommonText.Arabic}";
+    var descEnglish = $"{Html.DisplayNameFor(a => a.Desc)} {CommonText.English}";
+
+    var Gpus = gpuService.GetAll().ToSelectListItems(gpu => gpu.Name, gpu => gpu.Id, Model.GpuId?.ToString() ?? "", true);
+    var priceSources = priceSourceService.GetAll().ToSelectListItems(PriceSource => PriceSource.Name, PriceSource => PriceSource.Id, Model.PriceSourceId?.ToString() ?? "", true);
+}
+
+@Html.HiddenFor(a => a.Id)
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Name)
+            </label>
+            @Html.TextBoxFor(a => a.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.Name, "", new { @class = "help-block" })
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Gpu)
+            </label>
+            <select asp-for="GpuId" asp-items="Gpus" class="form-control" />
+            @Html.ValidationMessageFor(a => a.GpuId, "", new { @class = "help-block" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.PriceSource)
+            </label>
+            <select asp-for="PriceSourceId" asp-items="priceSources" class="form-control" />
+
+            @Html.ValidationMessageFor(a => a.PriceSourceId, "", new { @class = "help-block" })
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">
+                @Html.DisplayNameFor(m => m.Desc)
+            </label>
+            @Html.TextAreaFor(a => a.Desc, new { @class = "form-control", rows = 5 })
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

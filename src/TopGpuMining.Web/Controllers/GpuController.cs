@@ -31,10 +31,9 @@ namespace TopGpuMining.Web.Controllers
         {
             string asinNumber = asin;
 
-            var priceSourceItem = FetchGpu(asinNumber);
-            string data = string.Empty;
-
-            return Json(data);
+            PriceSourceItemOld priceSourceItem = FetchGpu(asinNumber);
+            
+            return Ok(priceSourceItem);
         }
 
         private PriceSourceItemOld FetchGpu(string asinNumber)
@@ -42,7 +41,7 @@ namespace TopGpuMining.Web.Controllers
             PriceSourceOld priceSource = new PriceSourceOld()
             {
                 PriceSourceItemIdentifier = asinNumber,
-                PriceSourceAction = (string term) => _amazonService.SearchItemLookupOperationOld(term)
+                PriceSourceAction = (string term) => _amazonService.GetProductDetailsOld(term)
             };
 
             GPUOld gpuOld = new GPUOld()

@@ -8,7 +8,7 @@ using TopGpuMining.Domain.Models;
 
 namespace TopGpuMining.Domain.Services
 {
-    public interface ICoinService
+    public interface ICoinService:IGenericService<Coin>
     {
         void AddOrUpdate();
         void FetchAndAddOrUpdateCoins();
